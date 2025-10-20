@@ -499,7 +499,12 @@ if ('serviceWorker' in navigator) {
             document.querySelectorAll('.tab-error').forEach(tab => {
                 tab.classList.remove('tab-error');
             });
-            
+            // Limpiar también el campo de edad calculada
+                const edadCalculada = document.getElementById('edad_calculada');
+                if (edadCalculada) {
+                edadCalculada.value = '';
+              }
+
             // Actualizar contador
             updateFieldCounter();
             
@@ -2007,6 +2012,7 @@ function activarModoTest() {
   document.querySelector('#campo1').value = 'Dato de prueba';
   // etc.
 }
+
 
 
 

@@ -1642,3 +1642,16 @@ body.modo-test::before {
     /* ajusta min-width si quieres tabs más anchas o más estrechas en móvil */
   }
 }
+/* Color “verde” profesional para resultados calculados */
+.resultado-calculado {
+  color: #21808d;   /* O el color exacto de tu botón, ajusta el código si usas otro */
+  font-weight: 600;
+  background: none; /* Asegura que no haya fondo blanco que tape el color */
+}
+
+/* Si antes usabas otro nombre, por ejemplo .resultado, añade también */
+.resultado {
+  color: #21808d;
+  font-weight: 600;
+  background: none;
+}

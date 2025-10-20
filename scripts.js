@@ -1963,4 +1963,23 @@ if ('serviceWorker' in navigator) {
           printWindow.focus();
           setTimeout(() => printWindow.print(), 250);
         }
-    </script>
+   
+// Obtener los parámetros de la URL actual
+const urlParams = new URLSearchParams(window.location.search);
+
+// Verificar si existe parametro 'modo' y su valor es 'test'
+if (urlParams.get('modo') === 'test') {
+  // Activar modo test en la aplicación
+  console.log('Modo TEST activado');
+  // Aquí puedes llamar a funciones o activar vistas para modo test
+  activarModoTest();
+}
+
+function activarModoTest() {
+  // Implementa aquí tu lógica para modo test
+  alert('Modo Test activado');
+  // Ejemplo: rellenar campos con datos de ejemplo
+  document.querySelector('#campo1').value = 'Dato de prueba';
+  // etc.
+}
+

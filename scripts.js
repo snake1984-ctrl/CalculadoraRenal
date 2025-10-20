@@ -92,10 +92,7 @@ if ('serviceWorker' in navigator) {
         // Variable global window.calculatedResults para V9
         window.calculatedResults = {};
         
-        // CAMBIO 1: Detectar modo test desde URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const modoTest = urlParams.get('modo') === 'test';
-        
+      
         // Variables globales para edad calculada
         window.edadEnAños = 0;
         window.edadEnMeses = 0;
@@ -2010,6 +2007,7 @@ function activarModoTest() {
   document.querySelector('#campo1').value = 'Dato de prueba';
   // etc.
 }
+
 
 
 

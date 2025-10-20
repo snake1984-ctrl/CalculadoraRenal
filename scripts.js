@@ -1,21 +1,10 @@
-// Registro del Service Worker
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('service-worker.js')
-      .then(registration => {
-        console.log('Service Worker registrado:', registration.scope);
-      }).catch(error => {
-        console.log('Error al registrar Service Worker:', error);
-      });
-  });
-}
 // ============================================
 // MODO TEST - ACTIVACIÓN COMPLETA CORREGIDA
 // ============================================
 (function() {
   const urlParams = new URLSearchParams(window.location.search);
   const modoTest = urlParams.get('modo') === 'test';
-  
+
   if (modoTest) {
     // Esperar a que el DOM esté listo
     if (document.readyState === 'loading') {
@@ -24,13 +13,13 @@ if ('serviceWorker' in navigator) {
       activarModoTest();
     }
   }
-  
+
   function activarModoTest() {
     console.log('✅ MODO TEST ACTIVADO');
-    
+
     // 1. Añadir clase al body para el distintivo visual
     document.body.classList.add('modo-test');
-    
+
     // 2. Mostrar botón de datos de ejemplo
     const botonTest = document.getElementById('btn-cargar-datos-test');
     if (botonTest) {
@@ -39,10 +28,6 @@ if ('serviceWorker' in navigator) {
     } else {
       console.warn('⚠️ No se encontró el botón btn-cargar-datos-test');
     }
-    
-    // 3. Opcional: Auto-cargar datos de prueba después de 500ms
-    // Descomenta la siguiente línea si quieres que se carguen automáticamente
-    // setTimeout(() => { if (typeof loadSampleData === 'function') loadSampleData(); }, 500);
   }
 })();
 
@@ -2039,4 +2024,5 @@ function activarModoTest() {
   document.querySelector('#campo1').value = 'Dato de prueba';
   // etc.
 }
+
 

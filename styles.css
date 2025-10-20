@@ -1608,18 +1608,17 @@ body.modo-test::before {
   }
 }
 @media (max-width: 800px) {
-  .tabs-indicator {
+  .tabs::after, .nav-tabs::after {
+    content: '';
     position: absolute;
-    top: 0; right: 0; bottom: 0;
-    width: 32px;
-    background: linear-gradient(to left, #fff 85%, transparent 100%);
+    right: 0; top: 0; bottom: 0;
+    width: 28px;
     pointer-events: none;
+    /* Cambia solo la opacidad aquí para hacerlo muy sutil */
+    background: linear-gradient(to left, rgba(245,245,245,0.85) 65%, transparent 100%);
     z-index: 4;
-    display: block;
     border-radius: 0 10px 10px 0;
-  }
-  .tabs-container, .nav-tabs, .tabs {
-    position: relative;
+    display: block;
   }
 }
 

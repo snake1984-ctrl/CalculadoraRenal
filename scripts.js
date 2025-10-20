@@ -2012,6 +2012,32 @@ function activarModoTest() {
   document.querySelector('#campo1').value = 'Dato de prueba';
   // etc.
 }
+// Desplaza la pestaña pulsada al centro visible
+document.querySelectorAll('.tab-button').forEach(btn => {
+  btn.addEventListener('click', function() {
+    // Solo aplica si hay scroll horizontal
+    const container = this.closest('.tabs') || this.closest('.nav-tabs');
+    if (container && (container.scrollWidth > container.clientWidth)) {
+      const btnRect = this.getBoundingClientRect();
+      const containerRect = container.getBoundingClientRect();
+      // ¿Está fuera por la izquierda?
+      if (btnRect.left < containerRect.left) {
+        container.scrollBy({ left: btnRect.left - containerRect.left - 10, behavior: "smooth" });
+      }
+      // ¿Fuera por la derecha?
+      else if (btnRect.right > containerRect.right) {
+        container.scrollBy({ left: btnRect.right - containerRect.right + 10, behavior: "smooth" });
+      }
+      // ¿Solo parcialmente visible? Llévala al centro
+      else {
+        const offset = btnRect.left - containerRect.left -
+          (containerRect.width / 2) + (btnRect.width / 2);
+        container.scrollBy({ left: offset, behavior: "smooth" });
+      }
+    }
+  });
+});
+
 
 
 

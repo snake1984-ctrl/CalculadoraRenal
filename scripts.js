@@ -135,21 +135,7 @@ if ('serviceWorker' in navigator) {
             // Actualizar contador inicial (0/46)
             updateFieldCounter();
             
-            // CAMBIO 1: Mostrar/ocultar botón de cargar datos según el modo
-            const botonCargarDatos = document.getElementById('btn-cargar-datos-test');
-            if (modoTest) {
-                if (botonCargarDatos) {
-                    botonCargarDatos.style.display = 'inline-block';
-                    console.log('Modo test activado - Botón cargar datos visible');
-                    // Añadir clase al body para mostrar indicador
-                    document.body.classList.add('modo-test');
-                }
-            } else {
-                if (botonCargarDatos) {
-                    botonCargarDatos.style.display = 'none';
-                }
-            }
-            
+           
             // CRÍTICO: primeraValidacion = FALSE hasta presionar "Calcular"
             // Esto garantiza que NO aparezcan asteriscos al inicio
             
@@ -2024,6 +2010,7 @@ function activarModoTest() {
   document.querySelector('#campo1').value = 'Dato de prueba';
   // etc.
 }
+
 
 
 

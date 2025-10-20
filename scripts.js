@@ -9,18 +9,62 @@ if ('serviceWorker' in navigator) {
       });
   });
 }
-// Detectar modo test por URL y activar cambios visuales y funcionales
-document.addEventListener('DOMContentLoaded', function() {
+// ============================================
+// MODO TEST - ACTIVACIÓN COMPLETA CORREGIDA
+// ============================================
+(function() {
   const urlParams = new URLSearchParams(window.location.search);
-  if (urlParams.get('modo') === 'test') {
-    document.body.classList.add('modo-test'); // Distintivo MODO TEST
-    // Mostrar botón de datos de ejemplo
-    var botonTest = document.getElementById('btn-cargar-datos-test');
-    if (botonTest) botonTest.style.display = 'inline-block';
-    // Opcional: auto-rellenar datos de ejemplo
-    // loadSampleData(); // Descomenta si quieres auto-llenar en modo test
+  const modoTest = urlParams.get('modo') === 'test';
+  
+  if (modoTest) {
+    // Esperar a que el DOM esté listo
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', activarModoTest);
+    } else {
+      activarModoTest();
+    }
   }
-});
+  
+  function activarModoTest() {
+    console.log('✅ MODO TEST ACTIVADO');
+    
+    // 1. Añadir clase al body para el distintivo visual
+    document.body.classList.add('modo-test');
+    
+    // 2. Mostrar botón de datos de ejemplo
+    const botonTest = document.getElementById('btn-cargar-datos-test');
+    if (botonTest) {
+      botonTest.style.display = 'inline-block';
+      console.log('✅ Botón de test visible');
+    } else {
+      console.warn('⚠️ No se encontró el botón btn-cargar-datos-test');
+    }
+    
+    // 3. Opcional: Auto-cargar datos de prueba después de 500ms
+    // Descomenta la siguiente línea si quieres que se carguen automáticamente
+    // setTimeout(() => { if (typeof loadSampleData === 'function') loadSampleData(); }, 500);
+  }
+})();
+
+// ============================================
+// REGISTRO DEL SERVICE WORKER
+// ============================================
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('service-worker.js')
+      .then(registration => {
+        console.log('Service Worker registrado:', registration.scope);
+      }).catch(error => {
+        console.log('Error al registrar Service Worker:', error);
+      });
+  });
+}
+
+// ============================================
+// AQUÍ VA TODO TU CÓDIGO JS ORIGINAL
+// ============================================
+// Copia y pega todo el contenido de tu scripts.js original DEBAJO de esta línea
+// (todo excepto el código de detección de modo test que ya está corregido arriba)
 
 
 // Añade aquí toda tu lógica JS, funciones, eventos, cálculos, etc.

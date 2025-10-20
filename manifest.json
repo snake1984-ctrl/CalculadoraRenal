@@ -1,0 +1,24 @@
+{
+  "name": "Calculadora Clínica de Parámetros Renales",
+  "short_name": "CalcRenal",
+  "description": "Calculadora clínica para el análisis de parámetros renales y función renal",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#21808d",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

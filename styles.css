@@ -1608,20 +1608,18 @@ body.modo-test::before {
   }
 }
 @media (max-width: 800px) {
-  .tabs::after, .nav-tabs::after {
-    content: '⟶';
+  .tabs-indicator {
     position: absolute;
-    right: 10px; 
-    top: 50%;
-    transform: translateY(-50%);
-    color: #2563eb;
-    font-size: 1.35em;
-    opacity: 0.85;
+    top: 0; right: 0; bottom: 0;
+    width: 32px;
+    background: linear-gradient(to left, #fff 85%, transparent 100%);
     pointer-events: none;
-    z-index: 3;
-    padding-left: 14px;
-    height: 80%;
+    z-index: 4;
     display: block;
+    border-radius: 0 10px 10px 0;
+  }
+  .tabs-container, .nav-tabs, .tabs {
+    position: relative;
   }
 }
 

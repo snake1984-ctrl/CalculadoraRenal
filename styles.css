@@ -1549,6 +1549,28 @@ body.modo-test::before {
     grid-template-columns: 1fr !important;
   }
 }
+/* Botón HOY pequeño, cuadrado, y adaptado móviles */
+#btn-hoy, .btn-hoy {
+  font-size: 14px !important;
+  padding: 6px 0 !important;
+  min-width: 60px !important;
+  max-width: 90px !important;
+  width: 90px !important;
+  border-radius: 8px !important;
+  background: #f1f5f9 !important;
+  color: #222 !important;
+  box-shadow: 0 1px 8px rgba(0,0,0,0.05);
+}
+@media (max-width: 600px) {
+  #btn-hoy, .btn-hoy {
+    font-size: 12px !important;
+    padding: 5px 0 !important;
+    min-width: 50px !important;
+    width: 70px !important;
+    max-width: 75px !important;
+  }
+  .form-control, input, .form-group input { font-size: 13px !important; }
+}
 
 /* Móvil vertical: aún más compacto */
 @media (max-width: 500px) {

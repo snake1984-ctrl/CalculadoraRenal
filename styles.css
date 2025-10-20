@@ -1518,3 +1518,55 @@ body.modo-test::before {
     padding: var(--space-12);
   }
 }
+/* Responsive: botón HOY y inputs, paddings en móvil/tablet */
+@media (max-width: 768px) {
+  #btn-hoy, .btn-hoy {
+    font-size: 14px !important;
+    padding: 7px 16px !important;
+    min-width: unset !important;
+    width: 90px !important;
+    max-width: 100px !important;
+    box-sizing: border-box;
+  }
+  .form-group input,
+  .form-group .form-control {
+    font-size: 14px !important;
+    padding: 7px 8px !important;
+  }
+  .form-group {
+    margin-bottom: 12px !important;
+  }
+  .container {
+    padding: 8px !important;
+  }
+  .tabs {
+    flex-direction: row !important;
+    overflow-x: auto !important;
+    scrollbar-width: none !important;
+    max-width: 100vw !important;
+  }
+  .results-grid, .form-grid, .form-grid-3col {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Móvil vertical: aún más compacto */
+@media (max-width: 500px) {
+  #btn-hoy, .btn-hoy {
+    font-size: 12px !important;
+    padding: 4px 8px !important;
+    width: 70px !important;
+    max-width: 80px !important;
+  }
+  .form-group input,
+  .form-group .form-control {
+    font-size: 12px !important;
+    padding: 4px 6px !important;
+  }
+  .tabs {
+    font-size: 12px !important;
+  }
+  .container {
+    padding: 2px !important;
+  }
+}

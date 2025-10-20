@@ -1571,17 +1571,7 @@ body.modo-test::before {
   }
   .form-control, input, .form-group input { font-size: 13px !important; }
 }
-.tabs, .nav-tabs {
-  display: flex;
-  justify-content: space-between;  /* Reparte las tabs a lo largo del ancho */
-  flex-wrap: nowrap;
-  width: 100%;
-  overflow-x: auto;
-  white-space: nowrap;
-  scrollbar-width: thin;
-  position: relative;
-  max-width: 100vw;
-}
+
 
 .tabs .tab-button, .nav-tabs .tab-button {
   flex: 1 1 0px;        /* Cada botón ocupa el mismo ancho disponible y reacciona al espacio */
@@ -1619,5 +1609,36 @@ body.modo-test::before {
   }
   .container {
     padding: 2px !important;
+  }
+}
+/* Tabs adaptables a todo el ancho en escritorio */
+.tabs, .nav-tabs {
+  display: flex;
+  flex-wrap: nowrap;
+  width: 100%;
+  overflow-x: auto;
+  white-space: nowrap;
+  max-width: 100vw;
+  position: relative;
+  scrollbar-width: thin;
+}
+
+.tabs .tab-button, .nav-tabs .tab-button {
+  flex: 1 1 0px;
+  min-width: 0;
+  text-align: center;
+  /* borra si tuvieras: flex: 0 0 auto; en este bloque */
+}
+
+/* Solo en pantallas pequeñas, deja ancho auto y activa scroll real */
+@media (max-width: 800px) {
+  .tabs, .nav-tabs {
+    /* mantiene el scroll */
+    overflow-x: auto;
+  }
+  .tabs .tab-button, .nav-tabs .tab-button {
+    flex: 0 0 auto !important;
+    min-width: 120px !important;
+    /* ajusta min-width si quieres tabs más anchas o más estrechas en móvil */
   }
 }

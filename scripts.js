@@ -2012,31 +2012,28 @@ function activarModoTest() {
   document.querySelector('#campo1').value = 'Dato de prueba';
   // etc.
 }
-// Desplaza la pestaña pulsada al centro visible
-document.querySelectorAll('.tab-button').forEach(btn => {
+document.querySelectorAll('.tab-button').forEach((btn, i, allBtns) => {
   btn.addEventListener('click', function() {
-    // Solo aplica si hay scroll horizontal
     const container = this.closest('.tabs') || this.closest('.nav-tabs');
     if (container && (container.scrollWidth > container.clientWidth)) {
       const btnRect = this.getBoundingClientRect();
-      const containerRect = container.getBoundingClientRect();
-      // ¿Está fuera por la izquierda?
-      if (btnRect.left < containerRect.left) {
-        container.scrollBy({ left: btnRect.left - containerRect.left - 10, behavior: "smooth" });
+      const contRect = container.getBoundingClientRect();
+
+      // Si el botón está a la derecha y quedan tabs ocultas a la derecha al pulsar
+      if ((btnRect.right >= contRect.right - 8) && (i < allBtns.length - 1)) {
+        // Desplaza todo lo que queda a la derecha
+        container.scrollBy({ left: container.scrollWidth, behavior: "smooth" });
       }
-      // ¿Fuera por la derecha?
-      else if (btnRect.right > containerRect.right) {
-        container.scrollBy({ left: btnRect.right - containerRect.right + 10, behavior: "smooth" });
-      }
-      // ¿Solo parcialmente visible? Llévala al centro
-      else {
-        const offset = btnRect.left - containerRect.left -
-          (containerRect.width / 2) + (btnRect.width / 2);
-        container.scrollBy({ left: offset, behavior: "smooth" });
+      // Si el botón está en la izquierda y hay tabs a la izquierda
+      if ((btnRect.left <= contRect.left + 8) && (i > 0)) {
+        // Desplaza todo el scroll a la izquierda (ver todos los tabs previos)
+        container.scrollBy({ left: -container.scrollWidth, behavior: "smooth" });
       }
     }
   });
 });
+
+
 
 
 

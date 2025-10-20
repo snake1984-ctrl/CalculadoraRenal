@@ -1607,6 +1607,23 @@ body.modo-test::before {
     pointer-events: none;
   }
 }
+@media (max-width: 800px) {
+  .tabs::after, .nav-tabs::after {
+    content: '⟶';
+    position: absolute;
+    right: 10px; 
+    top: 50%;
+    transform: translateY(-50%);
+    color: #2563eb;
+    font-size: 1.35em;
+    opacity: 0.85;
+    pointer-events: none;
+    z-index: 3;
+    padding-left: 14px;
+    height: 80%;
+    display: block;
+  }
+}
 
 /* Móvil vertical: aún más compacto */
 @media (max-width: 500px) {

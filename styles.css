@@ -1607,20 +1607,6 @@ body.modo-test::before {
     pointer-events: none;
   }
 }
-@media (max-width: 800px) {
-  .tabs::after, .nav-tabs::after {
-    content: '';
-    position: absolute;
-    right: 0; top: 0; bottom: 0;
-    width: 28px;
-    pointer-events: none;
-    /* Cambia solo la opacidad aquí para hacerlo muy sutil */
-    background: linear-gradient(to left, rgba(245,245,245,0.85) 65%, transparent 100%);
-    z-index: 4;
-    border-radius: 0 10px 10px 0;
-    display: block;
-  }
-}
 
 /* Móvil vertical: aún más compacto */
 @media (max-width: 500px) {

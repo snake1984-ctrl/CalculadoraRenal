@@ -9,6 +9,19 @@ if ('serviceWorker' in navigator) {
       });
   });
 }
+// Detectar modo test por URL y activar cambios visuales y funcionales
+document.addEventListener('DOMContentLoaded', function() {
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('modo') === 'test') {
+    document.body.classList.add('modo-test'); // Distintivo MODO TEST
+    // Mostrar botón de datos de ejemplo
+    var botonTest = document.getElementById('btn-cargar-datos-test');
+    if (botonTest) botonTest.style.display = 'inline-block';
+    // Opcional: auto-rellenar datos de ejemplo
+    // loadSampleData(); // Descomenta si quieres auto-llenar en modo test
+  }
+});
+
 
 // Añade aquí toda tu lógica JS, funciones, eventos, cálculos, etc.
 // Por ejemplo:

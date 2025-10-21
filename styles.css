@@ -32,20 +32,10 @@
     /* ajusta min-width si quieres tabs más anchas o más estrechas en móvil */
   }
 }
-/* Color "verde" profesional para resultados calculados */
-.resultado-calculado {
-  font-weight: 600;
-  background: none; /* Asegura que no haya fondo blanco que tape el color */
-}
-/* Si antes usabas otro nombre, por ejemplo .resultado, añade también */
-.resultado {
-  font-weight: 600;
-  background: none;
-}
+
 .result-value {
   color: inherit !important;
   font-weight: bold;
   background: none;
   font-size: 1.15em;
 }
-.result-value { color: inherit !important; font-weight: bold; background: none; font-size: 1.15em; }

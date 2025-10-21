@@ -1656,7 +1656,7 @@ body.modo-test::before {
   background: none;
 }
 .result-value {
-  color: #21808d !important;   /* Mismo verde que el botón */
+  color: inherit !important;
   font-weight: bold;
   background: none;
   font-size: 1.15em;

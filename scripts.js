@@ -42,7 +42,21 @@ if ('serviceWorker' in navigator) {
     } else {
       console.warn('⚠️ No se encontró el botón btn-cargar-datos-test');
     }
+    setupTabNavigationScroll();
   }
+  document.addEventListener('DOMContentLoaded', function() {
+  // Si tienes otras inicializaciones JS, ponlas aquí arriba
+
+  // Asegura el scroll aunque el DOM cambie después
+  setupTabNavigationScroll();
+
+  // Activa el modo test si la URL lo indica
+  if (window.location.search.includes('modo=test')) {
+    activarModoTest();
+    // (Dentro de activarModoTest ya se llama al scroll tras modificar el DOM)
+  }
+});
+
 })();
 
 // ============================================
@@ -2015,55 +2029,6 @@ if (urlParams.get('modo') === 'test') {
   activarModoTest();
 }
 
-function activarModoTest() {
-  // Implementa aquí tu lógica para modo test
-  alert('Modo Test activado');
-  // Ejemplo: rellenar campos con datos de ejemplo
-  document.querySelector('#campo1').value = 'Dato de prueba';
-  // etc.
-}
-// --- SCROLL SUAVE UNIVERSAL PARA TABS ---
-// Funciona igual en modo normal y en modo test, en iOS y Android.
-
-function setupTabNavigationScroll() {
-  // Elimina listeners anteriores (por si el modo test reinicia la interfaz)
-  document.querySelectorAll('.tab-button').forEach(btn => {
-    btn.removeEventListener('_scrollCustom', btn._scrollCustomCb || (()=>{}));
-  });
-
-  document.querySelectorAll('.tab-button').forEach((btn, i, allBtns) => {
-    // Guardamos la función en el propio botón para poder quitarla si hay recarga
-    btn._scrollCustomCb = function() {
-      const container = btn.closest('.tabs') || btn.closest('.nav-tabs');
-      if (container && (container.scrollWidth > container.clientWidth)) {
-        const btnRect = btn.getBoundingClientRect();
-        const contRect = container.getBoundingClientRect();
-        // Scroll completo derecha
-        if ((btnRect.right >= contRect.right - 8) && (i < allBtns.length - 1)) {
-          container.scrollLeft = container.scrollWidth;
-        }
-        // Scroll completo izquierda
-        if ((btnRect.left <= contRect.left + 8) && (i > 0)) {
-          container.scrollLeft = 0;
-        }
-      }
-    };
-    btn.addEventListener('click', btn._scrollCustomCb);
-    btn.addEventListener('_scrollCustom', btn._scrollCustomCb);
-  });
-}
-
-// --- Llama la función SIEMPRE, en modo normal y modo test ---
-document.addEventListener('DOMContentLoaded', function() {
-  // ... Aquí va tu setupTabNavigation y otros inits ...
-  setupTabNavigationScroll(); // <-- AHORA se aplica SIEMPRE
-
-  // Si tienes condiciones de modo test (activarModoTest), llama también:
-  if (window.location.search.includes('modo=test')) {
-    setupTabNavigationScroll(); // <-- Se asegura de estar activo también en modo test
-  }
-});
-
 // Scroll suave para tabs - compatible con iPhone y Android
 
 document.querySelectorAll('.tab-button').forEach((btn, i, allBtns) => {
@@ -2086,6 +2051,24 @@ document.querySelectorAll('.tab-button').forEach((btn, i, allBtns) => {
     }
   });
 });
+function setupTabNavigationScroll() {
+  document.querySelectorAll('.tab-button').forEach((btn, i, allBtns) => {
+    btn.onclick = function() {
+      const container = btn.closest('.tabs') || btn.closest('.nav-tabs');
+      if (container && (container.scrollWidth > container.clientWidth)) {
+        const btnRect = btn.getBoundingClientRect();
+        const contRect = container.getBoundingClientRect();
+        if ((btnRect.right >= contRect.right - 8) && (i < allBtns.length - 1)) {
+          container.scrollLeft = container.scrollWidth;
+        }
+        if ((btnRect.left <= contRect.left + 8) && (i > 0)) {
+          container.scrollLeft = 0;
+        }
+      }
+    };
+  });
+}
+
 
 
 

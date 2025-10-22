@@ -1564,7 +1564,13 @@ if ('serviceWorker' in navigator) {
                   const numValue = window.calculatedResults[key];
                   const valorFormateado = typeof numValue === 'number' ? numValue.toFixed(2) : '0.00';
                   value.textContent = valorFormateado;
-                  
+                 
+                //Pone en verde Superficie corporal e IMC
+                  if (key === "superficiecorporal" || key === "imc") {
+                      value.style.setProperty('color', '#21808d', 'important');
+                      value.style.fontWeight = "bold";
+                  }
+
                   // Evaluar si está fuera de rango y aplicar color rojo (solo visual)
                   const paramEncontrado = parametros.find(p => p.key === key);
                   if (paramEncontrado && numValue && numValue !== 0) {
@@ -2036,6 +2042,7 @@ document.querySelectorAll('.tab-button').forEach((btn, i, allBtns) => {
     }
   });
 });
+
 
 
 

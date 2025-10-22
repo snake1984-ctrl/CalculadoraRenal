@@ -1570,10 +1570,10 @@ if ('serviceWorker' in navigator) {
                   if (paramEncontrado && numValue && numValue !== 0) {
                       const evaluacion = evaluarRango(key, numValue, edad, edadMeses);
                       if (!evaluacion.enRango) {
-                          value.style.color = "#dc2626";
+                          value.style.setProperty('color', '#dc2626', 'important');
                           value.style.fontWeight = "bold";
                         } else {
-                          value.style.color = "#21808d";
+                          value.style.setProperty('color', '#21808d', 'important');
                           value.style.fontWeight = "bold";
                         }
 
@@ -2036,6 +2036,7 @@ document.querySelectorAll('.tab-button').forEach((btn, i, allBtns) => {
     }
   });
 });
+
 
 
 

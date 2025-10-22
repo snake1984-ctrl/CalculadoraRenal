@@ -2028,17 +2028,19 @@ document.querySelectorAll('.tab-button').forEach((btn, i, allBtns) => {
     if (container && (container.scrollWidth > container.clientWidth)) {
       const btnRect = this.getBoundingClientRect();
       const contRect = container.getBoundingClientRect();
-      // Si pulsas en extremo derecho, desplaza toda la barra hacia la derecha (muestra todos los de la derecha)
+      // derecha: muestra todo lo oculto a la derecha
       if ((btnRect.right >= contRect.right - 8) && (i < allBtns.length - 1)) {
-        container.scrollBy({ left: container.scrollWidth, behavior: "smooth" });
+        container.scrollLeft = container.scrollWidth;
       }
-      // Si pulsas en extremo izquierdo, desplaza toda la barra hacia la izquierda (muestra todos los de la izquierda)
+      // izquierda: muestra todo lo oculto a la izquierda
       if ((btnRect.left <= contRect.left + 8) && (i > 0)) {
-        container.scrollBy({ left: -container.scrollWidth, behavior: "smooth" });
+        container.scrollLeft = 0;
       }
     }
   });
 });
+
+
 
 
 

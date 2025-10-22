@@ -2022,23 +2022,30 @@ function activarModoTest() {
   document.querySelector('#campo1').value = 'Dato de prueba';
   // etc.
 }
+// Scroll suave para tabs - compatible con iPhone y Android
+
 document.querySelectorAll('.tab-button').forEach((btn, i, allBtns) => {
   btn.addEventListener('click', function() {
     const container = this.closest('.tabs') || this.closest('.nav-tabs');
     if (container && (container.scrollWidth > container.clientWidth)) {
       const btnRect = this.getBoundingClientRect();
       const contRect = container.getBoundingClientRect();
-      // derecha: muestra todo lo oculto a la derecha
+
+      // Si se pulsa un botón en el borde derecho → desplaza todo hacia la derecha
       if ((btnRect.right >= contRect.right - 8) && (i < allBtns.length - 1)) {
+        // En iOS scrollBy no es fiable; usamos scrollLeft directamente
         container.scrollLeft = container.scrollWidth;
       }
-      // izquierda: muestra todo lo oculto a la izquierda
+      
+      // Si se pulsa un botón en el borde izquierdo → desplaza todo hacia la izquierda
       if ((btnRect.left <= contRect.left + 8) && (i > 0)) {
         container.scrollLeft = 0;
       }
     }
   });
 });
+
+
 
 
 

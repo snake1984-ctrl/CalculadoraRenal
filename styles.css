@@ -1642,6 +1642,11 @@ body.modo-test::before {
     /* ajusta min-width si quieres tabs más anchas o más estrechas en móvil */
   }
 }
+.tabs,
+.nav-tabs {
+  scroll-behavior: smooth;
+}
+
 
 .result-value {
   color: initial !important;

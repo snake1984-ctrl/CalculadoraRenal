@@ -2028,20 +2028,19 @@ document.querySelectorAll('.tab-button').forEach((btn, i, allBtns) => {
     if (container && (container.scrollWidth > container.clientWidth)) {
       const btnRect = this.getBoundingClientRect();
       const contRect = container.getBoundingClientRect();
-
-      // Si el botón está a la derecha y quedan tabs ocultas a la derecha al pulsar
+      // Si pulsas en extremo derecho, desplaza toda la barra hacia la derecha (muestra todos los de la derecha)
       if ((btnRect.right >= contRect.right - 8) && (i < allBtns.length - 1)) {
-        // Desplaza todo lo que queda a la derecha
         container.scrollBy({ left: container.scrollWidth, behavior: "smooth" });
       }
-      // Si el botón está en la izquierda y hay tabs a la izquierda
+      // Si pulsas en extremo izquierdo, desplaza toda la barra hacia la izquierda (muestra todos los de la izquierda)
       if ((btnRect.left <= contRect.left + 8) && (i > 0)) {
-        // Desplaza todo el scroll a la izquierda (ver todos los tabs previos)
         container.scrollBy({ left: -container.scrollWidth, behavior: "smooth" });
       }
     }
   });
 });
+
+
 
 
 

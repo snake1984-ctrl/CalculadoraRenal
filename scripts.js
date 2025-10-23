@@ -477,7 +477,13 @@ if ('serviceWorker' in navigator) {
                     clearedCount++;
                 }
             });
-            
+            // Limpiar manualmente los dos textarea de texto libre
+            const textareaSedimento = document.getElementById('sedimento_urinario'); 
+            if (textareaSedimento) textareaSedimento.value = "";
+
+            const textareaComentario = document.getElementById('comentario_nutricional'); 
+            if (textareaComentario) textareaComentario.value = "";
+
             // Limpiar secciones de resultados e informe
             const resultsSection = document.getElementById('results');
             const reportSection = document.getElementById('report');
@@ -2057,6 +2063,7 @@ function setupTabNavigationScroll() {
     };
   });
 }
+
 
 
 

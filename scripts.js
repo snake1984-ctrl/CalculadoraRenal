@@ -59,17 +59,6 @@ if ('serviceWorker' in navigator) {
 
 })();
 
-// ============================================
-// AQUÍ VA TODO TU CÓDIGO JS ORIGINAL
-// ============================================
-// Copia y pega todo el contenido de tu scripts.js original DEBAJO de esta línea
-// (todo excepto el código de detección de modo test que ya está corregido arriba)
-
-
-// Añade aquí toda tu lógica JS, funciones, eventos, cálculos, etc.
-// Por ejemplo:
-// function calcularParametros() { ... }
-// document.querySelector('#calcularBtn').addEventListener('click', calcularParametros);
 // ===============================================
         // APLICACIÓN CLÍNICA RENAL - VERSIÓN 9 INTEGRADA
         // Motor de cálculo COMPLETO con funciones exactas
@@ -2068,6 +2057,7 @@ function setupTabNavigationScroll() {
     };
   });
 }
+
 
 
 

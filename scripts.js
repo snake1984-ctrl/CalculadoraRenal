@@ -1738,12 +1738,10 @@ if ('serviceWorker' in navigator) {
           if (isValid(results.rtp)) fosfocalcico.push(`RTP: ${fmt(results.rtp)}%`);
           if (isValid(data.mg_plasma_mg_dl)) fosfocalcico.push(`Mg: ${fmt(data.mg_plasma_mg_dl)}mg/dL`);
           if (isValid(results.mgcr)) {
-            //const rangoMgCr = obtenerTextoRangoNormal('mgcr', edad, edadMeses);
-            fosfocalcico.push(`Mg/Cr: ${fmt(results.mgcr)}mg/mg ${rangoMgCr}`);
+            fosfocalcico.push(`Mg/Cr: ${fmt(results.mgcr)}mg/mg`);
           }
           if (isValid(results.pcr)) {
-            //const rangoPCr = obtenerTextoRangoNormal('pcr', edad, edadMeses);
-            fosfocalcico.push(`P/Cr: ${fmt(results.pcr)}mg/mg ${rangoPCr}`);
+            fosfocalcico.push(`P/Cr: ${fmt(results.pcr)}mg/mg`);
           }
           if (isValid(data.pth_pg_ml)) fosfocalcico.push(`PTH: ${fmt(data.pth_pg_ml)}pg/mL`);
           if (isValid(data.vitamina_d_ng_ml)) fosfocalcico.push(`Vitamina D: ${fmt(data.vitamina_d_ng_ml)}ng/mL`);
@@ -1811,16 +1809,14 @@ if ('serviceWorker' in navigator) {
           // BLOQUE COCIENTES URINARIOS
           let cocientes = [];
           if (isValid(results.aucr)) {
-            //const rangoAUCr = obtenerTextoRangoNormal('aucr', edad, edadMeses);
-            cocientes.push(`AU/Cr: ${fmt(results.aucr)}mg/mg ${rangoAUCr}`);
+            cocientes.push(`AU/Cr: ${fmt(results.aucr)}mg/mg`);
           }
           if (isValid(results.nak)) cocientes.push(`Na/K: ${fmt(results.nak)}`);
           if (isValid(results.cacr)) cocientes.push(`Ca/Cr: ${fmt(results.cacr)}mg/mg`);
           if (isValid(results.citratocr)) cocientes.push(`Citrato/Cr: ${fmt(results.citratocr)}mg/mg`);
           if (isValid(results.cacitrato)) cocientes.push(`Ca/Citrato: ${fmt(results.cacitrato)}`);
           if (isValid(results.oxalatocr)) {
-            //const rangoOxalatoCr = obtenerTextoRangoNormal('oxalatocr', edad, edadMeses);
-            cocientes.push(`Oxalato/Cr: ${fmt(results.oxalatocr)}mg/mg ${rangoOxalatoCr}`);
+            cocientes.push(`Oxalato/Cr: ${fmt(results.oxalatocr)}mg/mg`);
           }
           
           if (cocientes.length > 0) {
@@ -1830,25 +1826,20 @@ if ('serviceWorker' in navigator) {
           // BLOQUE ORINA 24H
           let orina24h = [];
           if (isValid(results.uricosuria)) {
-            //const rangoUricosuria = obtenerTextoRangoNormal('uricosuria', edad, edadMeses);
-            orina24h.push(`Uricosuria: ${fmt(results.uricosuria)}mg/1.73m² ${rangoUricosuria}`);
+            orina24h.push(`Uricosuria: ${fmt(results.uricosuria)}mg/1.73m²`);
           }
           if (isValid(results.calciuria)) orina24h.push(`Calciuria: ${fmt(results.calciuria)}mg/kg/día`);
           if (isValid(results.citraturia)) {
-            //const rangoCitraturia = obtenerTextoRangoNormal('citraturia', edad, edadMeses);
-            orina24h.push(`Citraturia: ${fmt(results.citraturia)}mg/kg/día ${rangoCitraturia}`);
+            orina24h.push(`Citraturia: ${fmt(results.citraturia)}mg/kg/día`);
           }
           if (isValid(results.fosfaturia)) {
-            //const rangoFosfaturia = obtenerTextoRangoNormal('fosfaturia', edad, edadMeses);
-            orina24h.push(`Fosfaturia: ${fmt(results.fosfaturia)}mg/kg/día ${rangoFosfaturia}`);
+            orina24h.push(`Fosfaturia: ${fmt(results.fosfaturia)}mg/kg/día`);
           }
           if (isValid(results.oxaluria)) {
-            //const rangoOxaluria = obtenerTextoRangoNormal('oxaluria', edad, edadMeses);
-            orina24h.push(`Oxaluria: ${fmt(results.oxaluria)}mg/1.73m² ${rangoOxaluria}`);
+            orina24h.push(`Oxaluria: ${fmt(results.oxaluria)}mg/1.73m²`);
           }
           if (isValid(results.magnesuria)) {
-            //const rangoMagnesuria = obtenerTextoRangoNormal('magnesuria', edad, edadMeses);
-            orina24h.push(`Magnesuria: ${fmt(results.magnesuria)}mg/kg/día ${rangoMagnesuria}`);
+            orina24h.push(`Magnesuria: ${fmt(results.magnesuria)}mg/kg/día`);
           }
           if (isValid(results.proteinuria)) orina24h.push(`Proteinuria: ${fmt(results.proteinuria)}mg/m²/día`);
           if (isValid(results.albuminuria)) orina24h.push(`Albuminuria: ${fmt(results.albuminuria)}mg/1.73m²/día`);
@@ -2063,6 +2054,7 @@ function setupTabNavigationScroll() {
     };
   });
 }
+
 
 
 

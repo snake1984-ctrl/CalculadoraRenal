@@ -259,8 +259,12 @@ if ('serviceWorker' in navigator) {
                         value = value.replace(/\./g, ',');
                         
                         // Eliminar todo excepto números y comas
-                        value = value.replace(/[^0-9,]/g, '');
-                        
+// Permitir negativos solo en exceso de bases
+        if (fieldId === 'exceso_bases_mmol_l') {
+          value = value.replace(/[^0-9,-]/g, '');
+        } else {
+          value = value.replace(/[^0-9,]/g, '');
+        }                        
                         // Permitir solo UNA coma
                         const parts = value.split(',');
                         if (parts.length > 2) {
@@ -2054,6 +2058,7 @@ function setupTabNavigationScroll() {
     };
   });
 }
+
 
 
 

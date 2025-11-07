@@ -2076,17 +2076,29 @@ document.addEventListener('DOMContentLoaded', function() {
 document.addEventListener('DOMContentLoaded', function() {
   let testTapCount = 0;
   const logo = document.querySelector('.app-title');
-  if (logo) {
-    logo.addEventListener('click', function() {
-      testTapCount++;
-      if (testTapCount >= 5) {
+  function handleTap() {
+    testTapCount++;
+    if (testTapCount >= 5) {
+      // Alterna la clase 'modo-test'
+      if(document.body.classList.contains('modo-test')) {
+        document.body.classList.remove('modo-test');
+        const btnTest = document.getElementById('btn-cargar-datos-test');
+        if(btnTest) btnTest.style.display = 'none';
+        alert('Modo TEST desactivado');
+      } else {
         document.body.classList.add('modo-test');
         const btnTest = document.getElementById('btn-cargar-datos-test');
         if(btnTest) btnTest.style.display = 'block';
         alert('¡Modo TEST activado!');
-        testTapCount = 0;
       }
-      setTimeout(() => testTapCount = 0, 2000); // reinicia si pasan 2 segundos sin más pulsaciones
-    });
+      testTapCount = 0;
+    }
+    setTimeout(() => testTapCount = 0, 2000);
+  }
+  if (logo) {
+    logo.addEventListener('click', handleTap);       // Para ratón de escritorio
+    logo.addEventListener('touchend', handleTap);    // Para móvil/táctil
   }
 });
+
+

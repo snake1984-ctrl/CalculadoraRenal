@@ -1,4 +1,4 @@
-const CACHE_NAME = 'calcrenal-cache-v2';
+const CACHE_NAME = 'calcrenal-cache-v21';
 const urlsToCache = [
   './',
   './index.html',
@@ -40,30 +40,16 @@ self.addEventListener('activate', event => {
 
 self.addEventListener('fetch', event => {
   event.respondWith(
-    caches.match(event.request)
+    fetch(event.request)
       .then(response => {
-        if (response) {
-          return response;
-        }
-        const fetchRequest = event.request.clone();
-
-        return fetch(fetchRequest).then(response => {
-          if (!response || response.status !== 200 || response.type !== 'basic') {
-            return response;
-          }
-
-          const responseToCache = response.clone();
-
-          caches.open(CACHE_NAME).then(cache => {
-            cache.put(event.request, responseToCache);
-          });
-
-          return response;
-        });
+        // Si la petición a internet funciona, devuélvela
+        return response;
       })
       .catch(() => {
+        // Si falla (offline), usa la caché solo PARA el .html principal
         return caches.match('./index.html');
       })
   );
 });
+
 

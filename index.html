@@ -327,16 +327,24 @@
     </div>
 
   <script src="scripts.js"></script>
-    <script>
+<script>
 if ('serviceWorker' in navigator) {
+  // Registro del service worker, ya lo tienes:
   window.addEventListener('load', function() {
     navigator.serviceWorker.register('service-worker.js');
+  });
+
+  // Aviso de nueva versión, lo AÑADES AQUÍ:
+  navigator.serviceWorker.addEventListener('controllerchange', function() {
+    alert('¡Hay una nueva versión! Por favor, recarga la página para ver los cambios.');
   });
 }
 </script>
 
+
 </body>
 </html>
+
 
 
 

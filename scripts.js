@@ -2073,37 +2073,20 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+document.addEventListener('DOMContentLoaded', function() {
+  let testTapCount = 0;
+  const logo = document.querySelector('.app-title');
+  if (logo) {
+    logo.addEventListener('click', function() {
+      testTapCount++;
+      if (testTapCount >= 5) {
+        document.body.classList.add('modo-test');
+        const btnTest = document.getElementById('btn-cargar-datos-test');
+        if(btnTest) btnTest.style.display = 'block';
+        alert('¡Modo TEST activado!');
+        testTapCount = 0;
+      }
+      setTimeout(() => testTapCount = 0, 2000); // reinicia si pasan 2 segundos sin más pulsaciones
+    });
+  }
+});

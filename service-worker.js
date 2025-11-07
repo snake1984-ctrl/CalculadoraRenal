@@ -1,4 +1,4 @@
-const CACHE_NAME = 'calcrenal-cache-v1';
+const CACHE_NAME = 'calcrenal-cache-v2';
 const urlsToCache = [
   './',
   './index.html',
@@ -32,9 +32,11 @@ self.addEventListener('activate', event => {
           }
         })
       );
-    })
+    }).then(() => self.clients.claim()) // <- Añadido
   );
+  self.skipWaiting(); // <- Añadido
 });
+
 
 self.addEventListener('fetch', event => {
   event.respondWith(
@@ -64,3 +66,4 @@ self.addEventListener('fetch', event => {
       })
   );
 });
+

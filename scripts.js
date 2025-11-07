@@ -402,12 +402,16 @@ if ('serviceWorker' in navigator) {
                     });
                     
                     // Validación en tiempo real para valores negativos (excepto exceso_bases)
-                    input.addEventListener('input', () => {
-                      console.log('Validando:', fieldId, input.value);
-                        if (fieldId !== 'exceso_bases_mmol_l' && parseFloat(input.value) < 0) {
-                            input.value = '';
-                        }
-                    });
+                   document.querySelectorAll('input[type="number"]').forEach(input => {
+                      let fieldId = input.id;
+                      input.addEventListener('input', () => {
+                          console.log('Validando:', fieldId, input.value);
+                          if (fieldId !== 'exceso_bases_mmol_l' && parseFloat(input.value) < 0) {
+                              input.value = '';
+                           }
+                        });
+                      });
+
                 }
             });
         }
@@ -2059,6 +2063,7 @@ function setupTabNavigationScroll() {
     };
   });
 }
+
 
 
 

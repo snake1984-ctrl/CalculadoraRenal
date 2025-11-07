@@ -2075,11 +2075,13 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 document.addEventListener('DOMContentLoaded', function() {
   let testTapCount = 0;
+  let tapTimer = null;
   const logo = document.querySelector('.app-title');
-  function handleTap() {
+  function handleTap(e) {
+    // Previene doble disparo en algunos móviles
+    if (e) e.preventDefault();
     testTapCount++;
     if (testTapCount >= 5) {
-      // Alterna la clase 'modo-test'
       if(document.body.classList.contains('modo-test')) {
         document.body.classList.remove('modo-test');
         const btnTest = document.getElementById('btn-cargar-datos-test');
@@ -2092,13 +2094,20 @@ document.addEventListener('DOMContentLoaded', function() {
         alert('¡Modo TEST activado!');
       }
       testTapCount = 0;
+      if (tapTimer) clearTimeout(tapTimer);
+      tapTimer = null;
+      return;
     }
-    setTimeout(() => testTapCount = 0, 2000);
+    if (tapTimer) clearTimeout(tapTimer);
+    tapTimer = setTimeout(() => { testTapCount = 0; }, 2000);
   }
   if (logo) {
-    logo.addEventListener('click', handleTap);       // Para ratón de escritorio
-    logo.addEventListener('touchend', handleTap);    // Para móvil/táctil
+    logo.addEventListener('click', handleTap, {passive: false});       // Para ratón de escritorio
+    logo.addEventListener('touchstart', handleTap, {passive: false});  // Para toques en móvil
+    logo.addEventListener('touchend', e => e.preventDefault(), {passive: false}); // Previene doble-detección
   }
 });
+;
+
 
 

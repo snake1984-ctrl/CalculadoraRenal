@@ -2063,6 +2063,21 @@ function setupTabNavigationScroll() {
     };
   });
 }
+document.addEventListener('DOMContentLoaded', function() {
+  // Permite negativos SOLO en exceso de bases (mmol/L)
+  document.querySelectorAll('input[type="number"]').forEach(input => {
+    input.addEventListener('input', () => {
+      const fieldId = input.id;
+      // Depuración visible (puedes quitar el console.log cuando todo funcione)
+      console.log('Validando campo:', fieldId, input.value);
+      if (fieldId !== 'exceso_bases_mmol_l' && parseFloat(input.value) < 0) {
+        input.value = '';
+      }
+    });
+  });
+});
+
+
 
 
 

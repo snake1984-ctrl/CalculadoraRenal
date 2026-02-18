@@ -1225,10 +1225,36 @@ if ('serviceWorker' in navigator) {
                 const superficieCorporal = Math.sqrt(data.peso_kg * data.talla_cm / 3600);
                 const imc = data.peso_kg / Math.pow(data.talla_cm / 100, 2);
 
-                // Cálculos renales con fórmulas exactas
-                const schwartz2009 = data.creatinina_enz_mg_dl > 0 ? 0.413 * data.talla_cm / data.creatinina_enz_mg_dl : 0;
-                const pottel2017 = data.cistatina_c_mg_l > 0 ? 107.3 / (data.cistatina_c_mg_l / 0.82) : 0;
+                const sexoSeleccionado = document.querySelector('input[name="sexo"]:checked')?.value || 'hombre';
 
+// CKiD U25 - Ecuación por Creatinina (eGFRcr)
+// K varía según edad y sexo
+let K_ckid = 50.8; // Default para 18-25 años hombre
+const edadCKiD = window.edadEnAños || 0;
+
+if (edadCKiD < 12) {
+    K_ckid = sexoSeleccionado === 'hombre' ? 39.0 : 36.1;
+} else if (edadCKiD < 18) {
+    K_ckid = sexoSeleccionado === 'hombre' ? 39.0 : 36.1;
+} else {
+    K_ckid = sexoSeleccionado === 'hombre' ? 50.8 : 41.4;
+}
+
+// Fórmula CKiD U25 creatinina: eGFR = K × (height / creatinine)^0.5
+const ckidU25_creatinina = data.creatinina_enz_mg_dl > 0 ? K_ckid * Math.pow((data.talla_cm / data.creatinina_enz_mg_dl), 0.5) : 0;
+
+// CKiD U25 - Ecuación por Cistatina C (eGFRcys)
+// No depende de edad ni sexo
+// Fórmula: eGFR = 70.69 × (cystatin_C / 0.84)^(-0.940)
+const ckidU25_cistatina = data.cistatina_c_mg_l > 0 ? 70.69 * Math.pow((data.cistatina_c_mg_l / 0.84), -0.940) : 0;
+
+// CKiD U25 - Ecuación Combinada (RECOMENDADA)
+// Fórmula: eGFR = (eGFRcr + eGFRcys) / 2
+const ckidU25_combinada = (ckidU25_creatinina > 0 && ckidU25_cistatina > 0) ? (ckidU25_creatinina + ckidU25_cistatina) / 2 : 0;
+
+// Para compatibilidad con el resto del código, mantener nombres antiguos apuntando a nuevas variables
+const schwartz2009 = ckidU25_creatinina;
+const pottel2017 = ckidU25_cistatina;
                 // Fracciones de excreción
                 const efNa = (data.na_plasma_meq_l && data.creatinina_orina_mg_dl && data.na_orina_meq_l && data.creatinina_enz_mg_dl) ? 
                     (data.na_orina_meq_l * data.creatinina_enz_mg_dl) / (data.na_plasma_meq_l * data.creatinina_orina_mg_dl) * 100 : 0;
@@ -1422,8 +1448,9 @@ if ('serviceWorker' in navigator) {
                     superficiecorporal: superficieCorporal,
                     imc: imc,
                     vpercent: vpercent,
-                    schwartz2009: schwartz2009,
-                    pottel2017: pottel2017,
+                    ckidU25_creatinina: ckidU25_creatinina,
+                    ckidU25_cistatina: ckidU25_cistatina,
+                    ckidU25_combinada: ckidU25_combinada,
                     efau: efAU,
                     efna: efNa,
                     efk: efK,
@@ -1484,8 +1511,9 @@ if ('serviceWorker' in navigator) {
           // Lista de parámetros a evaluar
           const parametros = [
             { key: 'vpercent', nombre: 'V%', unidad: '%' },
-            { key: 'schwartz2009', nombre: 'FG Schwartz 2009', unidad: 'ml/min/1.73m²' },
-            { key: 'pottel2017', nombre: 'FG por talla Pottel 2017', unidad: 'ml/min/1.73m²' },
+            { key: 'ckidU25_creatinina', nombre: 'eGFR CKiD U25 (Creatinina)', unidad: 'ml/min/1.73m²' },
+            { key: 'ckidU25_cistatina', nombre: 'eGFR CKiD U25 (Cistatina C)', unidad: 'ml/min/1.73m²' },
+            { key: 'ckidU25_combinada', nombre: 'eGFR CKiD U25 (Combinada - RECOMENDADA)', unidad: 'ml/min/1.73m²' },
             { key: 'efau', nombre: 'EF AU', unidad: '' },
             { key: 'efna', nombre: 'EF Na', unidad: '' },
             { key: 'efk', nombre: 'EF K', unidad: '' },
@@ -1517,8 +1545,9 @@ if ('serviceWorker' in navigator) {
               superficiecorporal: 'Superficie Corporal (m²)',
               imc: 'IMC (kg/m²)',
               vpercent: 'V% (creat enz/orina)',
-              schwartz2009: 'FG Schwartz 2009 (ml/min/1.73m²)',
-              pottel2017: 'FG Pottel 2017 (ml/min/1.73m²)',
+              schwartz2009: 'eGFR CKiD U25 por Creatinina (ml/min/1.73m²)',
+              pottel2017: 'eGFR CKiD U25 por Cistatina C (ml/min/1.73m²)',
+              ckidU25_combinada: 'eGFR CKiD U25 Combinada - RECOMENDADA (ml/min/1.73m²)',
               efna: 'EF Na (%)',
               efk: 'EF K (%)',
               efcl: 'EF Cl (%)',
@@ -2108,6 +2137,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 ;
+
 
 
 

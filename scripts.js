@@ -1229,7 +1229,7 @@ if ('serviceWorker' in navigator) {
 
 // CKiD U25 - Ecuación por Creatinina (eGFRcr)
 // K varía según edad y sexo
-let K_ckid = 50.8; // Default para 18-25 años hombre
+let ckiu25_creatinina = 50.8; // Default para 18-25 años hombre
 const edadCKiD = window.edadEnAños || 0;
 
 if (edadCKiD < 12) {
@@ -2140,6 +2140,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 ;
+
 
 
 

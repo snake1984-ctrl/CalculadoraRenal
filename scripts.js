@@ -1622,14 +1622,13 @@ const pottel2017 = ckidU25_cistatina;
                   const paramEncontrado = parametros.find(p => p.key === key);
                   if (paramEncontrado && numValue && numValue !== 0) {
                       const evaluacion = evaluarRango(key, numValue, edad, edadMeses);
-                      if (!evaluacion.enRango) {
-                          value.style.setProperty('color', '#dc2626', 'important');
+                      if (numValue < 90) {  // ← CAMBIAR ESTA LÍNEA 1625
+                          value.style.setProperty('color', '#dc2626', 'important');  // Línea 1626 - ROJO
                           value.style.fontWeight = "bold";
                         } else {
-                          value.style.setProperty('color', '#21808d', 'important');
-                          value.style.fontWeight = "bold";
-                        }
-
+                              value.style.setProperty('color', '#21808d', 'important');  // Línea 1629 - VERDE
+                               value.style.fontWeight = "bold";
+                              }
                   }
                      
                 //Pone en verde Superficie corporal e IMC
@@ -2143,6 +2142,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 ;
+
 
 
 

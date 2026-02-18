@@ -1239,20 +1239,32 @@ let ckiu25_creatinina = 50.8; // Default para 18-25 años hombre
 const edadCKiD = window.edadEnAños || 0;
 
 if (edadCKiD < 12) {
-    K_ckid = sexoSeleccionado === 'hombre' ? 39.0 : 36.1;
+    K_ckid = sexoSeleccionado === 'hombre' ? 39.0 * Math.pow(1.008, (edadCKiD - 12)) : 36.1 * Math.pow(1.008, (edadCKiD - 12));
 } else if (edadCKiD < 18) {
-    K_ckid = sexoSeleccionado === 'hombre' ? 39.0 : 36.1;
+    K_ckid = sexoSeleccionado === 'hombre' ? 39.0 * Math.pow(1.045, (edadCKiD - 12)) : 36.1 * Math.pow(1.023, (edadCKiD - 12));
 } else {
     K_ckid = sexoSeleccionado === 'hombre' ? 50.8 : 41.4;
+    
+  // K_ckid para Cistatina C
+  let K_ckid_cistatina;
+  if (edadCKiD < 12) {
+    K_ckid_cistatina = sexoSeleccionado === 'hombre' ? 87.2 * Math.pow(1.011, (edadCKiD - 15)) : 79.9 * Math.pow(1.004, (edadCKiD - 12));
+  } else if (edadCKiD < 15) {
+    K_ckid_cistatina = sexoSeleccionado === 'hombre' ? 87.2 * Math.pow(1.011, (edadCKiD - 15)) : 79.9 * Math.pow(0.974, (edadCKiD - 12));
+  } else if (edadCKiD < 18) {
+    K_ckid_cistatina = sexoSeleccionado === 'hombre' ? 87.2 * Math.pow(0.960, (edadCKiD - 15)) : 79.9 * Math.pow(0.974, (edadCKiD - 12));
+  } else {
+    K_ckid_cistatina = sexoSeleccionado === 'hombre' ? 77.1 : 41.4;
+  }
 }
 
 // Fórmula CKiD U25 creatinina: eGFR = K × (height / creatinine)^0.5
-const ckidU25_creatinina = data.creatinina_enz_mg_dl > 0 ? K_ckid * Math.pow((data.talla_cm / data.creatinina_enz_mg_dl), 0.5) : 0;
+data.creatinina_enz_mg_dl > 0 ? K_ckid * (data.talla_cm / data.creatinina_enz_mg_dl) : 0;
 
 // CKiD U25 - Ecuación por Cistatina C (eGFRcys)
 // No depende de edad ni sexo
 // Fórmula: eGFR = 70.69 × (cystatin_C / 0.84)^(-0.940)
-const ckidU25_cistatina = data.cistatina_c_mg_l > 0 ? 70.69 * Math.pow((data.cistatina_c_mg_l / 0.84), -0.940) : 0;
+const ckidU25_cistatina = data.cistatina_c_mg_l > 0 ? K_ckid_cistatina * (1 / data.cistatina_c_mg_l) : 0;
 
 // CKiD U25 - Ecuación Combinada (RECOMENDADA)
 // Fórmula: eGFR = (eGFRcr + eGFRcys) / 2
@@ -2145,6 +2157,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 ;
+
 
 
 

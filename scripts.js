@@ -1746,14 +1746,14 @@ const pottel2017 = ckidU25_cistatina;
           if (isValid(data.creatinina_enz_mg_dl)) {
             let cr = `Cr: ${fmt(data.creatinina_enz_mg_dl)}mg/dL`;
             if (isValid(results.schwartz2009)) {
-              cr += ` (FG Schwartz 2009: ${fmt(results.schwartz2009)}ml/min/1.73m²)`;
+              cr += ` (eGFR CKiD U25 por Creatinina: ${fmt(results.schwartz2009)}ml/min/1.73m²)`;
             }
             hidrosalino.push(cr);
           }
           if (isValid(data.cistatina_c_mg_l)) {
             let cist = `Cistatina C: ${fmt(data.cistatina_c_mg_l)}mg/L`;
             if (isValid(results.pottel2017)) {
-              cist += ` (FG por talla Pottel 2017: ${fmt(results.pottel2017)}ml/min/1.73m²)`;
+              cist += ` (eGFR CKiD U25 por Cistatina C: ${fmt(results.pottel2017)}ml/min/1.73m²)`;
             }
             hidrosalino.push(cist);
           }
@@ -2140,6 +2140,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 ;
+
 
 
 

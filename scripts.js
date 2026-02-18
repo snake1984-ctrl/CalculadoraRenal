@@ -1551,8 +1551,8 @@ const pottel2017 = ckidU25_cistatina;
               superficiecorporal: 'Superficie Corporal (m²)',
               imc: 'IMC (kg/m²)',
               vpercent: 'V% (creat enz/orina)',
-              schwartz2009: 'eGFR CKiD U25 por Creatinina (ml/min/1.73m²)',
-              pottel2017: 'eGFR CKiD U25 por Cistatina C (ml/min/1.73m²)',
+              ckidU25_creatinina: 'eGFR CKiD U25 por Creatinina (ml/min/1.73m²)',
+              ckidU25_cistatina: 'eGFR CKiD U25 por Cistatina C (ml/min/1.73m²)',
               ckidU25_combinada: 'eGFR CKiD U25 Combinada - RECOMENDADA (ml/min/1.73m²)',
               efna: 'EF Na (%)',
               efk: 'EF K (%)',
@@ -2142,6 +2142,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 ;
+
 
 
 

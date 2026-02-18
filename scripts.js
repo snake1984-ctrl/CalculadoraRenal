@@ -620,6 +620,9 @@ if ('serviceWorker' in navigator) {
             
             // Calcular edad después de cargar fechas
             calcularEdad();
+            // Seleccionar sexo aleatoriamente en modo test
+  const sexoAleatorio = Math.random() > 0.5 ? 'sexo_hombre' : 'sexo_mujer';
+  document.getElementById(sexoAleatorio).checked = true;
             
             // Actualizar interfaz
             updateFieldCounter();
@@ -2140,6 +2143,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 ;
+
 
 
 

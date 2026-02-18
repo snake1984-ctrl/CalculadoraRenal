@@ -767,6 +767,9 @@ if ('serviceWorker' in navigator) {
               
             case 'schwartz2009':
             case 'pottel2017':
+              case 'ckidU25_creatinina':
+              case 'ckidU25_cistatina':
+              case 'ckidU25_combinada':
               rangoMin = 90;
               rangoTexto = '>90ml/min/1.73m²';
               return { 
@@ -2142,6 +2145,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 ;
+
 
 
 

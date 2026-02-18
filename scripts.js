@@ -1308,6 +1308,9 @@ const pottel2017 = ckidU25_cistatina;
                     vpercent: vpercent,
                     schwartz2009: schwartz2009,
                     pottel2017: pottel2017,
+                              ckidU25_creatinina: ckidU25_creatinina,
+                              ckidU25_cistatina: ckidU25_cistatina,
+                              ckidU25_combinada: ckidU25_combinada,
                     efau: efAU,
                     efna: efNa,
                     efk: efK,
@@ -2137,6 +2140,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 ;
+
 
 
 

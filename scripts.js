@@ -1263,7 +1263,7 @@ ckiu25_creatinina = data.creatinina_enz_mg_dl > 0 ? K_ckid * Math.pow(data.talla
 // CKiD U25 - Ecuación por Cistatina C (eGFRcys)
 // No depende de edad ni sexo
 // Fórmula: eGFR = 70.69 × (cystatin_C / 0.84)^(-0.940)
-const ckidU25_cistatina = data.cistatina_c_mg_l > 0 ? K_ckid_cistatina * (1 / data.cistatina_c_mg_l) : 0;
+const ckidU25_cistatina = data.cistatina_c_mg_l > 0 ? K_ckid_cistatina * Math.pow(1 / data.cistatina_c_mg_l, -0.940) : 0;
 
 // CKiD U25 - Ecuación Combinada (RECOMENDADA)
 // Fórmula: eGFR = (eGFRcr + eGFRcys) / 2
@@ -2156,6 +2156,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 ;
+
 
 
 

@@ -64,7 +64,7 @@ if ('serviceWorker' in navigator) {
         // Motor de cálculo COMPLETO con funciones exactas
         // ===============================================
 
-        // Lista exacta de TODOS los IDs de los 46 campos
+        // Lista exacta de TODOS los IDs de los 48 campos
         const fieldIds = [
             // DATOS BÁSICOS (3 campos) - ACTUALIZADO CON FECHAS
             'fecha_nacimiento', 'fecha_analitica', 'peso_kg', 'talla_cm',
@@ -298,7 +298,7 @@ if ('serviceWorker' in navigator) {
         }
 
         function verifyFieldsExist() {
-            console.log('🔍 Verificando 46 campos con tipografía Rubik...');
+            console.log('🔍 Verificando 48 campos con tipografía Rubik...');
             let missingFields = [];
             
             fieldIds.forEach(fieldId => {
@@ -311,7 +311,7 @@ if ('serviceWorker' in navigator) {
             if (missingFields.length > 0) {
                 console.error('❌ Campos faltantes:', missingFields);
             } else {
-                console.log(`✅ Todos los 46 campos están presentes con fuente Rubik aplicada`);
+                console.log(`✅ Todos los 48 campos están presentes con fuente Rubik aplicada`);
             }
         }
 
@@ -725,7 +725,7 @@ if ('serviceWorker' in navigator) {
             return true; // Todos los campos completos
         }
 
-        // CORRECCIÓN CRÍTICA 2: Contador dinámico 46 campos
+        // CORRECCIÓN CRÍTICA 2: Contador dinámico 48 campos
         function updateFieldCounter() {
             let filledCount = 0;
             
@@ -1259,7 +1259,7 @@ if (edadCKiD < 12) {
 }
 
 // Fórmula CKiD U25 creatinina: eGFR = K × (height / creatinine)^0.5
-ckiu25_creatinina = data.creatinina_enz_mg_dl > 0 ? K_ckid * Math.pow(data.talla_cm / data.creatinina_enz_mg_dl, 0.5) : 0;
+ckiu25_creatinina = data.creatinina_enz_mg_dl > 0 ? K_ckid * (data.talla_cm / data.creatinina_enz_mg_dl) : 0;
 // CKiD U25 - Ecuación por Cistatina C (eGFRcys)
 // No depende de edad ni sexo
 // Fórmula: eGFR = 70.69 × (cystatin_C / 0.84)^(-0.940)
@@ -2156,6 +2156,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 ;
+
 
 
 

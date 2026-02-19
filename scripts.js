@@ -1259,7 +1259,7 @@ if (edadCKiD < 12) {
 }
 
 // Fórmula CKiD U25 creatinina: eGFR = K × (height / creatinine)^0.5
-ckiu25_creatinina = data.creatinina_enz_mg_dl > 0 ? K_ckid * (data.talla_cm / data.creatinina_enz_mg_dl) : 0;
+ckiu25_creatinina = data.creatinina_enz_mg_dl > 0 ? K_ckid * Math.pow(data.talla_cm / data.creatinina_enz_mg_dl, 0.5) : 0;
 // CKiD U25 - Ecuación por Cistatina C (eGFRcys)
 // No depende de edad ni sexo
 // Fórmula: eGFR = 70.69 × (cystatin_C / 0.84)^(-0.940)
@@ -2156,6 +2156,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 ;
+
 
 
 

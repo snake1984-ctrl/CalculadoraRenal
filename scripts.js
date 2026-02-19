@@ -66,8 +66,9 @@ if ('serviceWorker' in navigator) {
 
         // Lista exacta de TODOS los IDs de los 48 campos
         const fieldIds = [
-            // DATOS BÁSICOS (3 campos) - ACTUALIZADO CON FECHAS
+            // DATOS BÁSICOS (3 5) - ACTUALIZADO CON FECHAS
             'fecha_nacimiento', 'fecha_analitica', 'peso_kg', 'talla_cm',
+          'sexo',
             
             // BIOQUÍMICA PLASMÁTICA (13 campos)
             'urea_mg_dl', 'creatinina_enz_mg_dl', 'au_plasma_mg_dl', 'na_plasma_meq_l', 'k_plasma_meq_l', 'cl_plasma_meq_l', 'fosfatasa_alcalina_u_l', 'ca_plasma_mg_dl', 'p_plasma_mg_dl', 'mg_plasma_mg_dl', 'pth_pg_ml', 'vitamina_d_ng_ml', 'cistatina_c_mg_l',
@@ -2124,7 +2125,7 @@ document.addEventListener('DOMContentLoaded', function() {
 document.addEventListener('DOMContentLoaded', function() {
   let testTapCount = 0;
   let tapTimer = null;
-  const logo = document.querySelector('.app-title');
+  const logo = document.querySelector('h1);
   function handleTap(e) {
     // Previene doble disparo en algunos móviles
     if (e) e.preventDefault();
@@ -2156,6 +2157,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 ;
+
 
 
 

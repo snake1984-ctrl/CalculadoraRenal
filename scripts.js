@@ -51,11 +51,7 @@ if ('serviceWorker' in navigator) {
   setupTabNavigationScroll();
 
   // Activa el modo test si la URL lo indica
-  if (window.location.search.includes('modo=test')) {
-    activarModoTest();
-    // (Dentro de activarModoTest ya se llama al scroll tras modificar el DOM)
-  }
-});
+  
 
 })();
 
@@ -64,10 +60,11 @@ if ('serviceWorker' in navigator) {
         // Motor de cálculo COMPLETO con funciones exactas
         // ===============================================
 
-        // Lista exacta de TODOS los IDs de los 46 campos
+        // Lista exacta de TODOS los IDs de los 48 campos
         const fieldIds = [
             // DATOS BÁSICOS (3 campos) - ACTUALIZADO CON FECHAS
             'fecha_nacimiento', 'fecha_analitica', 'peso_kg', 'talla_cm',
+          'sexo',
             
             // BIOQUÍMICA PLASMÁTICA (13 campos)
             'urea_mg_dl', 'creatinina_enz_mg_dl', 'au_plasma_mg_dl', 'na_plasma_meq_l', 'k_plasma_meq_l', 'cl_plasma_meq_l', 'fosfatasa_alcalina_u_l', 'ca_plasma_mg_dl', 'p_plasma_mg_dl', 'mg_plasma_mg_dl', 'pth_pg_ml', 'vitamina_d_ng_ml', 'cistatina_c_mg_l',
@@ -298,7 +295,7 @@ if ('serviceWorker' in navigator) {
         }
 
         function verifyFieldsExist() {
-            console.log('🔍 Verificando 46 campos con tipografía Rubik...');
+            console.log('🔍 Verificando 48 campos con tipografía Rubik...');
             let missingFields = [];
             
             fieldIds.forEach(fieldId => {
@@ -311,7 +308,7 @@ if ('serviceWorker' in navigator) {
             if (missingFields.length > 0) {
                 console.error('❌ Campos faltantes:', missingFields);
             } else {
-                console.log(`✅ Todos los 46 campos están presentes con fuente Rubik aplicada`);
+                console.log(`✅ Todos los 48 campos están presentes con fuente Rubik aplicada`);
             }
         }
 
@@ -722,7 +719,7 @@ if ('serviceWorker' in navigator) {
             return true; // Todos los campos completos
         }
 
-        // CORRECCIÓN CRÍTICA 2: Contador dinámico 46 campos
+        // CORRECCIÓN CRÍTICA 2: Contador dinámico 48 campos
         function updateFieldCounter() {
             let filledCount = 0;
             
@@ -2108,6 +2105,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 ;
+
 
 
 

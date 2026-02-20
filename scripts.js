@@ -552,6 +552,7 @@ if ('serviceWorker' in navigator) {
                 fecha_analitica: '20/10/2024',
                 peso_kg: 35.5,
                 talla_cm: 140.0,
+              sexo: 'hombre',
                 
                 // BIOQUÍMICA PLASMÁTICA
                 urea_mg_dl: 28,
@@ -659,6 +660,21 @@ if ('serviceWorker' in navigator) {
             primeraValidacion = true;
             
             fieldIds.forEach(campoId => {
+                // Manejo especial para sexo (radio buttons)
+                if (campoId === 'sexo') {
+                      const sexoChecked = document.querySelector('input[name="sexo"]:checked');
+                      if (!sexoChecked) {
+                              camposVacios.push(campoId);
+                              // Marcar los radio buttons como error
+                              const radioButtons = document.querySelectorAll('input[name="sexo"]');
+                              radioButtons.forEach(rb => rb.classList.add('campo-error'));
+                            } else {
+                              // Remover la clase de error si está seleccionado
+                              const radioButtons = document.querySelectorAll('input[name="sexo"]');
+                              radioButtons.forEach(rb => rb.classList.remove('campo-error'));
+                            }
+                      return; // Saltar la validación normal para este campo
+                    }
                 const campo = document.getElementById(campoId);
                 if (!campo || !campo.value || campo.value.trim() === '') {
                     camposVacios.push(campoId);
@@ -728,6 +744,14 @@ if ('serviceWorker' in navigator) {
             let filledCount = 0;
             
             fieldIds.forEach(fieldId => {
+                  // Manejo especial para radio buttons (sexo)
+                  if (fieldId === 'sexo') {
+                          const sexoChecked = document.querySelector('input[name="sexo"]:checked');
+                          if (sexoChecked) {
+                                    filledCount++;
+                                  }
+                          return;
+                        }
                 const input = document.getElementById(fieldId);
                 if (input && input.value.trim() !== '') {
                     filledCount++;
@@ -1182,6 +1206,14 @@ if ('serviceWorker' in navigator) {
             const data = {};
             
             fieldIds.forEach(fieldId => {
+                  // Manejo especial para radio buttons (sexo)
+                  if (fieldId === 'sexo') {
+                          const sexoChecked = document.querySelector('input[name="sexo"]:checked');
+                          if (sexoChecked) {
+                                    data[fieldId] = sexoChecked.value;
+                                  }
+                          return;
+                        }
                 const input = document.getElementById(fieldId);
                 if (input) {
                     let value = input.value;
@@ -2109,4 +2141,5 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 ;
+
 

@@ -1305,7 +1305,7 @@ if ('serviceWorker' in navigator) {
      const isMale = sexo === 'H';
      
      // eGFR por Creatinina (U25)
-     const eGFRCreatinina = data.creatinina_enz_mg_dl > 0 ? getKCreatinine(edad, isMale) * (data.talla_cm / data.creatinina_enz_mg_dl) : 0;
+     const eGFRCreatinina = data.creatinina_enz_mg_dl > 0 ? getKCreatinine(edad, isMale) * ((data.talla_cm / 100) / data.creatinina_enz_mg_dl) : 0;
      
      // eGFR por Cistatina C (U25)
      const eGFRCistatina = data.cistatina_c_mg_l > 0 ? getKCystatin(edad, isMale) * (1 / data.cistatina_c_mg_l) : 0;
@@ -2195,6 +2195,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 ;
+
 
 
 

@@ -1638,21 +1638,66 @@ eGFRCreatinina: 'eGFR por Creatinina U25 (ml/min/1.73m²)',
               
     // Generar tarjetas de resultados calculados
     parametros.forEach(param => {
-      const valor = results[param.key];
-      if (valor && valor !== 0) {
-        const label = resultLabels[param.key] || param.nombre;
-        const valorFormateado = valor.toFixed(2);
-        const unidadTexto = param.unidad ? `(${param.unidad})` : '';
-        
-        const card = document.createElement('div');
-        card.className = 'result-card';
-        card.innerHTML = `
-          <div class="result-label">${label} ${unidadTexto}</div>
-          <div class="result-value">${valorFormateado}</div>
-        `;
-        resultsGrid.appendChild(card);
-      }
-    });
+        const valor = results[param.key];
+        if (valor && valor !== 0) {
+            const label = resultLabels[param.key] || param.nombre;
+            const valorFormateado = valor.toFixed(2);
+            const unidadTexto = param.unidad ? `(${param.unidad})` : '';
+            
+            // Obtener edad del paciente para rangos de referencia
+            const edadInput = document.getElementById('edad');
+            const edad = edadInput ? parseFloat(edadInput.value) : null;
+            const edadMeses = edad ? edad * 12 : null;
+            
+            // Obtener rango de referencia
+            const rango = obtenerRangoReferencia(param.key, edad, edadMeses);
+            
+            // Determinar si el valor está fuera de rango
+            let statusClass = '';
+            let rangoTexto = '';
+            if (rango && rango !== 'VN') {
+                rangoTexto = ` (VN: ${rango})`;
+                // Parsear el rango para determinar si está fuera
+                const rangoMatch = rango.match(/([<>]=?\s*)?([\d.]+)(?:\s*-\s*([\d.]+))?/);
+                if (rangoMatch) {
+                    const valorNum = parseFloat(valorFormateado);
+                    if (rango.includes('-')) {
+                        // Rango con mínimo y máximo
+                        const [, , min, max] = rangoMatch;
+                        if (valorNum < parseFloat(min) || valorNum > parseFloat(max)) {
+                            statusClass = ' status--error';
+                        } else {
+                            statusClass = ' status--success';
+                        }
+                    } else if (rango.startsWith('>')) {
+                        // Mayor que
+                        const threshold = parseFloat(rangoMatch[2]);
+                        if (valorNum <= threshold) {
+                            statusClass = ' status--error';
+                        } else {
+                            statusClass = ' status--success';
+                        }
+                    } else if (rango.startsWith('<')) {
+                        // Menor que
+                        const threshold = parseFloat(rangoMatch[2]);
+                        if (valorNum >= threshold) {
+                            statusClass = ' status--error';
+                        } else {
+                            statusClass = ' status--success';
+                        }
+                    }
+                }
+            }
+            
+            const card = document.createElement('div');
+            card.className = 'result-item' + statusClass;
+            card.innerHTML = `
+                <div class="result-label">${label} ${unidadTexto}${rangoTexto}</div>
+                <div class="result-value">${valorFormateado}</div>
+            `;
+            resultsGrid.appendChild(card);
+        }
+    })
           
           // Evaluar rangos y llenar array de fuera de rango
           parametros.forEach(param => {
@@ -2213,6 +2258,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 ;
+
 
 
 

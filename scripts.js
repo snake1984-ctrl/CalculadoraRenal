@@ -1183,6 +1183,10 @@ if ('serviceWorker' in navigator) {
                 vpercent: 'V%',
                 schwartz2009: 'FG Schwartz 2009 (ml/min/1.73m²)',
                 pottel2017: 'FG por talla Pottel 2017 (ml/min/1.73m²)',
+                  eGFRCreatinina: 'eGFR por Creatinina U25 (ml/min/1.73m²)',
+    eGFRCistatina: 'eGFR por Cistatina C U25 (ml/min/1.73m²)',
+    eGFRCombinado: 'eGFR Combinado U25 (ml/min/1.73m²)',
+              
                 efau: 'EF AU',
                 efna: 'EF Na',
                 efk: 'EF K',
@@ -1268,9 +1272,50 @@ if ('serviceWorker' in navigator) {
                 const imc = data.peso_kg / Math.pow(data.talla_cm / 100, 2);
 
                 // Cálculos renales con fórmulas exactas
-                const schwartz2009 = data.creatinina_enz_mg_dl > 0 ? 0.413 * data.talla_cm / data.creatinina_enz_mg_dl : 0;
-                const pottel2017 = data.cistatina_c_mg_l > 0 ? 107.3 / (data.cistatina_c_mg_l / 0.82) : 0;
-
+// U25 eGFR Formulas - Creatinina, Cistatina, and Combined
+     const edad = window.edadEnAños || 0;
+     const sexo = data.sexo || 'H'; // H = Hombre, M = Mujer
+     
+     // Helper function to calculate K for creatinine
+     function getKCreatinine(age, isMale) {
+       if (age >= 1 && age < 12) {
+         return isMale ? 39.0 * Math.pow(1.008, age - 12) : 36.1 * Math.pow(1.008, age - 12);
+       } else if (age >= 12 && age < 18) {
+         return isMale ? 39.0 * Math.pow(1.045, age - 12) : 36.1 * Math.pow(1.023, age - 12);
+       } else if (age >= 18 && age <= 25) {
+         return isMale ? 50.8 : 41.4;
+       }
+       return 0;
+     }
+     
+     // Helper function to calculate K for cystatin C
+     function getKCystatin(age, isMale) {
+       if (age >= 1 && age < 12) {
+         return isMale ? 87.2 * Math.pow(1.011, age - 15) : 79.9 * Math.pow(1.004, age - 12);
+       } else if (age >= 12 && age < 15) {
+         return isMale ? 87.2 * Math.pow(1.011, age - 15) : 79.9 * Math.pow(0.974, age - 12);
+       } else if (age >= 15 && age < 18) {
+         return isMale ? 87.2 * Math.pow(0.960, age - 15) : 79.9 * Math.pow(0.974, age - 12);
+       } else if (age >= 18 && age <= 25) {
+         return isMale ? 77.1 : 41.4;
+       }
+       return 0;
+     }
+     
+     const isMale = sexo === 'H';
+     
+     // eGFR por Creatinina (U25)
+     const eGFRCreatinina = data.creatinina_enz_mg_dl > 0 ? getKCreatinine(edad, isMale) * (data.talla_cm / data.creatinina_enz_mg_dl) : 0;
+     
+     // eGFR por Cistatina C (U25)
+     const eGFRCistatina = data.cistatina_c_mg_l > 0 ? getKCystatin(edad, isMale) * (1 / data.cistatina_c_mg_l) : 0;
+     
+     // eGFR Combinado (promedio)
+     const eGFRCombinado = (eGFRCreatinina > 0 && eGFRCistatina > 0) ? (eGFRCreatinina + eGFRCistatina) / 2 : (eGFRCreatinina > 0 ? eGFRCreatinina : eGFRCistatina);
+     
+     // Keep old variables for compatibility
+     const schwartz2009 = eGFRCreatinina;
+     const pottel2017 = eGFRCistatina;
                 // Fracciones de excreción
                 const efNa = (data.na_plasma_meq_l && data.creatinina_orina_mg_dl && data.na_orina_meq_l && data.creatinina_enz_mg_dl) ? 
                     (data.na_orina_meq_l * data.creatinina_enz_mg_dl) / (data.na_plasma_meq_l * data.creatinina_orina_mg_dl) * 100 : 0;
@@ -1489,7 +1534,8 @@ if ('serviceWorker' in navigator) {
                     magnesuria: magnesuria,
                     albuminuria: albuminuria,
                     proteinuria: proteinuria,
-                    proteinuriaestimada: proteinuriaEstimada
+                    proteinuriaestimada: proteinuriaEstimada,
+                       eGFRCombinado: eGFRCombinado
                 };
 
                 // Mostrar resultados
@@ -2150,6 +2196,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 ;
+
 
 
 

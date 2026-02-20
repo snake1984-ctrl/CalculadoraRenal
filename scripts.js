@@ -1635,6 +1635,24 @@ eGFRCreatinina: 'eGFR por Creatinina U25 (ml/min/1.73m²)',
           const resultsGrid = document.getElementById('resultsGrid');
           const resultsSection = document.getElementById('results');
           resultsGrid.innerHTML = '';
+              
+    // Generar tarjetas de resultados calculados
+    parametros.forEach(param => {
+      const valor = results[param.key];
+      if (valor && valor !== 0) {
+        const label = resultLabels[param.key] || param.nombre;
+        const valorFormateado = valor.toFixed(2);
+        const unidadTexto = param.unidad ? `(${param.unidad})` : '';
+        
+        const card = document.createElement('div');
+        card.className = 'result-card';
+        card.innerHTML = `
+          <div class="result-label">${label} ${unidadTexto}</div>
+          <div class="result-value">${valorFormateado}</div>
+        `;
+        resultsGrid.appendChild(card);
+      }
+    });
           
           // Evaluar rangos y llenar array de fuera de rango
           parametros.forEach(param => {
@@ -2195,6 +2213,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 ;
+
 
 
 

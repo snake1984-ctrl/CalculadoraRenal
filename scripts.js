@@ -1181,8 +1181,8 @@ if ('serviceWorker' in navigator) {
         function obtenerNombreParametro(param) {
             const nombres = {
                 vpercent: 'V%',
-                schwartz2009: 'FG Schwartz 2009 (ml/min/1.73m²)',
-                pottel2017: 'FG por talla Pottel 2017 (ml/min/1.73m²)',
+                schwartz2009: 'eGFR Creatinina U25 (ml/min/1.73m²)',
+                pottel2017: 'eGFR Cistatina C U25 (ml/min/1.73m²)',
                   eGFRCreatinina: 'eGFR por Creatinina U25 (ml/min/1.73m²)',
     eGFRCistatina: 'eGFR por Cistatina C U25 (ml/min/1.73m²)',
     eGFRCombinado: 'eGFR Combinado U25 (ml/min/1.73m²)',
@@ -1455,8 +1455,6 @@ if ('serviceWorker' in navigator) {
                 const imc = data.peso_kg / Math.pow(data.talla_cm / 100, 2);
 
                 // Cálculos renales con fórmulas exactas
-                const schwartz2009 = data.creatinina_enz_mg_dl > 0 ? 0.413 * data.talla_cm / data.creatinina_enz_mg_dl : 0;
-                const pottel2017 = data.cistatina_c_mg_l > 0 ? 107.3 / (data.cistatina_c_mg_l / 0.82) : 0;
 
                 // Fracciones de excreción
                 const efNa = (data.na_plasma_meq_l && data.creatinina_orina_mg_dl && data.na_orina_meq_l && data.creatinina_enz_mg_dl) ? 
@@ -1572,8 +1570,8 @@ if ('serviceWorker' in navigator) {
           // Lista de parámetros a evaluar
           const parametros = [
             { key: 'vpercent', nombre: 'V%', unidad: '%' },
-            { key: 'schwartz2009', nombre: 'FG Schwartz 2009', unidad: 'ml/min/1.73m²' },
-            { key: 'pottel2017', nombre: 'FG por talla Pottel 2017', unidad: 'ml/min/1.73m²' },
+            { key: 'schwartz2009', nombre: 'eGFR Creatinina U25', unidad: 'ml/min/1.73m²' },
+            { key: 'pottel2017', nombre: 'eGFR Cistatina C U25', unidad: 'ml/min/1.73m²' },
             { key: 'efau', nombre: 'EF AU', unidad: '' },
             { key: 'efna', nombre: 'EF Na', unidad: '' },
             { key: 'efk', nombre: 'EF K', unidad: '' },
@@ -1605,9 +1603,10 @@ if ('serviceWorker' in navigator) {
               superficiecorporal: 'Superficie Corporal (m²)',
               imc: 'IMC (kg/m²)',
               vpercent: 'V% (creat enz/orina)',
-              schwartz2009: 'FG Schwartz 2009 (ml/min/1.73m²)',
-              pottel2017: 'FG Pottel 2017 (ml/min/1.73m²)',
-              efna: 'EF Na (%)',
+eGFRCreatinina: 'eGFR por Creatinina U25 (ml/min/1.73m²)',
+    eGFRCistatina: 'eGFR por Cistatina C U25 (ml/min/1.73m²)',
+    eGFRCombinado: 'eGFR Combinado U25 (ml/min/1.73m²)',
+            
               efk: 'EF K (%)',
               efcl: 'EF Cl (%)',
               efau: 'EF AU (%)',
@@ -1656,7 +1655,7 @@ if ('serviceWorker' in navigator) {
           
           // Crear elementos para todos los resultados
           Object.keys(window.calculatedResults).forEach(key => {
-              if (resultLabels[key]) {
+              if (1308[key]) {
                   const resultItem = document.createElement('div');
                   resultItem.className = 'result-item';
                   resultItem.id = `resultado-${key}`;  // ID para poder aplicar color
@@ -1802,14 +1801,14 @@ if ('serviceWorker' in navigator) {
           if (isValid(data.creatinina_enz_mg_dl)) {
             let cr = `Cr: ${fmt(data.creatinina_enz_mg_dl)}mg/dL`;
             if (isValid(results.schwartz2009)) {
-              cr += ` (FG Schwartz 2009: ${fmt(results.schwartz2009)}ml/min/1.73m²)`;
+              cr += ` (eGFR Creatinina U25: ${fmt(results.schwartz2009)}ml/min/1.73m²)`;
             }
             hidrosalino.push(cr);
           }
           if (isValid(data.cistatina_c_mg_l)) {
             let cist = `Cistatina C: ${fmt(data.cistatina_c_mg_l)}mg/L`;
             if (isValid(results.pottel2017)) {
-              cist += ` (FG por talla Pottel 2017: ${fmt(results.pottel2017)}ml/min/1.73m²)`;
+              cist += ` (eGFR Cistatina C U25: ${fmt(results.pottel2017)}ml/min/1.73m²)`;
             }
             hidrosalino.push(cist);
           }
@@ -2196,6 +2195,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 ;
+
 
 
 

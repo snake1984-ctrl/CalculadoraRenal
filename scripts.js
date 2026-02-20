@@ -612,6 +612,15 @@ if ('serviceWorker' in navigator) {
             let camposLlenados = 0;
             Object.keys(sampleData).forEach(key => {
                 const input = document.getElementById(key);
+                // Manejo especial para radio buttons (sexo)
+                if (key === 'sexo') {
+                      const sexoRadio = document.querySelector(`input[name="sexo"][value="${sampleData[key]}"]`);
+                      if (sexoRadio) {
+                              sexoRadio.checked = true;
+                              camposLlenados++;
+                            }
+                      return;
+                    }
                 if (input) {
                     input.value = sampleData[key];
                     camposLlenados++;
@@ -2141,5 +2150,6 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 ;
+
 
 

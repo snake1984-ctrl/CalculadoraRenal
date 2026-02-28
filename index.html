@@ -299,18 +299,17 @@
 
         <!-- CAMBIO 2: Zona de botones con jerarquía correcta -->
         <div class="zona-botones-principales">
-            <!-- BOTÓN PRINCIPAL (grande y centrado) -->
-            <button type="button" class="btn btn-primary btn-lg btn-calcular" id="calculateButton">
-                <i class="fas fa-calculator"></i> Calcular Resultados
+         <button type="button" class="btn btn-primary btn-lg btn-calcular" id="calculateButton">
+                Calcular Resultados <i class="fas fa-calculator" style="margin-left: 8px;"></i>
             </button>
             
-            <!-- BOTONES SECUNDARIOS (pequeños, abajo) -->
             <div class="botones-secundarios">
                 <button type="button" class="btn btn-outline-secondary btn-sm btn-limpiar" onclick="confirmarLimpiarFormulario()">
-                    <i class="fas fa-trash-alt"></i> Limpiar
+                    Limpiar <i class="fas fa-trash-alt" style="margin-left: 8px;"></i>
                 </button>
-               <button id="btn-cargar-datos-test" style="display:none;" onclick="loadSampleData()">Datos de ejemplo</button>
-
+               <button id="btn-cargar-datos-test" class="btn btn-sm" style="display:none;" onclick="loadSampleData()">
+                    Datos de ejemplo <i class="fas fa-vial" style="margin-left: 8px;"></i>
+               </button>
             </div>
         </div>
 
@@ -343,6 +342,7 @@
 
 </body>
 </html>
+
 
 
 

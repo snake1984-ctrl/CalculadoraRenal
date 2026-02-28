@@ -1,16 +1,19 @@
 // ============================================
-// 1. REGISTRO DEL SERVICE WORKER
+// 1. REGISTRO DEL SERVICE WORKER (SILENCIOSO)
 // ============================================
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('service-worker.js')
-      .then(registration => console.log('✅ Service Worker registrado:', registration.scope))
+      .then(registration => {
+        console.log('✅ Service Worker registrado:', registration.scope);
+        // Fuerza al navegador a comprobar si hay actualizaciones en segundo plano
+        registration.update();
+      })
       .catch(error => console.log('❌ Error al registrar Service Worker:', error));
   });
-
-  navigator.serviceWorker.addEventListener('controllerchange', () => {
-    alert('¡Hay una nueva versión! Por favor, recarga la página para ver los cambios.');
-  });
+  
+  // Hemos eliminado el eventListener de 'controllerchange' con el alert.
+  // Ahora la app se actualiza en segundo plano de forma 100% invisible.
 }
 
 // ===============================================
@@ -139,8 +142,15 @@ function setupThemeToggle() {
 
 function updateThemeIcon(theme) {
     const icon = document.querySelector('#theme-toggle i');
-    if (icon) {
-        icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+    const text = document.querySelector('#theme-toggle span');
+    if (icon && text) {
+        if (theme === 'dark') {
+            icon.className = 'fas fa-sun';
+            text.textContent = ' Modo Claro';
+        } else {
+            icon.className = 'fas fa-moon';
+            text.textContent = ' Modo Oscuro';
+        }
     }
 }
 
@@ -835,4 +845,5 @@ function printReport() {
     printWindow.document.close(); printWindow.focus();
     setTimeout(() => printWindow.print(), 250);
 }
+
 

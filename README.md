@@ -31,8 +31,6 @@ Este es el proyecto de la Calculadora Renal adaptada como Progressive Web App (P
 
 Puedes probar localmente usando un servidor simple:
 
-Puedes probar localmente usando un servidor simple:
-
 python -m http.server 8000
 
 text

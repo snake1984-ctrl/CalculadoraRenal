@@ -142,15 +142,9 @@ function setupThemeToggle() {
 
 function updateThemeIcon(theme) {
     const icon = document.querySelector('#theme-toggle i');
-    const text = document.querySelector('#theme-toggle span');
-    if (icon && text) {
-        if (theme === 'dark') {
-            icon.className = 'fas fa-sun';
-            text.textContent = ' Modo Claro';
-        } else {
-            icon.className = 'fas fa-moon';
-            text.textContent = ' Modo Oscuro';
-        }
+    if (icon) {
+        // Sol para modo oscuro, Luna para modo claro
+        icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
     }
 }
 
@@ -845,5 +839,6 @@ function printReport() {
     printWindow.document.close(); printWindow.focus();
     setTimeout(() => printWindow.print(), 250);
 }
+
 
 

@@ -1893,7 +1893,48 @@ if ('serviceWorker' in navigator) {
           if (orina24h.length > 0) {
             report.push(`- Orina de 24h: ${orina24h.join('   ')}`);
           }
+          
+          // BLOQUE ESTADIFICACIÓN KDIGO 2012
+          // 1. Funciones evaluadoras locales
+          function evaluarGradoG(egfr) {
+              if (!isValid(egfr)) return null;
+              if (egfr >= 90) return "Estadio G1 (Normal o elevado)";
+              if (egfr >= 60) return "Estadio G2 (Levemente disminuido)";
+              if (egfr >= 45) return "Estadio G3a (Leve o moderadamente disminuido)";
+              if (egfr >= 30) return "Estadio G3b (Moderado o muy disminuido)";
+              if (egfr >= 15) return "Estadio G4 (Muy disminuido)";
+              return "Estadio G5 (Fallo renal)";
+          }
 
+          function evaluarGradoA(albcr) {
+              if (albcr === null || isNaN(albcr) || albcr === undefined) return null;
+              // albcr viene en mg/g
+              if (albcr < 30) return "Estadio A1 (Normal o levemente elevada)";
+              if (albcr <= 300) return "Estadio A2 (Moderadamente elevada)";
+              return "Estadio A3 (Muy elevada)";
+          }
+
+          // 2. Extraer grados
+          const gradoCr = evaluarGradoG(results.ckid_u25_cr);
+          const gradoCist = evaluarGradoG(results.ckid_u25_cistc);
+          const gradoComb = evaluarGradoG(results.ckid_u25_combinado);
+          
+          // Nota: Si la albúmina/creatinina es exactamente 0 (no metida), isValid daría falso, 
+          // pero clínicamente podría ser 0. Por eso uso albcr > 0 o !== undefined.
+          let gradoAlb = null;
+          if (results.albcr !== undefined && results.albcr > 0) {
+              gradoAlb = evaluarGradoA(results.albcr);
+          }
+
+          // 3. Imprimir en el informe si existe al menos un cálculo
+          if (gradoCr || gradoCist || gradoComb || gradoAlb) {
+              report.push('');
+              report.push('ESTADIFICACIÓN SEGÚN GUÍAS KDIGO 2012');
+              if (gradoCr) report.push(`- Grado de ERC por Cr: ${gradoCr}`);
+              if (gradoCist) report.push(`- Grado de ERC por CistC: ${gradoCist}`);
+              if (gradoComb) report.push(`- Grado de ER Combinado: ${gradoComb}`);
+              if (gradoAlb) report.push(`- Albuminuria: ${gradoAlb}`);
+          }
           // AÑADIR BLOQUE NUTRICIONAL SI HAY TEXTO
           if (comentarioNutricional) {
             report.push('');
@@ -2145,6 +2186,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 ;
+
 
 
 

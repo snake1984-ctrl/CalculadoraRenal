@@ -59,6 +59,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 3. Huevo de Pascua (Easter Egg): 5 toques en el logo para Modo Test
     setupSecretTap();
+    // 4. Mejoras UX: Tema y Autoguardado
+    setupThemeToggle();
+    setupAutoSave();
 });
 
 // ===============================================
@@ -109,7 +112,63 @@ function setupSecretTap() {
         logo.addEventListener('touchend', e => e.preventDefault(), {passive: false});
     }
 }
+// ===============================================
+// MEJORAS UX: MODO OSCURO Y AUTOGUARDADO (SESSION)
+// ===============================================
+function setupThemeToggle() {
+    const toggleBtn = document.getElementById('theme-toggle');
+    if (!toggleBtn) return;
+    
+    // Aquí sí usamos localStorage porque guardar si te gusta el modo oscuro no viola la privacidad
+    const savedTheme = localStorage.getItem('themePref');
+    if (savedTheme) {
+        document.documentElement.setAttribute('data-color-scheme', savedTheme);
+        updateThemeIcon(savedTheme);
+    } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.documentElement.setAttribute('data-color-scheme', 'dark');
+        updateThemeIcon('dark');
+    }
 
+    toggleBtn.addEventListener('click', () => {
+        const currentTheme = document.documentElement.getAttribute('data-color-scheme') === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-color-scheme', currentTheme);
+        localStorage.setItem('themePref', currentTheme);
+        updateThemeIcon(currentTheme);
+    });
+}
+
+function updateThemeIcon(theme) {
+    const icon = document.querySelector('#theme-toggle i');
+    if (icon) {
+        icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+    }
+}
+
+function setupAutoSave() {
+    // Cargar datos temporales al abrir la pestaña
+    const savedData = sessionStorage.getItem('calcRenalDataTemporales');
+    if (savedData) {
+        try {
+            const data = JSON.parse(savedData);
+            Object.keys(data).forEach(key => {
+                const input = document.getElementById(key);
+                if (input && data[key] !== 0 && data[key] !== '') input.value = data[key];
+            });
+            // Recalcular edad visualmente
+            calcularEdad();
+        } catch (e) {
+            console.error('Error al recuperar datos temporales');
+        }
+    }
+
+    // Guardar temporalmente en cada pulsación (solo en esta pestaña)
+    document.getElementById('clinicalForm').addEventListener('input', () => {
+        const data = getFormData();
+        data.sedimento_urinario = document.getElementById('sedimento_urinario')?.value || '';
+        data.comentario_nutricional = document.getElementById('comentario_nutricional')?.value || '';
+        sessionStorage.setItem('calcRenalDataTemporales', JSON.stringify(data));
+    });
+}
 // ===============================================
 // 5. FUNCIONES DE UI, FECHAS Y EVENTOS
 // ===============================================
@@ -321,6 +380,7 @@ function clearFormSilent() {
     
     updateFieldCounter();
     switchTab('datos-basicos', document.querySelector('[data-tab="datos-basicos"]'));
+    sessionStorage.removeItem('calcRenalDataTemporales');
 }
 
 function clearForm() { confirmarLimpiarFormulario(); }
@@ -775,3 +835,4 @@ function printReport() {
     printWindow.document.close(); printWindow.focus();
     setTimeout(() => printWindow.print(), 250);
 }
+

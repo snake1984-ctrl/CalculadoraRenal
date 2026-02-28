@@ -441,24 +441,20 @@ body.modo-test::before {
     right: 16px;
     background: transparent;
     border: none;
-    color: var(--color-text-secondary);
-    font-size: 20px;
+    color: var(--color-text); /* Color que se adapta automáticamente */
+    font-size: 24px; /* Tamaño del icono más grande */
     cursor: pointer;
     padding: 8px;
-    border-radius: 50%;
-    transition: all var(--duration-fast) var(--ease-standard);
+    z-index: 100; /* CRÍTICO: Asegura que nada lo tape */
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: transform 0.2s ease;
 }
 
 .btn-theme-toggle:hover {
+    transform: scale(1.1); /* Pequeño efecto al pasar el ratón */
     color: var(--color-primary);
-    background: var(--color-bg-2);
-}
-
-.btn-theme-toggle:focus-visible {
-    outline: var(--focus-outline);
 }
 
 /* Ajuste para móviles: hacer el icono un pelín más pequeño para que no estorbe */

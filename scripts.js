@@ -1,21 +1,25 @@
 // ============================================
-// 1. REGISTRO DEL SERVICE WORKER (SILENCIOSO)
+// 1. REGISTRO DEL SERVICE WORKER (INVISIBLE)
 // ============================================
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('service-worker.js')
       .then(registration => {
         console.log('✅ Service Worker registrado:', registration.scope);
-        // Fuerza al navegador a comprobar si hay actualizaciones en segundo plano
+        // Fuerza la comprobación de nuevas versiones en segundo plano
         registration.update();
       })
-      .catch(error => console.log('❌ Error al registrar Service Worker:', error));
+      .catch(error => console.log('❌ Error al registrar SW:', error));
   });
-  
-  // Hemos eliminado el eventListener de 'controllerchange' con el alert.
-  // Ahora la app se actualiza en segundo plano de forma 100% invisible.
-}
 
+  // Cuando el Service Worker descargue una nueva versión (ej. cambiaste el CACHE_NAME a v22)
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    console.log('🔄 Nueva versión detectada. Recargando silenciosamente...');
+    // Forzamos la recarga de la página. 
+    // GRACIAS al sessionStorage, el médico NO perderá lo que estaba escribiendo.
+    window.location.reload();
+  });
+}
 // ===============================================
 // 2. VARIABLES GLOBALES Y CONFIGURACIÓN
 // ===============================================
@@ -839,6 +843,7 @@ function printReport() {
     printWindow.document.close(); printWindow.focus();
     setTimeout(() => printWindow.print(), 250);
 }
+
 
 
 

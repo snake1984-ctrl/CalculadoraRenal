@@ -67,7 +67,7 @@ if ('serviceWorker' in navigator) {
         // Lista exacta de TODOS los IDs de los 46 campos
         const fieldIds = [
             // DATOS BÁSICOS (3 campos) - ACTUALIZADO CON FECHAS
-            'fecha_nacimiento', 'fecha_analitica', 'peso_kg', 'talla_cm',
+            'sexo', 'fecha_nacimiento', 'fecha_analitica', 'peso_kg', 'talla_cm',
             
             // BIOQUÍMICA PLASMÁTICA (13 campos)
             'urea_mg_dl', 'creatinina_enz_mg_dl', 'au_plasma_mg_dl', 'na_plasma_meq_l', 'k_plasma_meq_l', 'cl_plasma_meq_l', 'fosfatasa_alcalina_u_l', 'ca_plasma_mg_dl', 'p_plasma_mg_dl', 'mg_plasma_mg_dl', 'pth_pg_ml', 'vitamina_d_ng_ml', 'cistatina_c_mg_l',
@@ -551,6 +551,7 @@ if ('serviceWorker' in navigator) {
                 fecha_analitica: '20/10/2024',
                 peso_kg: 35.5,
                 talla_cm: 140.0,
+                sexo: 'M',
                 
                 // BIOQUÍMICA PLASMÁTICA
                 urea_mg_dl: 28,
@@ -762,8 +763,9 @@ if ('serviceWorker' in navigator) {
               }
               break;
               
-            case 'schwartz2009':
-            case 'pottel2017':
+            case 'ckid_u25_cr':
+            case 'ckid_u25_cistc':
+            case 'ckid_u25_combinado':
               rangoMin = 90;
               rangoTexto = '>90ml/min/1.73m²';
               return { 
@@ -1186,7 +1188,7 @@ if ('serviceWorker' in navigator) {
                     let value = input.value;
                     
                     // Campos de fecha se mantienen como texto
-                    if (fieldId === 'fecha_nacimiento' || fieldId === 'fecha_analitica') {
+                    if (fieldId === 'fecha_nacimiento' || fieldId === 'fecha_analitica' || fieldId === 'sexo') {
                         data[fieldId] = value;
                         return;
                     }
@@ -1226,8 +1228,36 @@ if ('serviceWorker' in navigator) {
                 const imc = data.peso_kg / Math.pow(data.talla_cm / 100, 2);
 
                 // Cálculos renales con fórmulas exactas
-                const schwartz2009 = data.creatinina_enz_mg_dl > 0 ? 0.413 * data.talla_cm / data.creatinina_enz_mg_dl : 0;
-                const pottel2017 = data.cistatina_c_mg_l > 0 ? 107.3 / (data.cistatina_c_mg_l / 0.82) : 0;
+                // Cálculos renales CKiD U25
+                const edadExacta = window.edadEnAños + (window.edadEnMeses / 12);
+                const talla_m = data.talla_cm / 100;
+                
+                // 1. eGFR by CKiD U25 Cr
+                let k_cr = 0;
+                if (edadExacta >= 1 && edadExacta < 12) {
+                    k_cr = (data.sexo === 'M') ? 39.0 * Math.pow(1.008, edadExacta - 12) : 36.1 * Math.pow(1.008, edadExacta - 12);
+                } else if (edadExacta >= 12 && edadExacta < 18) {
+                    k_cr = (data.sexo === 'M') ? 39.0 * Math.pow(1.045, edadExacta - 12) : 36.1 * Math.pow(1.023, edadExacta - 12);
+                } else if (edadExacta >= 18) {
+                    k_cr = (data.sexo === 'M') ? 50.8 : 41.4;
+                }
+                const ckid_u25_cr = (k_cr > 0 && data.creatinina_enz_mg_dl > 0 && talla_m > 0) ? k_cr * (talla_m / data.creatinina_enz_mg_dl) : 0;
+
+                // 2. eGFR by CKiD U25 CistC
+                let k_cist = 0;
+                if (edadExacta >= 1 && edadExacta < 12) {
+                    k_cist = (data.sexo === 'M') ? 87.2 * Math.pow(1.011, edadExacta - 15) : 79.9 * Math.pow(1.004, edadExacta - 12);
+                } else if (edadExacta >= 12 && edadExacta < 15) {
+                    k_cist = (data.sexo === 'M') ? 87.2 * Math.pow(1.011, edadExacta - 15) : 79.9 * Math.pow(0.974, edadExacta - 12);
+                } else if (edadExacta >= 15 && edadExacta < 18) {
+                    k_cist = (data.sexo === 'M') ? 87.2 * Math.pow(0.960, edadExacta - 15) : 79.9 * Math.pow(0.974, edadExacta - 12);
+                } else if (edadExacta >= 18) {
+                    k_cist = (data.sexo === 'M') ? 77.1 : 41.4;
+                }
+                const ckid_u25_cistc = (k_cist > 0 && data.cistatina_c_mg_l > 0) ? k_cist * (1 / data.cistatina_c_mg_l) : 0;
+
+                // 3. eGFR Combinado (Promedio)
+                const ckid_u25_combinado = (ckid_u25_cr > 0 && ckid_u25_cistc > 0) ? (ckid_u25_cr + ckid_u25_cistc) / 2 : 0;
 
                 // Fracciones de excreción
                 const efNa = (data.na_plasma_meq_l && data.creatinina_orina_mg_dl && data.na_orina_meq_l && data.creatinina_enz_mg_dl) ? 
@@ -1280,8 +1310,9 @@ if ('serviceWorker' in navigator) {
                     superficiecorporal: superficieCorporal,
                     imc: imc,
                     vpercent: vpercent,
-                    schwartz2009: schwartz2009,
-                    pottel2017: pottel2017,
+                    ckid_u25_cr: ckid_u25_cr,
+                    ckid_u25_cistc: ckid_u25_cistc,
+                    ckid_u25_combinado: ckid_u25_combinado,
                     efau: efAU,
                     efna: efNa,
                     efk: efK,
@@ -1484,8 +1515,9 @@ if ('serviceWorker' in navigator) {
           // Lista de parámetros a evaluar
           const parametros = [
             { key: 'vpercent', nombre: 'V%', unidad: '%' },
-            { key: 'schwartz2009', nombre: 'FG Schwartz 2009', unidad: 'ml/min/1.73m²' },
-            { key: 'pottel2017', nombre: 'FG por talla Pottel 2017', unidad: 'ml/min/1.73m²' },
+            { key: 'ckid_u25_cr', nombre: 'eGFR CKiD U25 Cr', unidad: 'ml/min/1.73m²' },
+            { key: 'ckid_u25_cistc', nombre: 'eGFR CKiD U25 CistC', unidad: 'ml/min/1.73m²' },
+            { key: 'ckid_u25_combinado', nombre: 'eGFR Combinado', unidad: 'ml/min/1.73m²' },
             { key: 'efau', nombre: 'EF AU', unidad: '' },
             { key: 'efna', nombre: 'EF Na', unidad: '' },
             { key: 'efk', nombre: 'EF K', unidad: '' },
@@ -1517,8 +1549,9 @@ if ('serviceWorker' in navigator) {
               superficiecorporal: 'Superficie Corporal (m²)',
               imc: 'IMC (kg/m²)',
               vpercent: 'V% (creat enz/orina)',
-              schwartz2009: 'FG Schwartz 2009 (ml/min/1.73m²)',
-              pottel2017: 'FG Pottel 2017 (ml/min/1.73m²)',
+              ckid_u25_cr: 'eGFR CKiD U25 Cr (ml/min/1.73m²)',
+              ckid_u25_cistc: 'eGFR CKiD U25 CistC (ml/min/1.73m²)',
+              ckid_u25_combinado: 'eGFR Combinado (ml/min/1.73m²)',
               efna: 'EF Na (%)',
               efk: 'EF K (%)',
               efcl: 'EF Cl (%)',
@@ -1709,21 +1742,25 @@ if ('serviceWorker' in navigator) {
           let report = [];
 
           // BLOQUE HIDROSALINO (una línea horizontal con todos los valores)
+    // BLOQUE HIDROSALINO 
           let hidrosalino = [];
           if (isValid(data.urea_mg_dl)) hidrosalino.push(`Urea: ${fmt(data.urea_mg_dl)}mg/dL`);
           if (isValid(data.creatinina_enz_mg_dl)) {
             let cr = `Cr: ${fmt(data.creatinina_enz_mg_dl)}mg/dL`;
-            if (isValid(results.schwartz2009)) {
-              cr += ` (FG Schwartz 2009: ${fmt(results.schwartz2009)}ml/min/1.73m²)`;
+            if (isValid(results.ckid_u25_cr)) {
+              cr += ` (eGFR CKiD U25 Cr: ${fmt(results.ckid_u25_cr)}ml/min/1.73m²)`;
             }
             hidrosalino.push(cr);
           }
           if (isValid(data.cistatina_c_mg_l)) {
             let cist = `Cistatina C: ${fmt(data.cistatina_c_mg_l)}mg/L`;
-            if (isValid(results.pottel2017)) {
-              cist += ` (FG por talla Pottel 2017: ${fmt(results.pottel2017)}ml/min/1.73m²)`;
+            if (isValid(results.ckid_u25_cistc)) {
+              cist += ` (eGFR CKiD U25 CistC: ${fmt(results.ckid_u25_cistc)}ml/min/1.73m²)`;
             }
             hidrosalino.push(cist);
+          }
+          if (isValid(results.ckid_u25_combinado)) {
+            hidrosalino.push(`eGFR Combinado: ${fmt(results.ckid_u25_combinado)}ml/min/1.73m²`);
           }
           if (isValid(results.vpercent)) hidrosalino.push(`V%: ${fmt(results.vpercent)}%`);
           if (isValid(data.na_plasma_meq_l)) hidrosalino.push(`Na: ${fmt(data.na_plasma_meq_l)}mEq/L`);
@@ -1856,7 +1893,48 @@ if ('serviceWorker' in navigator) {
           if (orina24h.length > 0) {
             report.push(`- Orina de 24h: ${orina24h.join('   ')}`);
           }
+          
+          // BLOQUE ESTADIFICACIÓN KDIGO 2012
+          // 1. Funciones evaluadoras locales
+          function evaluarGradoG(egfr) {
+              if (!isValid(egfr)) return null;
+              if (egfr >= 90) return "Estadio G1 (Normal o elevado)";
+              if (egfr >= 60) return "Estadio G2 (Levemente disminuido)";
+              if (egfr >= 45) return "Estadio G3a (Leve o moderadamente disminuido)";
+              if (egfr >= 30) return "Estadio G3b (Moderado o muy disminuido)";
+              if (egfr >= 15) return "Estadio G4 (Muy disminuido)";
+              return "Estadio G5 (Fallo renal)";
+          }
 
+          function evaluarGradoA(albcr) {
+              if (albcr === null || isNaN(albcr) || albcr === undefined) return null;
+              // albcr viene en mg/g
+              if (albcr < 30) return "Estadio A1 (Normal o levemente elevada)";
+              if (albcr <= 300) return "Estadio A2 (Moderadamente elevada)";
+              return "Estadio A3 (Muy elevada)";
+          }
+
+          // 2. Extraer grados
+          const gradoCr = evaluarGradoG(results.ckid_u25_cr);
+          const gradoCist = evaluarGradoG(results.ckid_u25_cistc);
+          const gradoComb = evaluarGradoG(results.ckid_u25_combinado);
+          
+          // Nota: Si la albúmina/creatinina es exactamente 0 (no metida), isValid daría falso, 
+          // pero clínicamente podría ser 0. Por eso uso albcr > 0 o !== undefined.
+          let gradoAlb = null;
+          if (results.albcr !== undefined && results.albcr > 0) {
+              gradoAlb = evaluarGradoA(results.albcr);
+          }
+
+          // 3. Imprimir en el informe si existe al menos un cálculo
+          if (gradoCr || gradoCist || gradoComb || gradoAlb) {
+              report.push('');
+              report.push('ESTADIFICACIÓN SEGÚN GUÍAS KDIGO 2012');
+              if (gradoCr) report.push(`- Grado de ERC por Cr: ${gradoCr}`);
+              if (gradoCist) report.push(`- Grado de ERC por CistC: ${gradoCist}`);
+              if (gradoComb) report.push(`- Grado de ER Combinado: ${gradoComb}`);
+              if (gradoAlb) report.push(`- Albuminuria: ${gradoAlb}`);
+          }
           // AÑADIR BLOQUE NUTRICIONAL SI HAY TEXTO
           if (comentarioNutricional) {
             report.push('');
@@ -2108,5 +2186,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 ;
+
+
 
 

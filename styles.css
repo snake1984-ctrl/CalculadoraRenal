@@ -434,4 +434,38 @@ body.modo-test::before {
   width: 90px !important; border-radius: 8px !important;
   background: #f1f5f9 !important; color: #222 !important; box-shadow: 0 1px 8px rgba(0,0,0,0.05); border: none; cursor: pointer;
 }
+/* Botón de tema minimalista (Esquina superior derecha) */
+.btn-theme-toggle {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: transparent;
+    border: none;
+    color: var(--color-text-secondary);
+    font-size: 20px;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    transition: all var(--duration-fast) var(--ease-standard);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
+.btn-theme-toggle:hover {
+    color: var(--color-primary);
+    background: var(--color-bg-2);
+}
+
+.btn-theme-toggle:focus-visible {
+    outline: var(--focus-outline);
+}
+
+/* Ajuste para móviles: hacer el icono un pelín más pequeño para que no estorbe */
+@media (max-width: 480px) {
+    .btn-theme-toggle {
+        top: 10px;
+        right: 10px;
+        font-size: 18px;
+    }
+}

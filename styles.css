@@ -434,46 +434,4 @@ body.modo-test::before {
   width: 90px !important; border-radius: 8px !important;
   background: #f1f5f9 !important; color: #222 !important; box-shadow: 0 1px 8px rgba(0,0,0,0.05); border: none; cursor: pointer;
 }
-/* ============================================
-   ESTILOS DE IMPRESIÓN (PRINT)
-   ============================================ */
-@media print {
-    /* Ocultar todo por defecto */
-    body * {
-        visibility: hidden;
-    }
-    
-    /* Mostrar solo el informe y su contenido */
-    #reportSection, #reportSection * {
-        visibility: visible;
-    }
-    
-    /* Posicionar el informe en la esquina superior izquierda del papel */
-    #reportSection {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-        box-shadow: none !important;
-        border: none !important;
-        margin: 0 !important;
-        padding: 0 !important;
-    }
 
-    /* Forzar ocultar elementos innecesarios dentro del informe */
-    .export-options, 
-    .app-header, 
-    .tabs-container, 
-    .zona-botones-principales, 
-    .field-count,
-    #results {
-        display: none !important;
-    }
-
-    /* Ajustar tipografía para papel */
-    pre {
-        white-space: pre-wrap !important;
-        font-size: 12pt !important;
-        color: black !important;
-    }
-}

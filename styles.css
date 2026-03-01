@@ -107,6 +107,9 @@
   --focus-ring: 0 0 0 3px var(--color-focus-ring);
   --focus-outline: 2px solid var(--color-primary);
 }
+*, *::before, *::after {
+    box-sizing: border-box;
+}
 
 /* Dark mode colors */
 @media (prefers-color-scheme: dark) {
@@ -211,6 +214,8 @@ h4 { font-size: var(--font-size-xl); }
   max-width: 1280px;
   margin: 0 auto;
   padding: var(--space-16);
+  box-sizing: border-box;
+  overflow-x: hidden; 
 }
 
 .app-header {
@@ -239,7 +244,8 @@ h4 { font-size: var(--font-size-xl); }
   border: 1px solid var(--color-border);
   overflow: hidden;
   margin-bottom: var(--space-24);
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-sm)width: 100%;
+  max-width: 100%;
 }
 
 .tabs, .nav-tabs {

@@ -340,7 +340,18 @@ function setupFormEvents() {
     fieldIds.forEach(fieldId => {
         const input = document.getElementById(fieldId);
         if (input) {
-            input.addEventListener('input', () => { updateFieldCounter(); actualizarMarcadoresEnTiempoReal(); });
+            input.addEventListener('input', (e) => { 
+                updateFieldCounter(); 
+                actualizarMarcadoresEnTiempoReal(); 
+                
+                // Feedback Positivo en tiempo real
+                if(e.target.value.trim() !== '') {
+                    e.target.classList.add('campo-valido');
+                    e.target.classList.remove('campo-error');
+                } else {
+                    e.target.classList.remove('campo-valido');
+                }
+            });
             input.addEventListener('change', () => { updateFieldCounter(); actualizarMarcadoresEnTiempoReal(); });
         }
     });
@@ -895,6 +906,7 @@ window.addEventListener('appinstalled', () => {
     if (installBtn) installBtn.classList.add('hidden');
     console.log('¡PWA instalada con éxito!');
 });
+
 
 
 

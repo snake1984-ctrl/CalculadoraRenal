@@ -57,6 +57,7 @@ document.addEventListener('DOMContentLoaded', function() {
     setupFormEvents();
     setupButtons();
     updateFieldCounter();
+    inyectarUnidadesEnInputs();
 
     // 2. Detección del Modo Test por URL
     const urlParams = new URLSearchParams(window.location.search);
@@ -907,6 +908,66 @@ window.addEventListener('appinstalled', () => {
     console.log('¡PWA instalada con éxito!');
 });
 
+// ===============================================
+// 9. TRUCO NINJA: UNIDADES INTEGRADAS EN EL INPUT
+// ===============================================
+function inyectarUnidadesEnInputs() {
+    document.querySelectorAll('.form-label').forEach(label => {
+        // Recorremos los textos de la etiqueta (con cuidado de no romper los tooltips ?)
+        for (let i = 0; i < label.childNodes.length; i++) {
+            const node = label.childNodes[i];
+            
+            // Buscamos solo el texto normal (NodeType 3)
+            if (node.nodeType === 3) {
+                // Buscamos cualquier cosa que esté entre paréntesis
+                const match = node.nodeValue.match(/\((.*?)\)/);
+                
+                if (match) {
+                    const unidad = match[1].trim();
+                    const inputId = label.getAttribute('for');
+                    
+                    // Excluimos la edad porque "(calculada)" no es una unidad matemática
+                    if (inputId === 'edad_calculada') continue;
+                    
+                    const input = document.getElementById(inputId);
+                    if (input && input.tagName.toLowerCase() === 'input') {
+                        // 1. Borramos la unidad del título original
+                        node.nodeValue = node.nodeValue.replace(/\(.*?\)/, '').trim() + ' ';
+                        
+                        // 2. Creamos una "caja" invisible para agrupar el input y la unidad
+                        const wrapper = document.createElement('div');
+                        wrapper.style.position = 'relative';
+                        wrapper.style.display = 'flex';
+                        wrapper.style.alignItems = 'center';
+                        wrapper.style.width = '100%';
+                        
+                        // Metemos el input dentro de la caja
+                        input.parentNode.insertBefore(wrapper, input);
+                        wrapper.appendChild(input);
+                        
+                        // 3. Hacemos hueco a la derecha del input para que los números no pisen la letra
+                        const paddingDerecho = (unidad.length * 8 + 15);
+                        input.style.paddingRight = paddingDerecho + 'px';
+                        
+                        // 4. Creamos el texto de la unidad y lo anclamos a la derecha
+                        const unitSpan = document.createElement('span');
+                        unitSpan.textContent = unidad;
+                        unitSpan.style.position = 'absolute';
+                        unitSpan.style.right = '12px';
+                        unitSpan.style.color = 'var(--color-text-secondary)';
+                        unitSpan.style.fontSize = '12px';
+                        unitSpan.style.fontWeight = '600';
+                        unitSpan.style.pointerEvents = 'none'; // Evita que el click se bloquee
+                        unitSpan.style.userSelect = 'none';
+                        
+                        wrapper.appendChild(unitSpan);
+                    }
+                    break; // Terminamos con este campo y pasamos al siguiente
+                }
+            }
+        }
+    });
+}
 
 
 

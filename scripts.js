@@ -843,6 +843,49 @@ function printReport() {
     printWindow.document.close(); printWindow.focus();
     setTimeout(() => printWindow.print(), 250);
 }
+// ===============================================
+// 8. LÓGICA DE INSTALACIÓN PWA (Botón Instalar)
+// ===============================================
+let deferredPrompt;
+
+window.addEventListener('beforeinstallprompt', (e) => {
+    // Evita que el navegador muestre su propio mini-aviso feo (sobre todo en Android)
+    e.preventDefault();
+    // Guardamos el evento para dispararlo luego cuando el usuario pulse nuestro botón
+    deferredPrompt = e;
+    
+    // Mostramos nuestro botón elegante
+    const installBtn = document.getElementById('btn-install-pwa');
+    if (installBtn) {
+        installBtn.classList.remove('hidden');
+    }
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    const installBtn = document.getElementById('btn-install-pwa');
+    if (installBtn) {
+        installBtn.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                // Mostramos el aviso nativo de instalación del sistema operativo
+                deferredPrompt.prompt();
+                // Esperamos a ver qué elige el usuario (Aceptar o Cancelar)
+                const { outcome } = await deferredPrompt.userChoice;
+                console.log(`Resultado de la instalación: ${outcome}`);
+                // Vaciamos la variable porque solo se puede usar una vez
+                deferredPrompt = null;
+                // Ocultamos el botón
+                installBtn.classList.add('hidden');
+            }
+        });
+    }
+});
+
+window.addEventListener('appinstalled', () => {
+    // Si ya se ha instalado, ocultamos el botón para siempre
+    const installBtn = document.getElementById('btn-install-pwa');
+    if (installBtn) installBtn.classList.add('hidden');
+    console.log('¡PWA instalada con éxito!');
+});
 
 
 

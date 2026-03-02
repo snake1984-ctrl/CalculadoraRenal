@@ -1,68 +1,33 @@
-# Calculadora Clínica de Parámetros Renales - PWA
+# 🩺 NefroPed 
 
-Este es el proyecto de la Calculadora Renal adaptada como Progressive Web App (PWA) para funcionar tanto en navegadores de escritorio como en dispositivos móviles iOS y Android, con soporte offline y experiencia similar a una app nativa.
+**Calculadora Clínica Avanzada de Nefrología Pediátrica** 🌐 [Visitar la aplicación: nefroped.es](https://nefroped.es)
 
----
+NefroPed es una Aplicación Web Progresiva (PWA) diseñada específicamente para profesionales sanitarios en el ámbito de la nefrología pediátrica. Permite realizar cálculos clínicos complejos, estadificaciones y fórmulas de forma rápida, segura y adaptada al entorno hospitalario.
 
-## Características
+## ✨ Características Principales
 
-- Cálculo clínico de parámetros renales con interfaz amigable
-- Adaptabilidad (responsive) para diferentes tamaños de pantalla
-- Progressive Web App con instalación y funcionamiento offline
-- Iconos personalizados para pantalla de inicio 
-- Uso de Service Worker para cacheo y velocidad de carga
+* **🏥 Orientada a la práctica clínica:** Fórmulas actualizadas (eGFR CKiD U25, RTP, Superficie Corporal, etc.) validadas en la literatura médica estándar.
+* **🔒 Privacidad por Diseño (100% Local):** Los datos introducidos no se envían a ningún servidor. Todo el procesamiento matemático se realiza localmente en el navegador del dispositivo del usuario, garantizando el cumplimiento normativo de protección de datos.
+* **📱 Aplicación Web Progresiva (PWA):** Instalable en dispositivos móviles (iOS/Android) y ordenadores sin pasar por tiendas de aplicaciones. Funciona offline una vez cargada.
+* **📋 Integración en Historia Clínica:** Generación automática de informes médicos con formato limpio. Incluye exportación a PDF, Word (.docx) y copiado directo al portapapeles en un clic para pegar en aplicaciones oficiales de salud.
+* **🎨 Interfaz UI/UX Moderna:** Diseño aséptico, simétrico, con soporte nativo para Modo Claro/Oscuro y adaptabilidad total (Responsive Design).
 
----
+## 🛠️ Stack Tecnológico
 
-## Archivos principales
+* **Frontend:** HTML5, CSS3 (Variables nativas, CSS Grid, Flexbox), JavaScript (Vanilla ES6+).
+* **Librerías externas:** SweetAlert2 (Alertas UI), FontAwesome (Iconografía).
+* **Arquitectura:** Static Web App / PWA (Service Workers, Manifest).
 
-- `index.html`: Archivo principal, estructura y contenido de la calculadora
-- `styles.css`: Estilos CSS, diseño y estilos responsive
-- `scripts.js`: JavaScript con lógica de la calculadora y registro de Service Worker
-- `manifest.json`: Configuración de la PWA (iconos, nombre, colores)
-- `service-worker.js`: Service Worker para cacheo y soporte offline
-- `icon-192.png` y `icon-512.png`: Iconos para la app
+## 👨‍⚕️ Autores y Dirección
 
----
+* **Dirección Médica e Idea Original:** Dra. Ana María Ortega Morales (FEA Pediatría en HUSC Granada).
+* **Desarrollo Técnico e Informático:** Felipe Reyes.
 
-## Cómo usar
+## ⚠️ Aviso Legal
 
-### Despliegue local
+*NefroPed es una herramienta informática de apoyo diseñada exclusivamente para profesionales sanitarios. Esta aplicación no constituye un dispositivo médico ni un sistema de diagnóstico, y los resultados generados nunca deben sustituir el juicio clínico del facultativo. Todos los derechos reservados.*
 
-Puedes probar localmente usando un servidor simple:
+## 📬 Contacto y Soporte
 
-python -m http.server 8000
-
-text
-
-Luego abre en navegador: `http://localhost:8000`
-
-### Publicación
-
-Para desplegar en producción:
-
-- Sube todo el proyecto a GitHub y activa GitHub Pages (rama main, carpeta root)
-- O utiliza servicios como Netlify o Vercel para hosting gratuito con HTTPS
-
-### Instalación en móvil
-
-1. Abre la URL en Safari (iOS) o Chrome (Android)
-2. Usa la opción de añadir a pantalla de inicio
-3. Abre la app como una aplicación nativa
-
----
-
-## Desarrollo
-
-- Modifica y amplía el código en `index.html`, `styles.css` y `scripts.js`
-- Actualiza versión del cache en `service-worker.js` para forzar refresco
-
-## Licencia
-
-Proyecto libre para uso educativo y clínico. Sin garantía.
-
----
-
-## Contacto
-
-Para dudas o mejoras: snake1984@gmail.com
+Para consultas técnicas, sugerencias de mejora o contacto institucional, puedes escribir a:
+**📧 contacto@nefroped.es**

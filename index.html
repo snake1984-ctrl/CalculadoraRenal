@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Calculadora Clínica de Parámetros Renales</title>
+    <title>NefroPed</title>
     <link rel="stylesheet" href="styles.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link rel="manifest" href="manifest.json" />
@@ -18,15 +18,14 @@
 <body>
   <div class="container">
         <!-- Header -->
-      <header class="app-header" style="position: relative;">
+     <header class="app-header" style="position: relative;">
             <button id="theme-toggle" class="btn-theme-toggle" aria-label="Cambiar tema" title="Cambiar apariencia">
                 <i class="fas fa-moon"></i>
             </button>
             
-            <h1 class="app-title">Calculadora clínica de parámetros renales</h1>
-            <p class="app-subtitle">Sistema completo de análisis y cálculos renales</p>
+            <h1 class="app-title" style="font-size: 2.8rem; font-weight: 800; color: var(--color-primary); margin: 0 0 5px 0; letter-spacing: -1px;">NefroPed</h1>
+            <p class="app-subtitle" style="font-size: 1.1rem; font-weight: 500; opacity: 0.85; margin: 0;">Calculadora Clínica de Nefrología Pediátrica</p>
         </header>
-
 <!-- prueba -->
 
         <!-- Tab Navigation -->
@@ -132,11 +131,11 @@
                             <label class="form-label" for="vitamina_d_ng_ml">Vitamina D (ng/mL)</label>
                             <input type="number" id="vitamina_d_ng_ml" class="form-control" step="any" min="0">
                         </div>
-                        <div class="form-group">
+                      <div class="form-group span-2">
                             <label class="form-label" for="comentario_nutricional">Nutricional</label>
-                            <textarea id="comentario_nutricional" class="form-control" rows="3" placeholder="Comentarios nutricionales (texto libre)"></textarea>
+                            <input type="text" id="comentario_nutricional" class="form-control" placeholder="Comentarios nutricionales">
                         </div>
-                        <div class="form-group">
+                        <div class="form-group span-2">
                             <label class="form-label" for="cistatina_c_mg_l">Cistatina C (mg/L)</label>
                             <input type="number" id="cistatina_c_mg_l" class="form-control" step="any" min="0">
                         </div>
@@ -180,7 +179,7 @@
                         </div>
                         <div class="form-group">
                             <label class="form-label" for="sedimento_urinario">Sedimento urinario</label>
-                            <textarea id="sedimento_urinario" class="form-control" rows="3" placeholder="Descripción del sedimento urinario (texto libre)"></textarea>
+                            <input type="text" id="sedimento_urinario" class="form-control" placeholder="Descripción del sedimento urinario">
                         </div>
                         <div class="form-group">
                             <label class="form-label" for="au_orina_mg_dl">AU orina (mg/dL)</label>
@@ -279,7 +278,7 @@
                 <!-- SECCIÓN 6: HEMATOLOGÍA (3 campos) -->
                 <div id="hematologia" class="tab-content">
                     <h3 class="section-title"><i class="fas fa-heartbeat"></i> Hematología</h3>
-                    <div class="form-grid">
+                    <div class="form-grid-3col">
                         <div class="form-group">
                             <label class="form-label" for="hb_g_l">Hb (g/L)</label>
                             <input type="number" id="hb_g_l" class="form-control" step="any" min="0">
@@ -307,18 +306,28 @@
                 <button type="button" class="btn btn-outline-secondary btn-sm btn-limpiar" onclick="confirmarLimpiarFormulario()">
                     Limpiar <i class="fas fa-trash-alt" style="margin-left: 8px;"></i>
                 </button>
-               <button id="btn-cargar-datos-test" class="btn btn-sm" style="display:none;" onclick="loadSampleData()">
+                <button id="btn-cargar-datos-test" class="btn btn-sm" style="display:none;" onclick="loadSampleData()">
                     Datos de ejemplo <i class="fas fa-vial" style="margin-left: 8px;"></i>
-               </button>
+                </button>
+                
+                <!--<button id="btn-install-pwa" class="btn hidden" style="background-color: transparent; border: 1px solid var(--color-border); color: var(--color-text-secondary); font-size: 14px; padding: 8px 16px; transition: all 0.2s;">
+                    <i class="fas fa-download" style="margin-right: 6px;"></i> Instalar App
+                </button>-->
             </div>
         </div>
 
         <!-- Results Section -->
-        <div id="results" class="results-section hidden">
+      <div id="results" class="results-section">
             <h3><i class="fas fa-chart-line"></i> Resultados Calculados</h3>
-            <div class="results-grid" id="resultsGrid">
-                <!-- Los resultados se generarán dinámicamente aquí -->
+            
+            <div id="empty-state-results" style="text-align: center; padding: 50px 20px; color: var(--color-text-secondary); background: var(--color-bg-1); border-radius: var(--radius-lg); border: 1px dashed var(--color-primary); margin-top: 10px;">
+                <i class="fas fa-clipboard-list" style="font-size: 48px; color: var(--color-primary); opacity: 0.5; margin-bottom: 16px;"></i>
+                <h4 style="margin-bottom: 8px; color: var(--color-slate-900);">Aún no hay datos</h4>
+                <p style="font-size: 14px; max-width: 400px; margin: 0 auto;">Introduce los parámetros clínicos del paciente en las pestañas superiores y pulsa "Calcular Resultados" para generar el informe analítico.</p>
             </div>
+
+            <div class="results-grid hidden" id="resultsGrid">
+                </div>
         </div>
 
         <!-- Report Section -->
@@ -335,8 +344,7 @@
         </div>
 
         <!-- Field Counter - MEJORA 3: contador dinámico -->
-        <div class="field-count" id="fieldCount">0/46</div>
-    </div>
+        <div class="field-count hidden" id="fieldCount">0/46</div>
 
   <script src="scripts.js"></script>
 
@@ -348,18 +356,21 @@
                 <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--color-border);">
                     <ul style="margin: 0; padding-left: 20px; line-height: 1.6; text-align: left;">
                         <li style="margin-bottom: 6px;">
-                            <strong>Estadificación KDIGO:</strong> <em>KDIGO 2012 Clinical Practice Guideline for the Evaluation and Management of Chronic Kidney Disease.</em> Kidney Int Suppl. 2013;3(1):1-150.
-                        </li>
-                        <li style="margin-bottom: 6px;">
                             <strong>eGFR CKiD U25 (Cr y CistC):</strong> Pierce CB, et al. <em>eGFR in Children and Young Adults: The CKiD U25 Equations.</em> Am J Kidney Dis. 2021;77(6):865-875.
                         </li>
                         <li style="margin-bottom: 6px;">
-                            <strong>Valores de Referencia Pediátricos:</strong> <em>Asociación Española de Pediatría (AEPED)</em> y protocolos de Nefrología Infantil.
+                            <strong>Estadificación KDIGO:</strong> <em>KDIGO 2012 Clinical Practice Guideline for the Evaluation and Management of Chronic Kidney Disease.</em> Kidney Int Suppl. 2013;3(1):1-150.
+                        </li>
+                        <li style="margin-bottom: 6px;">
+                            <strong>Excreciones Fraccionales y Cocientes:</strong> <em>Protocolos Diagnósticos y Terapéuticos en Pediatría: Nefrología.</em> Asociación Española de Pediatría (AEPED).
+                        </li>
+                        <li>
+                            <strong>Valores de Referencia en Orina:</strong> Avner ED, et al. <em>Pediatric Nephrology.</em> 7th ed. Springer; 2016.
                         </li>
                     </ul>
                 </div>
             </details>
-            </div>
+        </div>
     
                     <footer style="margin-top: 40px; padding: 20px 15px 50px 15px; border-top: 1px solid var(--color-border); text-align: justify; color: var(--color-text-secondary); font-size: 11px; line-height: 1.5;">
             <p style="text-align: center; margin-bottom: 8px;">
@@ -369,17 +380,41 @@
                 NefroPed es una herramienta informática de apoyo diseñada exclusivamente para profesionales sanitarios. Los cálculos, estadificaciones y fórmulas pediátricas se basan en la literatura médica estándar. Sin embargo, esta aplicación no constituye un dispositivo médico ni un sistema de diagnóstico, y los resultados generados <strong>nunca deben sustituir el juicio clínico del facultativo</strong>.
             </p>
             <p>
-                El autor no se hace responsable de posibles errores en la entrada de datos, fallos en el procesamiento del navegador o decisiones terapéuticas tomadas en base a los resultados de esta aplicación. Es responsabilidad exclusiva del profesional médico verificar las dosis, parámetros y resultados antes de cualquier intervención clínica. Los datos introducidos no se envían a ningún servidor, garantizando la privacidad del paciente.
+                El autor no se hace responsable de posibles errores en la entrada de datos, fallos en el procesamiento del navegador o decisiones terapéuticas tomadas en base a los resultados de esta aplicación. Es responsabilidad exclusiva del profesional médico verificar las dosis, parámetros y resultados antes de cualquier intervención clínica.
             </p>
-            <p style="text-align: center; margin-top: 15px; font-weight: 500;">
-                Desarrollado para la comunidad de Nefrología Pediátrica | &copy; 2026
+            
+            <p style="text-align: center; color: var(--color-success); font-weight: 600; font-size: 12px; margin: 15px 0;">
+                <i class="fas fa-lock" style="margin-right: 4px;"></i> Privacidad garantizada: Los datos introducidos no se envían a ningún servidor y se procesan 100% de forma local en el dispositivo.
+            </p>
+
+            <p style="text-align: center; margin-top: 20px; font-weight: 500; line-height: 1.8;">
+                Dirección médica e idea original: <strong>Dra. Ana María Ortega Morales, FEA Pediatría en HUSC Granada</strong><br>
+                Desarrollo técnico e informático: <strong>Felipe Reyes</strong><br>
+                <a href="mailto:contacto@nefroped.es" style="color: var(--color-primary); text-decoration: none; display: inline-block; margin-bottom: 5px; transition: opacity 0.2s;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">
+                    <i class="fas fa-envelope"></i> contacto@nefroped.es
+                </a><br>
+                <span style="font-size: 0.95em;">Desarrollado para la comunidad de Nefrología Pediátrica | &copy; 2026</span>
             </p>
                     </footer>
     
-    
-
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -57,6 +57,7 @@ document.addEventListener('DOMContentLoaded', function() {
     setupFormEvents();
     setupButtons();
     updateFieldCounter();
+    inyectarUnidadesEnInputs();
 
     // 2. Detección del Modo Test por URL
     const urlParams = new URLSearchParams(window.location.search);
@@ -340,7 +341,18 @@ function setupFormEvents() {
     fieldIds.forEach(fieldId => {
         const input = document.getElementById(fieldId);
         if (input) {
-            input.addEventListener('input', () => { updateFieldCounter(); actualizarMarcadoresEnTiempoReal(); });
+            input.addEventListener('input', (e) => { 
+                updateFieldCounter(); 
+                actualizarMarcadoresEnTiempoReal(); 
+                
+                // Feedback Positivo en tiempo real
+                if(e.target.value.trim() !== '') {
+                    e.target.classList.add('campo-valido');
+                    e.target.classList.remove('campo-error');
+                } else {
+                    e.target.classList.remove('campo-valido');
+                }
+            });
             input.addEventListener('change', () => { updateFieldCounter(); actualizarMarcadoresEnTiempoReal(); });
         }
     });
@@ -378,9 +390,18 @@ function clearFormSilent() {
         if (el) el.value = '';
     });
     
-    document.getElementById('results')?.classList.add('hidden');
+    // Mantenemos la caja principal visible, pero restauramos el estado vacío
+    document.getElementById('results')?.classList.remove('hidden');
     document.getElementById('reportSection')?.classList.add('hidden');
-    const resultsGrid = document.getElementById('resultsGrid'); if(resultsGrid) resultsGrid.innerHTML = '';
+    
+    const resultsGrid = document.getElementById('resultsGrid'); 
+    if(resultsGrid) {
+        resultsGrid.innerHTML = '';
+        resultsGrid.classList.add('hidden'); // Ocultamos los números
+    }
+    
+    const emptyState = document.getElementById('empty-state-results');
+    if(emptyState) emptyState.classList.remove('hidden'); // Mostramos el mensaje
     const reportContent = document.getElementById('reportContent'); if(reportContent) reportContent.textContent = '';
     
     calculatedResults = {}; window.calculatedResults = {}; reportText = ''; primeraValidacion = false;
@@ -408,7 +429,15 @@ function loadSampleData() {
         if (input) input.value = sampleData[key];
     });
     calcularEdad(); updateFieldCounter(); actualizarMarcadoresEnTiempoReal();
-    Swal.fire({ icon: 'success', title: 'Datos cargados', timer: 2000, showConfirmButton: false });
+    Swal.fire({ 
+        icon: 'success', 
+        title: 'Datos cargados', 
+        text: 'Se han rellenado los campos de ejemplo de forma automática.',
+        showConfirmButton: true,
+        confirmButtonText: '<i class="fas fa-check"></i> OK',
+        confirmButtonColor: '#21808d',
+        allowOutsideClick: true // Permite que se cierre también tocando fuera
+    });
 }
 
 function marcarError(campoId, tieneError) {
@@ -449,7 +478,16 @@ function validarTodosCampos() {
 function updateFieldCounter() {
     const filledCount = fieldIds.filter(id => document.getElementById(id)?.value.trim() !== '').length;
     const counter = document.getElementById('fieldCount');
-    if (counter) counter.textContent = `${filledCount}/${fieldIds.length}`;
+    if (counter) {
+        counter.textContent = `${filledCount}/${fieldIds.length}`;
+        
+        // Magia UX: Si hay 1 o más campos, quitamos la clase hidden. Si está en 0, la ponemos.
+        if (filledCount > 0) {
+            counter.classList.remove('hidden');
+        } else {
+            counter.classList.add('hidden');
+        }
+    }
 }
 
 // ===============================================
@@ -523,7 +561,7 @@ function executeCalculations() {
     try {
         const calcButton = document.querySelector('.btn-calcular');
         calcButton.classList.add('loading');
-        calcButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Calculando...';
+        calcButton.innerHTML = 'Calculando... <i class="fas fa-spinner fa-spin" style="margin-left: 8px;"></i>';
 
         const superficieCorporal = Math.sqrt(data.peso_kg * data.talla_cm / 3600);
         const imc = data.peso_kg / Math.pow(data.talla_cm / 100, 2);
@@ -583,7 +621,7 @@ function executeCalculations() {
             displayResults();
             setTimeout(() => { generateReport(data); }, 100);
             calcButton.classList.remove('loading');
-            calcButton.innerHTML = '<i class="fas fa-calculator"></i> Calcular Resultados';
+            calcButton.innerHTML = 'Calcular Resultados <i class="fas fa-calculator" style="margin-left: 8px;"></i>';
         }, 800);
 
     } catch (error) {
@@ -610,7 +648,10 @@ function displayResults() {
     
     const resultsGrid = document.getElementById('resultsGrid');
     resultsGrid.innerHTML = '';
-    
+    resultsGrid.classList.remove('hidden');
+    const emptyState = document.getElementById('empty-state-results');
+    if(emptyState) emptyState.classList.add('hidden');
+  
     parametros.forEach(param => {
         const valor = results[param.key];
         if (valor && valor !== 0) {
@@ -843,6 +884,113 @@ function printReport() {
     printWindow.document.close(); printWindow.focus();
     setTimeout(() => printWindow.print(), 250);
 }
+// ===============================================
+// 8. LÓGICA DE INSTALACIÓN PWA (Botón Instalar)
+// ===============================================
+let deferredPrompt;
+
+window.addEventListener('beforeinstallprompt', (e) => {
+    // Evita que el navegador muestre su propio mini-aviso feo (sobre todo en Android)
+    e.preventDefault();
+    // Guardamos el evento para dispararlo luego cuando el usuario pulse nuestro botón
+    deferredPrompt = e;
+    
+    // Mostramos nuestro botón elegante
+    const installBtn = document.getElementById('btn-install-pwa');
+    if (installBtn) {
+        installBtn.classList.remove('hidden');
+    }
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    const installBtn = document.getElementById('btn-install-pwa');
+    if (installBtn) {
+        installBtn.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                // Mostramos el aviso nativo de instalación del sistema operativo
+                deferredPrompt.prompt();
+                // Esperamos a ver qué elige el usuario (Aceptar o Cancelar)
+                const { outcome } = await deferredPrompt.userChoice;
+                console.log(`Resultado de la instalación: ${outcome}`);
+                // Vaciamos la variable porque solo se puede usar una vez
+                deferredPrompt = null;
+                // Ocultamos el botón
+                installBtn.classList.add('hidden');
+            }
+        });
+    }
+});
+
+window.addEventListener('appinstalled', () => {
+    // Si ya se ha instalado, ocultamos el botón para siempre
+    const installBtn = document.getElementById('btn-install-pwa');
+    if (installBtn) installBtn.classList.add('hidden');
+    console.log('¡PWA instalada con éxito!');
+});
+
+// ===============================================
+// 9. TRUCO NINJA: UNIDADES INTEGRADAS EN EL INPUT
+// ===============================================
+function inyectarUnidadesEnInputs() {
+    document.querySelectorAll('.form-label').forEach(label => {
+        // Recorremos los textos de la etiqueta (con cuidado de no romper los tooltips ?)
+        for (let i = 0; i < label.childNodes.length; i++) {
+            const node = label.childNodes[i];
+            
+            // Buscamos solo el texto normal (NodeType 3)
+            if (node.nodeType === 3) {
+                // Buscamos cualquier cosa que esté entre paréntesis
+                const match = node.nodeValue.match(/\((.*?)\)/);
+                
+                if (match) {
+                    const unidad = match[1].trim();
+                    const inputId = label.getAttribute('for');
+                    
+                    // Excluimos la edad porque "(calculada)" no es una unidad matemática
+                    if (inputId === 'edad_calculada') continue;
+                    
+                    const input = document.getElementById(inputId);
+                    if (input && input.tagName.toLowerCase() === 'input') {
+                        // 1. Borramos la unidad del título original
+                        node.nodeValue = node.nodeValue.replace(/\(.*?\)/, '').trim() + ' ';
+                        
+                        // 2. Creamos una "caja" invisible para agrupar el input y la unidad
+                        const wrapper = document.createElement('div');
+                        wrapper.style.position = 'relative';
+                        wrapper.style.display = 'flex';
+                        wrapper.style.alignItems = 'center';
+                        wrapper.style.width = '100%';
+                        
+                        // Metemos el input dentro de la caja
+                        input.parentNode.insertBefore(wrapper, input);
+                        wrapper.appendChild(input);
+                        
+                        // 3. Hacemos hueco a la derecha del input para que los números no pisen la letra
+                        const paddingDerecho = (unidad.length * 8 + 15);
+                        input.style.paddingRight = paddingDerecho + 'px';
+                        
+                        // 4. Creamos el texto de la unidad y lo anclamos a la derecha
+                        const unitSpan = document.createElement('span');
+                        unitSpan.textContent = unidad;
+                        unitSpan.style.position = 'absolute';
+                        unitSpan.style.right = '12px';
+                        unitSpan.style.color = 'var(--color-text-secondary)';
+                        unitSpan.style.fontSize = '12px';
+                        unitSpan.style.fontWeight = '600';
+                        unitSpan.style.pointerEvents = 'none'; // Evita que el click se bloquee
+                        unitSpan.style.userSelect = 'none';
+                        
+                        wrapper.appendChild(unitSpan);
+                    }
+                    break; // Terminamos con este campo y pasamos al siguiente
+                }
+            }
+        }
+    });
+}
+
+
+
 
 
 

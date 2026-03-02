@@ -18,19 +18,18 @@
 <body>
   <div class="container">
         <!-- Header -->
-     <header class="app-header" style="position: relative;">
-            <button id="btn-install-pwa" class="btn btn--primary hidden" style="position: absolute; top: 16px; left: 16px; z-index: 100; font-size: 13px; padding: 6px 14px; border-radius: 20px; box-shadow: var(--shadow-md); transition: transform 0.2s ease;">
-                <i class="fas fa-download" style="margin-right: 6px;"></i> Instalar
+     <header class="app-header" style="position: relative; padding-top: 55px;">
+            <button id="btn-install-pwa" class="btn btn--primary hidden" style="position: absolute; top: 16px; left: 16px; z-index: 100; font-size: 12px; padding: 6px 12px; border-radius: 20px; box-shadow: var(--shadow-md);">
+                <i class="fas fa-download" style="margin-right: 4px;"></i> App
             </button>
 
-            <button id="theme-toggle" class="btn-theme-toggle" aria-label="Cambiar tema" title="Cambiar apariencia">
+            <button id="theme-toggle" class="btn-theme-toggle" aria-label="Cambiar tema" title="Cambiar apariencia" style="top: 10px;">
                 <i class="fas fa-moon"></i>
             </button>
             
-            <h1 class="app-title">Calculadora clínica de parámetros renales</h1>
-            <p class="app-subtitle">Sistema completo de análisis y cálculos renales</p>
+            <h1 class="app-title" style="margin-top: 0;">NefroPed</h1>
+            <p class="app-subtitle">Calculadora Clínica de Nefrología Pediátrica</p>
         </header>
-
 <!-- prueba -->
 
         <!-- Tab Navigation -->
@@ -339,8 +338,7 @@
         </div>
 
         <!-- Field Counter - MEJORA 3: contador dinámico -->
-        <div class="field-count" id="fieldCount">0/46</div>
-    </div>
+        <div class="field-count hidden" id="fieldCount">0/46</div>
 
   <script src="scripts.js"></script>
 
@@ -390,6 +388,7 @@
     
 </body>
 </html>
+
 
 
 

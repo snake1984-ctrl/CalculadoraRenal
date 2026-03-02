@@ -362,6 +362,10 @@ function setupButtons() {
     const calculateButton = document.getElementById('calculateButton');
     if (calculateButton) calculateButton.addEventListener('click', () => { primeraValidacion = true; actualizarMarcadoresEnTiempoReal(); calculateResults(); });
     
+    // NUEVO: Conectar botón de copiar
+    const copyClipboardButton = document.getElementById('copyClipboardButton');
+    if (copyClipboardButton) copyClipboardButton.addEventListener('click', copyToClipboard);
+
     const exportWordButton = document.getElementById('exportWordButton');
     if (exportWordButton) exportWordButton.addEventListener('click', exportToWord);
     
@@ -884,6 +888,30 @@ function printReport() {
     printWindow.document.close(); printWindow.focus();
     setTimeout(() => printWindow.print(), 250);
 }
+function copyToClipboard() {
+    const reportContent = document.getElementById('reportContent');
+    const reportText = reportContent ? reportContent.innerText : '';
+    
+    if (!reportText.trim()) {
+        return Swal.fire({ icon: 'warning', title: 'Sin informe', text: 'Calcule primero los resultados.'});
+    }
+    
+    // Usamos la API moderna del portapapeles del navegador
+    navigator.clipboard.writeText(reportText).then(() => {
+        // Alerta de éxito elegante
+        Swal.fire({
+            icon: 'success',
+            title: '¡Copiado!',
+            text: 'El informe médico está listo para pegar (Ctrl+V) en la Historia Clínica.',
+            timer: 2500,
+            showConfirmButton: false,
+            backdrop: `rgba(33, 128, 141, 0.2)` // Un fondo verde muy sutil
+        });
+    }).catch(err => {
+        console.error('Error al copiar: ', err);
+        Swal.fire({ icon: 'error', title: 'Error', text: 'No se pudo copiar el texto automáticamente. Por favor, selecciónelo a mano.' });
+    });
+}
 // ===============================================
 // 8. LÓGICA DE INSTALACIÓN PWA (Botón Instalar)
 // ===============================================
@@ -988,6 +1016,7 @@ function inyectarUnidadesEnInputs() {
         }
     });
 }
+
 
 
 

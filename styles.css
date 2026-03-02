@@ -363,6 +363,7 @@ h4 { font-size: var(--font-size-xl); }
 }
 @media (min-width: 769px) {
   .span-2 { grid-column: span 2; }
+  .span-3 { grid-column: span 3; } /* NUEVA CLASE PARA TEXTOS LARGOS */
 }
 .form-grid-3col { 
   display: grid; 

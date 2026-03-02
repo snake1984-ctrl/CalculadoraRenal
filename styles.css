@@ -461,65 +461,6 @@ body.modo-test::before {
   padding: var(--space-8) var(--space-16); font-weight: var(--font-weight-bold);
   border-radius: var(--radius-sm); z-index: 9999; box-shadow: var(--shadow-md);
 }
-/* ============================================
-   TOOLTIPS (Globitos Educativos)
-   ============================================ */
-.tooltip-icon {
-  color: var(--color-primary);
-  margin-left: 6px;
-  font-size: 0.9em;
-  cursor: pointer;
-  position: relative;
-  display: inline-block;
-  outline: none; /* Quita el borde azul feo al tocar en móvil */
-}
-
-.tooltip-icon .tooltip-text {
-  visibility: hidden;
-  width: max-content;
-  max-width: 250px;
-  background-color: var(--color-slate-900);
-  color: var(--color-white);
-  text-align: center;
-  border-radius: var(--radius-base);
-  padding: 8px 12px;
-  font-size: 12px;
-  font-weight: normal;
-  font-family: var(--font-family-base);
-  
-  /* Posicionamiento flotante (arriba por defecto) */
-  position: absolute;
-  z-index: 1000;
-  bottom: 150%;
-  left: 50%;
-  transform: translateX(-50%);
-  opacity: 0;
-  transition: opacity 0.3s;
-  box-shadow: var(--shadow-md);
-  pointer-events: none;
-  white-space: normal;
-  line-height: 1.4;
-}
-
-/* La flechita que apunta hacia abajo */
-.tooltip-icon .tooltip-text::after {
-  content: "";
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  margin-left: -5px;
-  border-width: 5px;
-  border-style: solid;
-  border-color: var(--color-slate-900) transparent transparent transparent;
-}
-
-/* Que aparezca al pasar el ratón o al tocar (focus/active) */
-.tooltip-icon:hover .tooltip-text,
-.tooltip-icon:focus .tooltip-text,
-.tooltip-icon:active .tooltip-text {
-  visibility: visible;
-  opacity: 1;
-}
 
 /* ============================================ 
    RESPONSIVE MÓVILES (Media Queries)

@@ -428,9 +428,13 @@ function loadSampleData() {
         hb_g_l: 125, ferritina_ng_ml: 45.8, ist_percent: 22.5
     };
     
-    Object.keys(sampleData).forEach(key => {
+   Object.keys(sampleData).forEach(key => {
         const input = document.getElementById(key);
-        if (input) input.value = sampleData[key];
+        if (input) {
+            input.value = sampleData[key];
+            // LA LÍNEA MÁGICA: Fuerza el evento para que se pinte de verde
+            input.dispatchEvent(new Event('input')); 
+        }
     });
     calcularEdad(); updateFieldCounter(); actualizarMarcadoresEnTiempoReal();
     Swal.fire({ 
@@ -1016,6 +1020,7 @@ function inyectarUnidadesEnInputs() {
         }
     });
 }
+
 
 
 

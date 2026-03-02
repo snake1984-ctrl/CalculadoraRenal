@@ -317,10 +317,16 @@
         </div>
 
         <!-- Results Section -->
-        <div id="results" class="results-section hidden">
+      <div id="results" class="results-section">
             <h3><i class="fas fa-chart-line"></i> Resultados Calculados</h3>
             <div class="results-grid" id="resultsGrid">
-                <!-- Los resultados se generarán dinámicamente aquí -->
+                
+                <div id="empty-state-results" style="grid-column: 1 / -1; text-align: center; padding: 50px 20px; color: var(--color-text-secondary); background: var(--color-bg-1); border-radius: var(--radius-lg); border: 1px dashed var(--color-primary); margin-top: 10px;">
+                    <i class="fas fa-clipboard-list" style="font-size: 48px; color: var(--color-primary); opacity: 0.5; margin-bottom: 16px;"></i>
+                    <h4 style="margin-bottom: 8px; color: var(--color-slate-900);">Aún no hay datos</h4>
+                    <p style="font-size: 14px; max-width: 400px; margin: 0 auto;">Introduce los parámetros clínicos del paciente en las pestañas superiores y pulsa "Calcular Resultados" para generar el informe analítico.</p>
+                </div>
+
             </div>
         </div>
 
@@ -393,6 +399,7 @@
     
 </body>
 </html>
+
 
 
 

@@ -421,9 +421,9 @@ function clearForm() { confirmarLimpiarFormulario(); }
 function loadSampleData() {
     const sampleData = {
         fecha_nacimiento: '15/03/2012', fecha_analitica: '20/10/2024', peso_kg: 35.5, talla_cm: 140.0, sexo: 'M',
-        urea_mg_dl: 28, creatinina_enz_mg_dl: 0.65, au_plasma_mg_dl: 4.2, na_plasma_meq_l: 138.5, k_plasma_meq_l: 4.1, cl_plasma_meq_l: 105.2, fosfatasa_alcalina_u_l: 180, ca_plasma_mg_dl: 9.8, p_plasma_mg_dl: 4.5, mg_plasma_mg_dl: 1.9, pth_pg_ml: 35.2, vitamina_d_ng_ml: 28.5, cistatina_c_mg_l: 0.92,
+        urea_mg_dl: 28, creatinina_enz_mg_dl: 0.65, au_plasma_mg_dl: 4.2, na_plasma_meq_l: 138.5, k_plasma_meq_l: 4.1, cl_plasma_meq_l: 105.2, fosfatasa_alcalina_u_l: 180, ca_plasma_mg_dl: 9.8, p_plasma_mg_dl: 4.5, mg_plasma_mg_dl: 1.9, pth_pg_ml: 35.2, vitamina_d_ng_ml: 28.5, comentario_nutricional: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in leo lacus. Nunc et fermentum nunc. Vestibulum lorem mauris, tempor sit amet finibus quis, fringilla a mauris. Suspendisse id est rutrum, pretium diam eu, tincidunt metus. Suspendisse ac libero non risus viverra pharetra at imperdiet justo. Cras pulvinar non nunc", cistatina_c_mg_l: 0.92,
         ph_plasma: 7.38, pco2_mmhg: 42.1, hco3_mmol_l: 22.8, exceso_bases_mmol_l: -1.2,
-        densidad: 1018, ph_orina: 6.2, au_orina_mg_dl: 45.8, na_orina_meq_l: 85.2, k_orina_meq_l: 55.1, cl_orina_meq_l: 98.5, osmolalidad_orina_mosm_kg: 320, ca_orina_mg_dl: 12.5, fosforo_orina_mg_dl: 18.2, magnesio_orina_mg_dl: 8.5, albumina_orina_mg_dl: 3.2, creatinina_orina_mg_dl: 68.5, proteinas_orina_mg_dl: 8.1, citrato_orina_mg_dl: 85.2, oxalato_orina_mg_dl: 15.8,
+        densidad: 1018, ph_orina: 6.2, sedimento_urinario: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis venenatis luctus lacus at ultrices. Donec laoreet nulla a quam eleifend fringilla. Phasellus commodo metus sed velit convallis malesuada sit amet vitae purus. Sed ullamcorper sollicitudin odio, ut bibendum purus malesuada eget. Curabitur ac tellus id ante condimentum efficitur eget id.", au_orina_mg_dl: 45.8, na_orina_meq_l: 85.2, k_orina_meq_l: 55.1, cl_orina_meq_l: 98.5, osmolalidad_orina_mosm_kg: 320, ca_orina_mg_dl: 12.5, fosforo_orina_mg_dl: 18.2, magnesio_orina_mg_dl: 8.5, albumina_orina_mg_dl: 3.2, creatinina_orina_mg_dl: 68.5, proteinas_orina_mg_dl: 8.1, citrato_orina_mg_dl: 85.2, oxalato_orina_mg_dl: 15.8,
         au_24h_mg: 420, ca_24h_mg: 85, p_24h_mg: 520, mg_24h_mg: 65, albumina_24h_mg: 25, proteinas_24h_mg: 95, citrato_24h_mg: 485, oxalato_24h_mg: 28,
         hb_g_l: 125, ferritina_ng_ml: 45.8, ist_percent: 22.5
     };
@@ -1016,6 +1016,7 @@ function inyectarUnidadesEnInputs() {
         }
     });
 }
+
 
 
 

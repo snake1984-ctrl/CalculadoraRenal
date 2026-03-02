@@ -108,13 +108,14 @@
   --focus-outline: 2px solid var(--color-primary);
 }
 
-/* Dark mode colors */
+/* ============================================
+   MODOS DE COLOR (Oscuro/Claro)
+   ============================================ */
 @media (prefers-color-scheme: dark) {
   :root {
     --color-bg-1: rgba(29, 78, 216, 0.15);
     --color-bg-2: rgba(180, 83, 9, 0.15);
     --color-bg-3: rgba(21, 128, 61, 0.15);
-
     --color-background: var(--color-charcoal-700);
     --color-surface: var(--color-charcoal-800);
     --color-text: var(--color-gray-200);
@@ -133,9 +134,7 @@
     --color-card-border: rgba(var(--color-gray-400-rgb), 0.2);
   }
 }
-/* ============================================
-   FORZAR MODO OSCURO/CLARO (Botón manual)
-   ============================================ */
+
 [data-color-scheme="dark"] {
   --color-bg-1: rgba(29, 78, 216, 0.15);
   --color-bg-2: rgba(180, 83, 9, 0.15);
@@ -174,12 +173,16 @@
   --color-btn-primary-text: var(--color-cream-50);
   --color-card-border: rgba(var(--color-brown-600-rgb), 0.12);
 }
+
+/* ============================================
+   RESETEOS Y BASE
+   ============================================ */
 @font-face {
   font-family: 'FKGroteskNeue';
   src: url('https://r2cdn.perplexity.ai/fonts/FKGroteskNeue.woff2') format('woff2');
 }
 
-* {
+*, *::before, *::after {
   box-sizing: border-box;
 }
 
@@ -211,14 +214,19 @@ h4 { font-size: var(--font-size-xl); }
   max-width: 1280px;
   margin: 0 auto;
   padding: var(--space-16);
+  overflow-x: hidden; /* Seguridad extra para evitar desbordes */
 }
 
+/* ============================================
+   CABECERA Y TEMA
+   ============================================ */
 .app-header {
   background: var(--color-bg-1);
   padding: var(--space-24) var(--space-16);
   text-align: center;
   border-bottom: 1px solid var(--color-border);
   margin-bottom: var(--space-24);
+  position: relative;
 }
 
 .app-title {
@@ -232,7 +240,31 @@ h4 { font-size: var(--font-size-xl); }
   font-size: var(--font-size-base);
 }
 
-/* TABS */
+.btn-theme-toggle {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: transparent;
+  border: none;
+  color: var(--color-text);
+  font-size: 24px;
+  cursor: pointer;
+  padding: 8px;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+}
+
+.btn-theme-toggle:hover {
+  transform: scale(1.1);
+  color: var(--color-primary);
+}
+
+/* ============================================
+   PESTAÑAS (TABS)
+   ============================================ */
 .tabs-container {
   background: var(--color-surface);
   border-radius: var(--radius-lg);
@@ -240,15 +272,18 @@ h4 { font-size: var(--font-size-xl); }
   overflow: hidden;
   margin-bottom: var(--space-24);
   box-shadow: var(--shadow-sm);
+  width: 100%; /* Aseguramos que respete al padre */
 }
 
+/* AQUI ESTABA EL BUG. width: 100% soluciona el desborde */
 .tabs, .nav-tabs {
   display: flex;
   background: var(--color-bg-2);
   border-bottom: 1px solid var(--color-border);
   overflow-x: auto;
   white-space: nowrap;
-  max-width: 100vw;
+  width: 100%;
+  max-width: 100%;
   position: relative;
   scrollbar-width: thin;
   scroll-behavior: smooth;
@@ -258,6 +293,7 @@ h4 { font-size: var(--font-size-xl); }
   height: 5px;
   background: #e5e7eb;
 }
+
 .tabs::-webkit-scrollbar-thumb, .nav-tabs::-webkit-scrollbar-thumb {
   background: #2563eb;
   border-radius: 8px;
@@ -290,14 +326,28 @@ h4 { font-size: var(--font-size-xl); }
   font-weight: var(--font-weight-semibold);
 }
 
-.tab-button:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+.tab-button:focus-visible { 
+  outline: none; 
+  box-shadow: var(--focus-ring); 
+}
 
-.tab-content { display: none; padding: var(--space-24); min-height: 300px; }
+.tab-content { 
+  display: none; 
+  padding: var(--space-24); 
+  min-height: 300px; 
+}
+
 .tab-content.active { display: block; }
 
-.section-title { margin-bottom: var(--space-24); padding-bottom: var(--space-12); border-bottom: 2px solid var(--color-border); }
+.section-title { 
+  margin-bottom: var(--space-24); 
+  padding-bottom: var(--space-12); 
+  border-bottom: 2px solid var(--color-border); 
+}
 
-/* FORMS */
+/* ============================================
+   FORMULARIOS
+   ============================================ */
 .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: var(--space-16); }
 .form-grid-3col { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--space-16); }
 .form-group { display: flex; flex-direction: column; margin-bottom: var(--space-16); }
@@ -316,7 +366,9 @@ h4 { font-size: var(--font-size-xl); }
 input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; display: none; }
 input[type=number] { -moz-appearance: textfield; }
 
-/* BUTTONS */
+/* ============================================
+   BOTONES
+   ============================================ */
 .btn {
   display: inline-flex; align-items: center; justify-content: center;
   padding: var(--space-8) var(--space-16); border-radius: var(--radius-base);
@@ -344,12 +396,23 @@ input[type=number] { -moz-appearance: textfield; }
   border-radius: var(--radius-md); box-shadow: var(--shadow-lg); background: var(--color-primary);
   color: var(--color-btn-primary-text); min-width: 280px; border: none;
 }
+
 .btn-calcular:hover { transform: translateY(-2px); background: var(--color-primary-hover); }
+
 .botones-secundarios { display: flex; gap: var(--space-12); justify-content: center; flex-wrap: wrap; }
 .btn-limpiar { font-size: var(--font-size-base); padding: var(--space-8) var(--space-16); background: transparent; border: 1px solid var(--color-border); color: var(--color-text-secondary); }
 .btn-limpiar:hover { background: var(--color-secondary); color: var(--color-text); }
 
-/* RESULTS & REPORTS */
+/* Botón HOY base */
+#btn-hoy, .btn-hoy {
+  font-size: 14px !important; padding: 6px 0 !important;
+  width: 90px !important; border-radius: 8px !important;
+  background: #f1f5f9 !important; color: #222 !important; box-shadow: 0 1px 8px rgba(0,0,0,0.05); border: none; cursor: pointer;
+}
+
+/* ============================================
+   RESULTADOS Y CONTADOR
+   ============================================ */
 .results-section, .report-section {
   background: var(--color-surface); border-radius: var(--radius-lg);
   padding: var(--space-24); margin-top: var(--space-24);
@@ -379,7 +442,9 @@ body.modo-test::before {
   border-radius: var(--radius-sm); z-index: 9999; box-shadow: var(--shadow-md);
 }
 
-/* ============================================ RESPONSIVE MÓVILES ============================================ */
+/* ============================================ 
+   RESPONSIVE MÓVILES (Media Queries)
+   ============================================ */
 @media (max-width: 1024px) {
   .container { padding: var(--space-12); }
   .form-grid, .form-grid-3col { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
@@ -423,49 +488,12 @@ body.modo-test::before {
 @media (max-width: 480px) {
   .app-title { 
       font-size: var(--font-size-xl); 
-      line-height: 1.3; /* Mejora la legibilidad al saltar de línea */
+      line-height: 1.3; 
       margin-top: 5px; 
   }
   .tab-button { min-width: 90px; padding: var(--space-10) var(--space-8); }
   .btn-calcular { font-size: var(--font-size-md); padding: var(--space-12) var(--space-20); }
   .zona-botones-principales { padding: var(--space-12); gap: var(--space-12); }
   .tab-content, .results-section, .report-section { padding: var(--space-12); }
+  .btn-theme-toggle { top: 10px; right: 10px; font-size: 18px; }
 }
-
-/* Botón HOY base */
-#btn-hoy, .btn-hoy {
-  font-size: 14px !important; padding: 6px 0 !important;
-  width: 90px !important; border-radius: 8px !important;
-  background: #f1f5f9 !important; color: #222 !important; box-shadow: 0 1px 8px rgba(0,0,0,0.05); border: none; cursor: pointer;
-}
-/* Botón de tema minimalista (Esquina superior derecha) */
-.btn-theme-toggle {
-    position: absolute;
-    top: 16px;
-    right: 16px;
-    background: transparent;
-    border: none;
-    color: var(--color-text); /* Color que se adapta automáticamente */
-    font-size: 24px; /* Tamaño del icono más grande */
-    cursor: pointer;
-    padding: 8px;
-    z-index: 100; /* CRÍTICO: Asegura que nada lo tape */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: transform 0.2s ease;
-}
-
-.btn-theme-toggle:hover {
-    transform: scale(1.1); /* Pequeño efecto al pasar el ratón */
-    color: var(--color-primary);
-}
-
-/* Ajuste para móviles: hacer el icono un pelín más pequeño para que no estorbe */
-@media (max-width: 480px) {
-    .btn-theme-toggle {
-        top: 10px;
-        right: 10px;
-        font-size: 18px;
-    }
-  }

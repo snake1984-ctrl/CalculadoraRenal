@@ -517,3 +517,17 @@ body.modo-test::before {
   .tab-content, .results-section, .report-section { padding: var(--space-12); }
   .btn-theme-toggle { top: 10px; right: 10px; font-size: 18px; }
 }
+/* ============================================
+   FEEDBACK DE VALIDACIÓN (Bordes dinámicos)
+   ============================================ */
+.form-control.campo-valido {
+    border-color: var(--color-success) !important;
+    background-color: rgba(33, 128, 141, 0.03); /* Fondo verde muuuuy sutil */
+    transition: all 0.3s ease;
+}
+
+.form-control.campo-error {
+    border-color: var(--color-error) !important;
+    background-color: rgba(192, 21, 47, 0.03); /* Fondo rojo sutil */
+    box-shadow: 0 0 0 1px var(--color-error);
+}

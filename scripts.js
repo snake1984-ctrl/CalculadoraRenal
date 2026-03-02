@@ -390,9 +390,18 @@ function clearFormSilent() {
         if (el) el.value = '';
     });
     
-    document.getElementById('results')?.classList.add('hidden');
+    // Mantenemos la caja principal visible, pero restauramos el estado vacío
+    document.getElementById('results')?.classList.remove('hidden');
     document.getElementById('reportSection')?.classList.add('hidden');
-    const resultsGrid = document.getElementById('resultsGrid'); if(resultsGrid) resultsGrid.innerHTML = '';
+    
+    const resultsGrid = document.getElementById('resultsGrid'); 
+    if(resultsGrid) {
+        resultsGrid.innerHTML = '';
+        resultsGrid.classList.add('hidden'); // Ocultamos los números
+    }
+    
+    const emptyState = document.getElementById('empty-state-results');
+    if(emptyState) emptyState.classList.remove('hidden'); // Mostramos el mensaje
     const reportContent = document.getElementById('reportContent'); if(reportContent) reportContent.textContent = '';
     
     calculatedResults = {}; window.calculatedResults = {}; reportText = ''; primeraValidacion = false;
@@ -420,7 +429,15 @@ function loadSampleData() {
         if (input) input.value = sampleData[key];
     });
     calcularEdad(); updateFieldCounter(); actualizarMarcadoresEnTiempoReal();
-    Swal.fire({ icon: 'success', title: 'Datos cargados', timer: 2000, showConfirmButton: false });
+    Swal.fire({ 
+        icon: 'success', 
+        title: 'Datos cargados', 
+        text: 'Se han rellenado los campos de ejemplo de forma automática.',
+        showConfirmButton: true,
+        confirmButtonText: '<i class="fas fa-check"></i> OK',
+        confirmButtonColor: '#21808d',
+        allowOutsideClick: true // Permite que se cierre también tocando fuera
+    });
 }
 
 function marcarError(campoId, tieneError) {
@@ -631,7 +648,10 @@ function displayResults() {
     
     const resultsGrid = document.getElementById('resultsGrid');
     resultsGrid.innerHTML = '';
-    
+    resultsGrid.classList.remove('hidden');
+    const emptyState = document.getElementById('empty-state-results');
+    if(emptyState) emptyState.classList.add('hidden');
+  
     parametros.forEach(param => {
         const valor = results[param.key];
         if (valor && valor !== 0) {
@@ -968,6 +988,7 @@ function inyectarUnidadesEnInputs() {
         }
     });
 }
+
 
 
 

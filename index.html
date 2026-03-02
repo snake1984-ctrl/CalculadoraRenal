@@ -18,17 +18,13 @@
 <body>
   <div class="container">
         <!-- Header -->
-     <header class="app-header" style="position: relative; padding-top: 55px;">
-            <button id="btn-install-pwa" class="btn btn--primary hidden" style="position: absolute; top: 16px; left: 16px; z-index: 100; font-size: 12px; padding: 6px 12px; border-radius: 20px; box-shadow: var(--shadow-md);">
-                <i class="fas fa-download" style="margin-right: 4px;"></i> App
-            </button>
-
-            <button id="theme-toggle" class="btn-theme-toggle" aria-label="Cambiar tema" title="Cambiar apariencia" style="top: 10px;">
+     <header class="app-header" style="position: relative;">
+            <button id="theme-toggle" class="btn-theme-toggle" aria-label="Cambiar tema" title="Cambiar apariencia">
                 <i class="fas fa-moon"></i>
             </button>
             
-            <h1 class="app-title" style="margin-top: 0;">NefroPed</h1>
-            <p class="app-subtitle">Calculadora Clínica de Nefrología Pediátrica</p>
+            <h1 class="app-title" style="font-size: 2.8rem; font-weight: 800; color: var(--color-primary); margin: 0 0 5px 0; letter-spacing: -1px;">NefroPed</h1>
+            <p class="app-subtitle" style="font-size: 1.1rem; font-weight: 500; opacity: 0.85; margin: 0;">Calculadora Clínica de Nefrología Pediátrica</p>
         </header>
 <!-- prueba -->
 
@@ -310,9 +306,13 @@
                 <button type="button" class="btn btn-outline-secondary btn-sm btn-limpiar" onclick="confirmarLimpiarFormulario()">
                     Limpiar <i class="fas fa-trash-alt" style="margin-left: 8px;"></i>
                 </button>
-               <button id="btn-cargar-datos-test" class="btn btn-sm" style="display:none;" onclick="loadSampleData()">
+                <button id="btn-cargar-datos-test" class="btn btn-sm" style="display:none;" onclick="loadSampleData()">
                     Datos de ejemplo <i class="fas fa-vial" style="margin-left: 8px;"></i>
-               </button>
+                </button>
+                
+                <button id="btn-install-pwa" class="btn btn-sm hidden" style="background-color: var(--color-bg-2); border: 1px dashed var(--color-primary); color: var(--color-primary); font-weight: 600;">
+                    <i class="fas fa-download" style="margin-right: 6px;"></i> Instalar en este dispositivo
+                </button>
             </div>
         </div>
 
@@ -388,6 +388,7 @@
     
 </body>
 </html>
+
 
 
 

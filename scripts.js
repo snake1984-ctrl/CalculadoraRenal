@@ -532,7 +532,7 @@ function executeCalculations() {
     try {
         const calcButton = document.querySelector('.btn-calcular');
         calcButton.classList.add('loading');
-        calcButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Calculando...';
+        calcButton.innerHTML = 'Calculando... <i class="fas fa-spinner fa-spin" style="margin-left: 8px;"></i>';
 
         const superficieCorporal = Math.sqrt(data.peso_kg * data.talla_cm / 3600);
         const imc = data.peso_kg / Math.pow(data.talla_cm / 100, 2);
@@ -592,7 +592,7 @@ function executeCalculations() {
             displayResults();
             setTimeout(() => { generateReport(data); }, 100);
             calcButton.classList.remove('loading');
-            calcButton.innerHTML = '<i class="fas fa-calculator"></i> Calcular Resultados';
+            calcButton.innerHTML = 'Calcular Resultados <i class="fas fa-calculator" style="margin-left: 8px;"></i>';
         }, 800);
 
     } catch (error) {
@@ -895,6 +895,7 @@ window.addEventListener('appinstalled', () => {
     if (installBtn) installBtn.classList.add('hidden');
     console.log('¡PWA instalada con éxito!');
 });
+
 
 
 

@@ -449,7 +449,16 @@ function validarTodosCampos() {
 function updateFieldCounter() {
     const filledCount = fieldIds.filter(id => document.getElementById(id)?.value.trim() !== '').length;
     const counter = document.getElementById('fieldCount');
-    if (counter) counter.textContent = `${filledCount}/${fieldIds.length}`;
+    if (counter) {
+        counter.textContent = `${filledCount}/${fieldIds.length}`;
+        
+        // Magia UX: Si hay 1 o más campos, quitamos la clase hidden. Si está en 0, la ponemos.
+        if (filledCount > 0) {
+            counter.classList.remove('hidden');
+        } else {
+            counter.classList.add('hidden');
+        }
+    }
 }
 
 // ===============================================
@@ -886,6 +895,7 @@ window.addEventListener('appinstalled', () => {
     if (installBtn) installBtn.classList.add('hidden');
     console.log('¡PWA instalada con éxito!');
 });
+
 
 
 

@@ -271,10 +271,10 @@ h4 { font-size: var(--font-size-xl); }
   background: var(--color-surface);
   border-radius: var(--radius-lg);
   border: 1px solid var(--color-border);
-  overflow: hidden;
+  /* BORRAMOS EL overflow: hidden; PARA QUE FUNCIONE EL STICKY */
   margin-bottom: var(--space-24);
   box-shadow: var(--shadow-sm);
-  width: 100%; /* Aseguramos que respete al padre */
+  width: 100%;
 }
 
 /* AQUI ESTABA EL BUG. width: 100% soluciona el desborde */
@@ -286,7 +286,13 @@ h4 { font-size: var(--font-size-xl); }
   white-space: nowrap;
   width: 100%;
   max-width: 100%;
-  position: relative;
+  
+  /* LA MAGIA STICKY */
+  position: sticky;
+  top: 0;
+  z-index: 50; /* Lo pone por encima de las cajas de texto al hacer scroll */
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0; /* Mantiene las esquinas redondas arriba */
+  
   scrollbar-width: thin;
   scroll-behavior: smooth;
 }

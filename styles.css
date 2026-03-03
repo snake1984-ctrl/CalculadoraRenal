@@ -568,3 +568,32 @@ textarea.form-control:focus {
     z-index: 10;
     position: relative;
 }
+/* ============================================
+   FIX UX: COMPORTAMIENTO DE APP NATIVA
+   ============================================ */
+
+/* 1. Prohibir selección de texto en toda la interfaz */
+.form-label, 
+.app-header, 
+.tabs-container, 
+.section-title, 
+.btn, 
+.result-item,
+summary {
+    -webkit-user-select: none; /* Safari/Chrome */
+    -moz-user-select: none;    /* Firefox */
+    -ms-user-select: none;     /* IE/Edge */
+    user-select: none;         /* Estándar */
+    cursor: default;           /* Flecha normal en vez de cursor de texto */
+}
+
+/* 2. Asegurar que los inputs SÍ dejen escribir */
+.form-control {
+    user-select: text;
+    cursor: text;
+}
+
+/* 3. Arreglo específico para los Wrappers de unidades inyectados por JS */
+.input-unit-wrapper {
+    cursor: text; /* Para que al pasar por encima parezca que vas a escribir */
+}

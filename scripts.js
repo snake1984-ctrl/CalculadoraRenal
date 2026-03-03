@@ -1,24 +1,59 @@
 // ============================================
-// 1. REGISTRO DEL SERVICE WORKER (INVISIBLE)
+// 1. REGISTRO DEL SERVICE WORKER CON DETECCIÓN DE ACTUALIZACIONES
 // ============================================
 if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('service-worker.js')
-      .then(registration => {
-        console.log('✅ Service Worker registrado:', registration.scope);
-        // Fuerza la comprobación de nuevas versiones en segundo plano
-        registration.update();
-      })
-      .catch(error => console.log('❌ Error al registrar SW:', error));
-  });
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./service-worker.js').then(registration => {
+            console.log('SW registrado: ', registration.scope);
 
-  // Cuando el Service Worker descargue una nueva versión (ej. cambiaste el CACHE_NAME a v22)
-  navigator.serviceWorker.addEventListener('controllerchange', () => {
-    console.log('🔄 Nueva versión detectada. Recargando silenciosamente...');
-    // Forzamos la recarga de la página. 
-    // GRACIAS al sessionStorage, el médico NO perderá lo que estaba escribiendo.
-    window.location.reload();
-  });
+            // Detectar si hay una actualización esperando
+            registration.addEventListener('updatefound', () => {
+                const newWorker = registration.installing;
+                
+                newWorker.addEventListener('statechange', () => {
+                    // Si el nuevo SW ya se ha instalado...
+                    if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                        // ... ¡AVISAMOS AL MÉDICO!
+                        mostrarAvisoActualizacion();
+                    }
+                });
+            });
+        }).catch(error => {
+            console.log('Fallo registro SW: ', error);
+        });
+    });
+
+    // Detectar si el SW ha cambiado (controlado por skipWaiting)
+    let refreshing;
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+        if (refreshing) return;
+        window.location.reload();
+        refreshing = true;
+    });
+}
+
+// Función para mostrar el aviso bonito con SweetAlert2
+function mostrarAvisoActualizacion() {
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'bottom-end', // Abajo a la derecha, no molesta
+        showConfirmButton: true,
+        confirmButtonText: 'Actualizar',
+        timer: null, // No se quita hasta que le den
+        background: '#333',
+        color: '#fff',
+        confirmButtonColor: '#21808d'
+    });
+
+    Toast.fire({
+        icon: 'info',
+        title: 'Nueva versión disponible'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Si le dan al botón, recargamos la página
+            window.location.reload();
+        }
+    });
 }
 // ===============================================
 // 2. VARIABLES GLOBALES Y CONFIGURACIÓN
@@ -1043,6 +1078,7 @@ function limpiarColoresValidacion() {
         input.classList.remove('campo-valido', 'campo-error');
     });
 }
+
 
 
 

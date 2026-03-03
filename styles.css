@@ -540,3 +540,20 @@ body.modo-test::before {
     background-color: rgba(192, 21, 47, 0.03); /* Fondo rojo sutil */
     box-shadow: 0 0 0 1px var(--color-error);
 }
+/* EFECTO ACORDEÓN PARA TEXTAREAS */
+textarea.form-control {
+    height: 45px !important; /* Altura idéntica a los inputs normales */
+    min-height: 45px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* Animación suave */
+    resize: none; /* Quitamos la esquina para arrastrar manual */
+    overflow: hidden;
+    line-height: 1.5;
+    padding-top: 10px;
+}
+
+textarea.form-control:focus {
+    height: 120px !important; /* Al escribir se hace grande */
+    overflow-y: auto;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    z-index: 10; /* Se pone por encima si hace falta */
+}

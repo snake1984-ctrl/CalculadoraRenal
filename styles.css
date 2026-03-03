@@ -559,7 +559,8 @@ textarea.form-control:focus {
     white-space: normal; /* Permite saltos de línea al escribir */
     overflow-y: auto; /* Muestra barra de scroll si escribes la biblia */
     box-shadow: 0 4px 15px rgba(0,0,0,0.15); /* Sombra para que destaque */
-    background-color: #fff;
+    background-color: var(--color-bg-input); 
+    color: var(--color-text-primary); /* Aseguramos que el texto se vea bien */
     z-index: 10;
-    position: relative; /* Asegura que quede por encima visualmente */
+    position: relative;
 }

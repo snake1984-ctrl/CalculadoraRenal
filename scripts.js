@@ -385,9 +385,14 @@ function confirmarLimpiarFormulario() {
 }
 
 function clearFormSilent() {
-    fieldIds.forEach(fieldId => {
-        const element = document.getElementById(fieldId);
-        if (element) { element.value = ''; element.classList.remove('campo-error'); }
+   // Limpiar campos de entrada y quitar colores
+    fieldIds.forEach(id => {
+        const input = document.getElementById(id);
+        if (input) {
+            input.value = '';
+            // AQUÍ ESTÁ EL ARREGLO: Quitamos las clases de color
+            input.classList.remove('campo-valido', 'campo-error');
+        }
     });
     ['sedimento_urinario', 'comentario_nutricional', 'edad_calculada'].forEach(id => {
         const el = document.getElementById(id);
@@ -1020,6 +1025,7 @@ function inyectarUnidadesEnInputs() {
         }
     });
 }
+
 
 
 

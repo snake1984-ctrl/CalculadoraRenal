@@ -542,18 +542,24 @@ body.modo-test::before {
 }
 /* EFECTO ACORDEÓN PARA TEXTAREAS */
 textarea.form-control {
-    height: 45px !important; /* Altura idéntica a los inputs normales */
-    min-height: 45px;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* Animación suave */
-    resize: none; /* Quitamos la esquina para arrastrar manual */
-    overflow: hidden;
-    line-height: 1.5;
-    padding-top: 10px;
+    height: 42px !important; /* Altura idéntica a tus inputs normales */
+    min-height: 42px;
+    overflow: hidden; /* Oculta el scroll cuando está cerrado */
+    resize: none; /* Quita la esquinita de arrastrar */
+    white-space: nowrap; /* Mantiene el texto en una línea visualmente al estar cerrado */
+    text-overflow: ellipsis;
+    transition: all 0.3s ease-in-out; /* Animación suave */
+    padding-top: 10px; /* Centrado vertical del texto */
 }
 
+/* Cuando haces clic dentro (focus) */
 textarea.form-control:focus {
-    height: 120px !important; /* Al escribir se hace grande */
-    overflow-y: auto;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    z-index: 10; /* Se pone por encima si hace falta */
+    height: 150px !important; /* Se abre un cuadrado grande */
+    min-height: 150px;
+    white-space: normal; /* Permite saltos de línea al escribir */
+    overflow-y: auto; /* Muestra barra de scroll si escribes la biblia */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15); /* Sombra para que destaque */
+    background-color: #fff;
+    z-index: 10;
+    position: relative; /* Asegura que quede por encima visualmente */
 }

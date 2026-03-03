@@ -856,6 +856,7 @@ function generateReport(data) {
     if (isValid(results.albuminuria)) orina24h.push(`Albuminuria: ${fmt(results.albuminuria)}mg/1.73m²/día`);
     if (orina24h.length > 0) report.push(`- Orina de 24h: ${orina24h.join('   ')}`);
     
+    // --- ESTADIFICACIÓN KDIGO (SOLO MAYORES DE 2 AÑOS) ---
     function evaluarGradoG(egfr) {
         if (!isValid(egfr)) return null;
         if (egfr >= 90) return "Estadio G1 (Normal o elevado)";
@@ -872,19 +873,23 @@ function generateReport(data) {
         return "Estadio A3 (Muy elevada)";
     }
 
-    const gradoCr = evaluarGradoG(results.ckid_u25_cr);
-    const gradoCist = evaluarGradoG(results.ckid_u25_cistc);
-    const gradoComb = evaluarGradoG(results.ckid_u25_combinado);
-    let gradoAlb = (results.albcr !== undefined && results.albcr > 0) ? evaluarGradoA(results.albcr) : null;
+    // AQUI ESTÁ LA CONDICIÓN NUEVA DE LA EDAD
+    if (window.edadEnAños >= 2) {
+        const gradoCr = evaluarGradoG(results.ckid_u25_cr);
+        const gradoCist = evaluarGradoG(results.ckid_u25_cistc);
+        const gradoComb = evaluarGradoG(results.ckid_u25_combinado);
+        let gradoAlb = (results.albcr !== undefined && results.albcr > 0) ? evaluarGradoA(results.albcr) : null;
 
-    if (gradoCr || gradoCist || gradoComb || gradoAlb) {
-        report.push('');
-        report.push('ESTADIFICACIÓN SEGÚN GUÍAS KDIGO 2012');
-        if (gradoCr) report.push(`- Grado de ERC por Cr: ${gradoCr}`);
-        if (gradoCist) report.push(`- Grado de ERC por CistC: ${gradoCist}`);
-        if (gradoComb) report.push(`- Grado de ER Combinado: ${gradoComb}`);
-        if (gradoAlb) report.push(`- Albuminuria: ${gradoAlb}`);
+        if (gradoCr || gradoCist || gradoComb || gradoAlb) {
+            report.push('');
+            report.push('ESTADIFICACIÓN SEGÚN GUÍAS KDIGO 2012');
+            if (gradoCr) report.push(`- Grado de ERC por Cr: ${gradoCr}`);
+            if (gradoCist) report.push(`- Grado de ERC por CistC: ${gradoCist}`);
+            if (gradoComb) report.push(`- Grado de ER Combinado: ${gradoComb}`);
+            if (gradoAlb) report.push(`- Albuminuria: ${gradoAlb}`);
+        }
     }
+    // -----------------------------------------------------
 
     const comentarioNutricional = document.getElementById('comentario_nutricional') ? document.getElementById('comentario_nutricional').value.trim() : '';
     if (comentarioNutricional) {
@@ -1099,6 +1104,7 @@ function limpiarColoresValidacion() {
         input.classList.remove('campo-valido', 'campo-error');
     });
 }
+
 
 
 

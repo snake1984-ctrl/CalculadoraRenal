@@ -1,6 +1,6 @@
 // CAMBIA ESTO CADA VEZ QUE SUBAS CAMBIOS (v1, v2, v3...)
 // Solo con cambiar este número, fuerzas a todos los móviles a actualizarse.
-const CACHE_NAME = 'nefroped-v1'; 
+const CACHE_NAME = 'nefroped-v2'; 
 
 const urlsToCache = [
   './',
@@ -77,3 +77,4 @@ self.addEventListener('fetch', event => {
       })
   );
 });
+

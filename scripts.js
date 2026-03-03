@@ -1018,66 +1018,70 @@ window.addEventListener('appinstalled', () => {
 });
 
 // ===============================================
-// 9. TRUCO NINJA: UNIDADES INTEGRADAS EN EL INPUT
+// 9. TRUCO NINJA MEJORADO: UNIDADES INTEGRADAS
 // ===============================================
 function inyectarUnidadesEnInputs() {
     document.querySelectorAll('.form-label').forEach(label => {
-        // Recorremos los textos de la etiqueta (con cuidado de no romper los tooltips ?)
+        // Recorremos los nodos para encontrar el texto (NodeType 3)
         for (let i = 0; i < label.childNodes.length; i++) {
             const node = label.childNodes[i];
             
-            // Buscamos solo el texto normal (NodeType 3)
-            if (node.nodeType === 3) {
-                // Buscamos cualquier cosa que esté entre paréntesis
+            if (node.nodeType === 3) { // Es texto
                 const match = node.nodeValue.match(/\((.*?)\)/);
                 
                 if (match) {
                     const unidad = match[1].trim();
                     const inputId = label.getAttribute('for');
                     
-                    // Excluimos la edad porque "(calculada)" no es una unidad matemática
+                    // Excepciones
                     if (inputId === 'edad_calculada') continue;
                     
                     const input = document.getElementById(inputId);
                     if (input && input.tagName.toLowerCase() === 'input') {
-                        // 1. Borramos la unidad del título original
+                        // 1. Limpiamos la etiqueta original
                         node.nodeValue = node.nodeValue.replace(/\(.*?\)/, '').trim() + ' ';
                         
-                        // 2. Creamos una "caja" invisible para agrupar el input y la unidad
+                        // 2. Creamos el wrapper (SOLO RELATIVE, SIN FLEX)
                         const wrapper = document.createElement('div');
                         wrapper.style.position = 'relative';
-                        wrapper.style.display = 'flex';
-                        wrapper.style.alignItems = 'center';
-                        wrapper.style.width = '100%';
+                        wrapper.style.width = '100%'; // Ocupa todo el hueco de la grid
+                        wrapper.style.display = 'block'; 
                         
-                        // Metemos el input dentro de la caja
+                        // Insertamos el wrapper antes del input y movemos el input dentro
                         input.parentNode.insertBefore(wrapper, input);
                         wrapper.appendChild(input);
                         
-                        // 3. Hacemos hueco a la derecha del input para que los números no pisen la letra
-                        const paddingDerecho = (unidad.length * 8 + 15);
+                        // 3. Estilamos el input para dejar hueco a la derecha
+                        // Calculamos un padding generoso para que el texto no toque la unidad
+                        const paddingDerecho = (unidad.length * 9 + 20); 
+                        input.style.width = '100%'; // Forzamos a llenar el wrapper
                         input.style.paddingRight = paddingDerecho + 'px';
+                        input.style.boxSizing = 'border-box'; // Vital para que el padding no rompa el ancho
                         
-                        // 4. Creamos el texto de la unidad y lo anclamos a la derecha
+                        // 4. Creamos la unidad flotante
                         const unitSpan = document.createElement('span');
                         unitSpan.textContent = unidad;
+                        
+                        // Estilos CSS inyectados para posicionamiento perfecto
                         unitSpan.style.position = 'absolute';
                         unitSpan.style.right = '12px';
+                        unitSpan.style.top = '50%'; // Centrado vertical top
+                        unitSpan.style.transform = 'translateY(-50%)'; // Centrado vertical exacto
                         unitSpan.style.color = 'var(--color-text-secondary)';
                         unitSpan.style.fontSize = '12px';
                         unitSpan.style.fontWeight = '600';
-                        unitSpan.style.pointerEvents = 'none'; // Evita que el click se bloquee
+                        unitSpan.style.pointerEvents = 'none'; // EL CLICK PASA A TRAVÉS DE LA UNIDAD AL INPUT
                         unitSpan.style.userSelect = 'none';
+                        unitSpan.style.whiteSpace = 'nowrap'; // Evita que la unidad se parta en dos líneas
                         
                         wrapper.appendChild(unitSpan);
                     }
-                    break; // Terminamos con este campo y pasamos al siguiente
+                    break; 
                 }
             }
         }
     });
 }
-
 // ==========================================
 // FUNCIÓN AUXILIAR: LIMPIEZA DE COLORES
 // ==========================================
@@ -1087,6 +1091,7 @@ function limpiarColoresValidacion() {
         input.classList.remove('campo-valido', 'campo-error');
     });
 }
+
 
 
 

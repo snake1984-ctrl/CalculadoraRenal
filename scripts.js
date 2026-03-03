@@ -385,21 +385,22 @@ function confirmarLimpiarFormulario() {
 }
 
 function clearFormSilent() {
-   // Limpiar campos de entrada y quitar colores
+    // 1. Borramos el TEXTO de los campos principales
     fieldIds.forEach(id => {
         const input = document.getElementById(id);
-        if (input) {
-            input.value = '';
-            // AQUÍ ESTÁ EL ARREGLO: Quitamos las clases de color
-            input.classList.remove('campo-valido', 'campo-error');
-        }
+        if (input) input.value = '';
     });
+
+    // 2. Borramos el TEXTO de los campos extra/especiales
     ['sedimento_urinario', 'comentario_nutricional', 'edad_calculada'].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.value = '';
     });
     
-    // Mantenemos la caja principal visible, pero restauramos el estado vacío
+    // 3. NUEVO: Llamamos a la función que quita los COLORES (verde/rojo) de todo
+    limpiarColoresValidacion();
+    
+    // 4. Gestión de la interfaz (Resultados vs Estado Vacío)
     document.getElementById('results')?.classList.remove('hidden');
     document.getElementById('reportSection')?.classList.add('hidden');
     
@@ -410,10 +411,17 @@ function clearFormSilent() {
     }
     
     const emptyState = document.getElementById('empty-state-results');
-    if(emptyState) emptyState.classList.remove('hidden'); // Mostramos el mensaje
-    const reportContent = document.getElementById('reportContent'); if(reportContent) reportContent.textContent = '';
+    if(emptyState) emptyState.classList.remove('hidden'); // Mostramos el mensaje de "Aún no hay datos"
     
-    calculatedResults = {}; window.calculatedResults = {}; reportText = ''; primeraValidacion = false;
+    const reportContent = document.getElementById('reportContent'); 
+    if(reportContent) reportContent.textContent = '';
+    
+    // 5. Reseteo de variables internas y pestañas
+    calculatedResults = {}; 
+    window.calculatedResults = {}; 
+    reportText = ''; 
+    primeraValidacion = false;
+    
     document.querySelectorAll('.tab-error').forEach(tab => tab.classList.remove('tab-error'));
     
     updateFieldCounter();
@@ -1023,6 +1031,16 @@ function inyectarUnidadesEnInputs() {
                 }
             }
         }
+    });
+}
+
+// ==========================================
+// FUNCIÓN AUXILIAR: LIMPIEZA DE COLORES
+// ==========================================
+function limpiarColoresValidacion() {
+    // Busca cualquier input o textarea que sea del formulario
+    document.querySelectorAll('.form-control').forEach(input => {
+        input.classList.remove('campo-valido', 'campo-error');
     });
 }
 

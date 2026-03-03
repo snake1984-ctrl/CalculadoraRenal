@@ -1,4 +1,4 @@
-const CACHE_NAME = 'nefroped-v4'; // <--- ACUÉRDATE DE CAMBIAR ESTO AL SUBIR
+const CACHE_NAME = 'nefroped-v5'; // <--- ACUÉRDATE DE CAMBIAR ESTO AL SUBIR
 
 const urlsToCache = [
   './',
@@ -53,4 +53,5 @@ self.addEventListener('fetch', event => {
       .catch(() => caches.match(event.request).then(res => res || caches.match('./index.html')))
   );
 });
+
 

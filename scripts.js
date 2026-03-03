@@ -1,45 +1,54 @@
-// ============================================
-// 1. REGISTRO DEL SERVICE WORKER CON DETECCIÓN DE ACTUALIZACIONES
-// ============================================
+// ======================================================================================
+// 1. REGISTRO DEL SERVICE WORKER CON GESTIÓN AVANZADA DE ACTUALIZACIONES (PWA)
+// ======================================================================================
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
         navigator.serviceWorker.register('./service-worker.js').then(registration => {
-            console.log('SW registrado: ', registration.scope);
+            console.log('SW registrado correctamente');
 
-            // Detectar si hay una actualización esperando
+            // 1. Si al cargar ya hay una actualización esperando (waiting)
+            if (registration.waiting) {
+                mostrarAvisoActualizacion(registration.waiting);
+            }
+
+            // 2. Si detectamos que se está instalando una nueva mientras usamos la app
             registration.addEventListener('updatefound', () => {
                 const newWorker = registration.installing;
-                
                 newWorker.addEventListener('statechange', () => {
-                    // Si el nuevo SW ya se ha instalado...
+                    // Cuando el nuevo SW esté listo pero esperando (installed)
                     if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                        // ... ¡AVISAMOS AL MÉDICO!
-                        mostrarAvisoActualizacion();
+                        mostrarAvisoActualizacion(newWorker);
                     }
                 });
             });
-        }).catch(error => {
-            console.log('Fallo registro SW: ', error);
-        });
-    });
 
-    // Detectar si el SW ha cambiado (controlado por skipWaiting)
-    let refreshing;
-    navigator.serviceWorker.addEventListener('controllerchange', () => {
-        if (refreshing) return;
-        window.location.reload();
-        refreshing = true;
+            // 3. TRUCO PARA HOSPITALES: Comprobar actualizaciones cada 1 hora
+            // Así, si dejan el PC encendido, al cabo de un rato les saltará el aviso
+            setInterval(() => {
+                registration.update();
+            }, 60 * 60 * 1000); // 1 hora en milisegundos
+
+        });
+
+        // 4. Cuando el SW nuevo tome el control (después de darle al botón), recargamos
+        let refreshing;
+        navigator.serviceWorker.addEventListener('controllerchange', () => {
+            if (refreshing) return;
+            window.location.reload();
+            refreshing = true;
+        });
     });
 }
 
-// Función para mostrar el aviso bonito con SweetAlert2
-function mostrarAvisoActualizacion() {
+function mostrarAvisoActualizacion(worker) {
     const Toast = Swal.mixin({
         toast: true,
-        position: 'bottom-end', // Abajo a la derecha, no molesta
+        position: 'bottom-end',
         showConfirmButton: true,
-        confirmButtonText: 'Actualizar',
-        timer: null, // No se quita hasta que le den
+        confirmButtonText: '🔄 Actualizar ahora',
+        showCancelButton: true,
+        cancelButtonText: 'Más tarde',
+        timer: null, // No desaparece solo
         background: '#333',
         color: '#fff',
         confirmButtonColor: '#21808d'
@@ -50,8 +59,8 @@ function mostrarAvisoActualizacion() {
         title: 'Nueva versión disponible'
     }).then((result) => {
         if (result.isConfirmed) {
-            // Si le dan al botón, recargamos la página
-            window.location.reload();
+            // Le mandamos la orden al SW para que se active
+            worker.postMessage({ type: 'SKIP_WAITING' });
         }
     });
 }
@@ -1078,6 +1087,7 @@ function limpiarColoresValidacion() {
         input.classList.remove('campo-valido', 'campo-error');
     });
 }
+
 
 
 

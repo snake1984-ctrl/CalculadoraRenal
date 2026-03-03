@@ -363,7 +363,8 @@ h4 { font-size: var(--font-size-xl); }
 }
 @media (min-width: 769px) {
   .span-2 { grid-column: span 2; }
-  .span-3 { grid-column: span 3; } /* NUEVA CLASE PARA TEXTOS LARGOS */
+  .span-3 { grid-column: span 3; }
+  .span-4 { grid-column: 1 / -1; } /* El truco definitivo para ocupar el 100% de la fila */
 }
 .form-grid-3col { 
   display: grid; 

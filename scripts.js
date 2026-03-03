@@ -1018,11 +1018,14 @@ window.addEventListener('appinstalled', () => {
 });
 
 // ===============================================
-// 9. TRUCO NINJA MEJORADO: UNIDADES INTEGRADAS
+// 9. TRUCO NINJA BLINDADO: UNIDADES UX NATIVA
 // ===============================================
 function inyectarUnidadesEnInputs() {
     document.querySelectorAll('.form-label').forEach(label => {
-        // Recorremos los nodos para encontrar el texto (NodeType 3)
+        // Bloquear selección de texto en el label (Refuerzo JS)
+        label.style.userSelect = 'none';
+        label.style.cursor = 'default';
+
         for (let i = 0; i < label.childNodes.length; i++) {
             const node = label.childNodes[i];
             
@@ -1033,46 +1036,51 @@ function inyectarUnidadesEnInputs() {
                     const unidad = match[1].trim();
                     const inputId = label.getAttribute('for');
                     
-                    // Excepciones
                     if (inputId === 'edad_calculada') continue;
                     
                     const input = document.getElementById(inputId);
                     if (input && input.tagName.toLowerCase() === 'input') {
-                        // 1. Limpiamos la etiqueta original
                         node.nodeValue = node.nodeValue.replace(/\(.*?\)/, '').trim() + ' ';
                         
-                        // 2. Creamos el wrapper (SOLO RELATIVE, SIN FLEX)
+                        // CREAMOS EL WRAPPER
                         const wrapper = document.createElement('div');
+                        wrapper.className = 'input-unit-wrapper'; // Clase para CSS
                         wrapper.style.position = 'relative';
-                        wrapper.style.width = '100%'; // Ocupa todo el hueco de la grid
-                        wrapper.style.display = 'block'; 
+                        wrapper.style.width = '100%';
+                        wrapper.style.display = 'flex'; // Volvemos a flex para alinear mejor el click
+                        wrapper.style.alignItems = 'center';
                         
-                        // Insertamos el wrapper antes del input y movemos el input dentro
+                        // EVENTO MÁGICO: Si clicas en el wrapper (el hueco), focusea el input
+                        wrapper.addEventListener('click', function(e) {
+                            input.focus();
+                        });
+
                         input.parentNode.insertBefore(wrapper, input);
                         wrapper.appendChild(input);
                         
-                        // 3. Estilamos el input para dejar hueco a la derecha
-                        // Calculamos un padding generoso para que el texto no toque la unidad
+                        // Ajustes del input
                         const paddingDerecho = (unidad.length * 9 + 20); 
-                        input.style.width = '100%'; // Forzamos a llenar el wrapper
+                        input.style.width = '100%';
+                        input.style.flex = '1'; // Que ocupe todo el espacio
                         input.style.paddingRight = paddingDerecho + 'px';
-                        input.style.boxSizing = 'border-box'; // Vital para que el padding no rompa el ancho
+                        input.style.boxSizing = 'border-box';
                         
-                        // 4. Creamos la unidad flotante
+                        // La unidad flotante
                         const unitSpan = document.createElement('span');
                         unitSpan.textContent = unidad;
-                        
-                        // Estilos CSS inyectados para posicionamiento perfecto
                         unitSpan.style.position = 'absolute';
                         unitSpan.style.right = '12px';
-                        unitSpan.style.top = '50%'; // Centrado vertical top
-                        unitSpan.style.transform = 'translateY(-50%)'; // Centrado vertical exacto
+                        // Centrado vertical perfecto sin transform (por si acaso Brave se lía)
+                        unitSpan.style.top = '0';
+                        unitSpan.style.bottom = '0';
+                        unitSpan.style.display = 'flex';
+                        unitSpan.style.alignItems = 'center';
+                        
                         unitSpan.style.color = 'var(--color-text-secondary)';
                         unitSpan.style.fontSize = '12px';
                         unitSpan.style.fontWeight = '600';
-                        unitSpan.style.pointerEvents = 'none'; // EL CLICK PASA A TRAVÉS DE LA UNIDAD AL INPUT
-                        unitSpan.style.userSelect = 'none';
-                        unitSpan.style.whiteSpace = 'nowrap'; // Evita que la unidad se parta en dos líneas
+                        unitSpan.style.pointerEvents = 'none'; // El click atraviesa
+                        unitSpan.style.userSelect = 'none'; // No se puede seleccionar
                         
                         wrapper.appendChild(unitSpan);
                     }
@@ -1091,6 +1099,7 @@ function limpiarColoresValidacion() {
         input.classList.remove('campo-valido', 'campo-error');
     });
 }
+
 
 
 

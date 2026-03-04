@@ -762,15 +762,15 @@ function displayResults() {
             const numValue = results[key];
             value.textContent = typeof numValue === 'number' ? numValue.toFixed(2) : '0.00';
             
-           if (key === "superficiecorporal" || key === "imc") {
-                // Usa la variable CSS primaria
+          if (key === "superficiecorporal" || key === "imc") {
+                // Usar color primario dinámico
                 value.style.setProperty('color', 'var(--color-primary)', 'important'); 
                 value.style.fontWeight = "bold";
             } else {
                 const paramEncontrado = parametros.find(p => p.key === key);
                 if (paramEncontrado && numValue && numValue !== 0) {
                     const evaluacion = evaluarRango(key, numValue, edad, edadMeses);
-                    // Si está fuera de rango rojo puro, si está OK usa la variable primaria
+                    // Rojo si está mal, Color Primario Dinámico si está OK
                     value.style.setProperty('color', !evaluacion.enRango ? '#dc2626' : 'var(--color-primary)', 'important');
                     value.style.fontWeight = "bold";
                 }
@@ -1002,49 +1002,68 @@ function copyToClipboard() {
     });
 }
 // ===============================================
-// 8. LÓGICA DE INSTALACIÓN PWA (Botón Instalar)
+// 8. LÓGICA DE INSTALACIÓN PWA (Android, PC y Apple)
 // ===============================================
 let deferredPrompt;
 
+// 1. Detectar si es un dispositivo Apple (iOS)
+const isIOS = () => {
+    return [
+      'iPad Simulator', 'iPhone Simulator', 'iPod Simulator', 'iPad', 'iPhone', 'iPod'
+    ].includes(navigator.platform)
+    || (navigator.userAgent.includes("Mac") && "ontouchend" in document);
+};
+
+// 2. Si es Android o PC, el navegador avisa cuando está listo
 window.addEventListener('beforeinstallprompt', (e) => {
-    // Evita que el navegador muestre su propio mini-aviso feo (sobre todo en Android)
     e.preventDefault();
-    // Guardamos el evento para dispararlo luego cuando el usuario pulse nuestro botón
     deferredPrompt = e;
-    
-    // Mostramos nuestro botón elegante
     const installBtn = document.getElementById('btn-install-pwa');
-    if (installBtn) {
+    if (installBtn && !isIOS()) {
         installBtn.classList.remove('hidden');
     }
 });
 
+// 3. Configurar el botón de instalar
 document.addEventListener('DOMContentLoaded', () => {
     const installBtn = document.getElementById('btn-install-pwa');
-    if (installBtn) {
-        installBtn.addEventListener('click', async () => {
-            if (deferredPrompt) {
-                // Mostramos el aviso nativo de instalación del sistema operativo
-                deferredPrompt.prompt();
-                // Esperamos a ver qué elige el usuario (Aceptar o Cancelar)
-                const { outcome } = await deferredPrompt.userChoice;
-                console.log(`Resultado de la instalación: ${outcome}`);
-                // Vaciamos la variable porque solo se puede usar una vez
-                deferredPrompt = null;
-                // Ocultamos el botón
+    if (!installBtn) return;
+
+    // A. Si es un iPhone, forzamos a que el botón sea visible siempre
+    if (isIOS()) {
+        installBtn.classList.remove('hidden');
+    }
+
+    // B. Al hacer click en el botón
+    installBtn.addEventListener('click', async () => {
+        if (isIOS()) {
+            // MODO APPLE: Mostramos el mensaje emergente moderno (SweetAlert)
+            Swal.fire({
+                title: 'Instalar en iPhone',
+                html: '<div style="font-size: 15px; text-align: left; line-height: 1.6;">Para añadir esta calculadora a tu móvil:<br><br><b>1.</b> Toca el botón <b>Compartir</b> <i class="fas fa-external-link-alt" style="color: #0891b2;"></i> en la barra inferior de Safari.<br><b>2.</b> Selecciona <b>"Añadir a la pantalla de inicio"</b> <i class="fas fa-plus-square" style="color: #0891b2;"></i>.</div>',
+                icon: 'info',
+                confirmButtonText: 'Entendido',
+                confirmButtonColor: '#0891b2',
+                background: document.documentElement.getAttribute('data-color-scheme') === 'dark' ? '#1e293b' : '#fff',
+                color: document.documentElement.getAttribute('data-color-scheme') === 'dark' ? '#f1f5f9' : '#0f172a'
+            });
+        } else if (deferredPrompt) {
+            // MODO ANDROID/PC: Instalación automática nativa
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            deferredPrompt = null;
+            if (outcome === 'accepted') {
                 installBtn.classList.add('hidden');
             }
-        });
-    }
+        }
+    });
 });
 
+// 4. Si ya se instaló, ocultamos el botón
 window.addEventListener('appinstalled', () => {
-    // Si ya se ha instalado, ocultamos el botón para siempre
     const installBtn = document.getElementById('btn-install-pwa');
     if (installBtn) installBtn.classList.add('hidden');
-    console.log('¡PWA instalada con éxito!');
 });
-
 // ===============================================
 // 9. TRUCO NINJA BLINDADO: UNIDADES UX NATIVA
 // ===============================================

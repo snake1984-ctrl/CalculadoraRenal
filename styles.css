@@ -88,7 +88,6 @@
   --duration-fast: 150ms;
   --ease-standard: cubic-bezier(0.16, 1, 0.3, 1);
 }
-
 /* ============================================
    MODO OSCURO (Deep Blue)
    ============================================ */
@@ -133,7 +132,7 @@
     --color-focus-ring: rgba(34, 211, 238, 0.4);
 
     --color-bg-1: rgba(34, 211, 238, 0.15);
-    --color-bg-2: rgba(251, 191, 36, 0.15);
+    --color-bg-2: #334155; /* <-- CORREGIDO: Sin !important */
     --color-bg-3: rgba(52, 211, 153, 0.15);
   }
 }
@@ -154,7 +153,7 @@
     --color-bg-input: #1e293b;
     --color-btn-primary-text: #0f172a;
     --color-bg-1: rgba(34, 211, 238, 0.15);
-    --color-bg-2: rgba(251, 191, 36, 0.15);
+    --color-bg-2: #334155; /* <-- CORREGIDO: Sin !important */
     --color-bg-3: rgba(52, 211, 153, 0.15);
 }
 
@@ -176,7 +175,6 @@
     --color-bg-2: rgba(245, 158, 11, 0.08);
     --color-bg-3: rgba(16, 185, 129, 0.08);
 }
-
 /* ============================================
    RESETEOS Y BASE
    ============================================ */
@@ -553,7 +551,7 @@ input[type=number] {
 .hidden { display: none !important; }
 
 .form-control.campo-valido {
-    border-color: var(--color-primary) !important; /* Ahora usa el Turquesa/Cyan */
+    border-color: var(--color-primary) !important; 
     background-color: transparent;
     box-shadow: 0 0 0 1px var(--color-primary) inset;
     transition: all 0.3s ease;
@@ -636,8 +634,8 @@ textarea.form-control:focus {
 }
 /* ARREGLO URGENTE: Botón Copiar Invisible */
 #copyClipboardButton {
-    background-color: var(--color-primary) !important; /* Recuperamos el color Teal */
-    color: #ffffff !important;
+    background-color: var(--color-primary) !important; 
+    color: var(--color-btn-primary-text) !important; /* AHORA SÍ: Usa el color de texto de sus hermanos */
     opacity: 1 !important;
 }
 
@@ -729,4 +727,27 @@ textarea.form-control:focus {
 [data-color-scheme="dark"] .zona-botones-principales {
     background-color: #1e293b !important; /* Fondo del mismo color que las tarjetas */
     border: 1px solid #334155 !important;
+}
+/* Refuerzo para la zona de botones en modo oscuro */
+[data-color-scheme="dark"] .zona-botones-principales {
+    background-color: var(--color-bg-2);
+    border-color: #475569; /* Un borde un pelín más claro para que resalte la caja */
+}
+/* ===============================================
+   AJUSTES FINALES MODO OSCURO
+   =============================================== */
+
+/* 1. Aplicar el 'Tercer Color' a la caja de botones principal */
+[data-color-scheme="dark"] .zona-botones-principales {
+    background-color: var(--color-bg-2) !important; /* Usa el gris azulado de las referencias */
+    border-color: #475569 !important; /* Borde un poco más claro para separar */
+}
+/* Igualar el color del título de Referencias con su texto */
+summary {
+    color: var(--color-text-secondary) !important;
+}
+
+/* Y ya que estamos, le quitamos el contorno negro feo que sale a veces al hacerle clic */
+summary:focus {
+    outline: none;
 }

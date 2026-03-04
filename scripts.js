@@ -23,7 +23,6 @@ if ('serviceWorker' in navigator) {
             });
 
             // 3. TRUCO PARA HOSPITALES: Comprobar actualizaciones cada 1 hora
-            // Así, si dejan el PC encendido, al cabo de un rato les saltará el aviso
             setInterval(() => {
                 registration.update();
             }, 60 * 60 * 1000); // 1 hora en milisegundos
@@ -64,6 +63,7 @@ function mostrarAvisoActualizacion(worker) {
         }
     });
 }
+
 // ===============================================
 // 2. VARIABLES GLOBALES Y CONFIGURACIÓN
 // ===============================================
@@ -109,10 +109,11 @@ document.addEventListener('DOMContentLoaded', function() {
         activarModoTest();
     }
 
-    // 3. Huevo de Pascua (Easter Egg): 5 toques en el logo para Modo Test
+    // 3. Huevo de Pascua (Easter Egg)
     setupSecretTap();
+    
     // 4. Mejoras UX: Tema y Autoguardado
-    setupThemeToggle();
+    setupThemeToggle(); // Nueva función del footer
     setupAutoSave();
 });
 
@@ -164,37 +165,49 @@ function setupSecretTap() {
         logo.addEventListener('touchend', e => e.preventDefault(), {passive: false});
     }
 }
+
 // ===============================================
-// MEJORAS UX: MODO OSCURO Y AUTOGUARDADO (SESSION)
+// GESTIÓN DEL MODO OSCURO (FOOTER - NUEVO)
 // ===============================================
 function setupThemeToggle() {
-    const toggleBtn = document.getElementById('theme-toggle');
+    const toggleBtn = document.getElementById('theme-toggle-footer');
+    const themeText = document.getElementById('theme-text');
+    const themeIcon = toggleBtn ? toggleBtn.querySelector('i') : null;
+
     if (!toggleBtn) return;
-    
-    // Aquí sí usamos localStorage porque guardar si te gusta el modo oscuro no viola la privacidad
+
+    // Función interna para actualizar Texto e Icono
+    function updateUI(theme) {
+        if (theme === 'dark') {
+            // Si estamos en oscuro, ofrecemos ir a claro
+            if(themeIcon) themeIcon.className = 'fas fa-sun';
+            if(themeText) themeText.textContent = 'Modo Claro';
+        } else {
+            // Si estamos en claro, ofrecemos ir a oscuro
+            if(themeIcon) themeIcon.className = 'fas fa-moon';
+            if(themeText) themeText.textContent = 'Modo Oscuro';
+        }
+    }
+
+    // 1. Cargar preferencia guardada o del sistema
     const savedTheme = localStorage.getItem('themePref');
     if (savedTheme) {
         document.documentElement.setAttribute('data-color-scheme', savedTheme);
-        updateThemeIcon(savedTheme);
+        updateUI(savedTheme);
     } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
         document.documentElement.setAttribute('data-color-scheme', 'dark');
-        updateThemeIcon('dark');
+        updateUI('dark');
+    } else {
+        updateUI('light'); // Por defecto
     }
 
+    // 2. Evento Click
     toggleBtn.addEventListener('click', () => {
         const currentTheme = document.documentElement.getAttribute('data-color-scheme') === 'dark' ? 'light' : 'dark';
         document.documentElement.setAttribute('data-color-scheme', currentTheme);
         localStorage.setItem('themePref', currentTheme);
-        updateThemeIcon(currentTheme);
+        updateUI(currentTheme);
     });
-}
-
-function updateThemeIcon(theme) {
-    const icon = document.querySelector('#theme-toggle i');
-    if (icon) {
-        // Sol para modo oscuro, Luna para modo claro
-        icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
-    }
 }
 
 function setupAutoSave() {
@@ -222,6 +235,7 @@ function setupAutoSave() {
         sessionStorage.setItem('calcRenalDataTemporales', JSON.stringify(data));
     });
 }
+
 // ===============================================
 // 5. FUNCIONES DE UI, FECHAS Y EVENTOS
 // ===============================================
@@ -629,26 +643,33 @@ function executeCalculations() {
         calcButton.innerHTML = 'Calculando... <i class="fas fa-spinner fa-spin" style="margin-left: 8px;"></i>';
 
         const superficieCorporal = Math.sqrt(data.peso_kg * data.talla_cm / 3600);
-        const imc = data.peso_kg / Math.pow(data.talla_cm / 100, 2);
+        const imc = data.peso_kg > 0 && data.talla_cm > 0 ? data.peso_kg / Math.pow(data.talla_cm / 100, 2) : 0;
 
         const edadExacta = window.edadEnAños + (window.edadEnMeses / 12);
         const talla_m = data.talla_cm / 100;
         
+        // --- CÁLCULO DE CONSTANTE K ---
         let k_cr = 0;
+        // NOTA: Mantenemos la lógica original para < 1 año (devuelve 0) hasta la V2 con fórmulas de neonatos
         if (edadExacta >= 1 && edadExacta < 12) k_cr = (data.sexo === 'M') ? 39.0 * Math.pow(1.008, edadExacta - 12) : 36.1 * Math.pow(1.008, edadExacta - 12);
         else if (edadExacta >= 12 && edadExacta < 18) k_cr = (data.sexo === 'M') ? 39.0 * Math.pow(1.045, edadExacta - 12) : 36.1 * Math.pow(1.023, edadExacta - 12);
         else if (edadExacta >= 18) k_cr = (data.sexo === 'M') ? 50.8 : 41.4;
+        
+        // Cálculo eGFR Creatinina
         const ckid_u25_cr = (k_cr > 0 && data.creatinina_enz_mg_dl > 0 && talla_m > 0) ? k_cr * (talla_m / data.creatinina_enz_mg_dl) : 0;
 
+        // --- CÁLCULO CISTATINA C ---
         let k_cist = 0;
         if (edadExacta >= 1 && edadExacta < 12) k_cist = (data.sexo === 'M') ? 87.2 * Math.pow(1.011, edadExacta - 15) : 79.9 * Math.pow(1.004, edadExacta - 12);
         else if (edadExacta >= 12 && edadExacta < 15) k_cist = (data.sexo === 'M') ? 87.2 * Math.pow(1.011, edadExacta - 15) : 79.9 * Math.pow(0.974, edadExacta - 12);
         else if (edadExacta >= 15 && edadExacta < 18) k_cist = (data.sexo === 'M') ? 87.2 * Math.pow(0.960, edadExacta - 15) : 79.9 * Math.pow(0.974, edadExacta - 12);
         else if (edadExacta >= 18) k_cist = (data.sexo === 'M') ? 77.1 : 41.4;
+        
         const ckid_u25_cistc = (k_cist > 0 && data.cistatina_c_mg_l > 0) ? k_cist * (1 / data.cistatina_c_mg_l) : 0;
 
         const ckid_u25_combinado = (ckid_u25_cr > 0 && ckid_u25_cistc > 0) ? (ckid_u25_cr + ckid_u25_cistc) / 2 : 0;
 
+        // --- RESTO DE CÁLCULOS ---
         const efNa = (data.na_plasma_meq_l && data.creatinina_orina_mg_dl && data.na_orina_meq_l && data.creatinina_enz_mg_dl) ? (data.na_orina_meq_l * data.creatinina_enz_mg_dl) / (data.na_plasma_meq_l * data.creatinina_orina_mg_dl) * 100 : 0;
         const efK = (data.k_plasma_meq_l && data.creatinina_orina_mg_dl && data.k_orina_meq_l && data.creatinina_enz_mg_dl) ? (data.k_orina_meq_l * data.creatinina_enz_mg_dl) / (data.k_plasma_meq_l * data.creatinina_orina_mg_dl) * 100 : 0;
         const efCl = (data.cl_plasma_meq_l && data.creatinina_orina_mg_dl && data.cl_orina_meq_l && data.creatinina_enz_mg_dl) ? (data.cl_orina_meq_l * data.creatinina_enz_mg_dl) / (data.cl_plasma_meq_l * data.creatinina_orina_mg_dl) * 100 : 0;
@@ -873,7 +894,6 @@ function generateReport(data) {
         return "Estadio A3 (Muy elevada)";
     }
 
-    // AQUI ESTÁ LA CONDICIÓN NUEVA DE LA EDAD
     if (window.edadEnAños >= 2) {
         const gradoCr = evaluarGradoG(results.ckid_u25_cr);
         const gradoCist = evaluarGradoG(results.ckid_u25_cistc);
@@ -1104,20 +1124,3 @@ function limpiarColoresValidacion() {
         input.classList.remove('campo-valido', 'campo-error');
     });
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

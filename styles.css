@@ -1,71 +1,56 @@
 :root {
-  /* Primitive Color Tokens */
-  --color-white: rgba(255, 255, 255, 1);
-  --color-black: rgba(0, 0, 0, 1);
-  --color-cream-50: rgba(252, 252, 249, 1);
-  --color-cream-100: rgba(255, 255, 253, 1);
-  --color-gray-200: rgba(245, 245, 245, 1);
-  --color-gray-300: rgba(167, 169, 169, 1);
-  --color-gray-400: rgba(119, 124, 124, 1);
-  --color-slate-500: rgba(98, 108, 113, 1);
-  --color-brown-600: rgba(94, 82, 64, 1);
-  --color-charcoal-700: rgba(31, 33, 33, 1);
-  --color-charcoal-800: rgba(38, 40, 40, 1);
-  --color-slate-900: rgba(19, 52, 59, 1);
-  --color-teal-300: rgba(50, 184, 198, 1);
-  --color-teal-400: rgba(45, 166, 178, 1);
-  --color-teal-500: rgba(33, 128, 141, 1);
-  --color-teal-600: rgba(29, 116, 128, 1);
-  --color-teal-700: rgba(26, 104, 115, 1);
-  --color-teal-800: rgba(41, 150, 161, 1);
-  --color-red-400: rgba(255, 84, 89, 1);
-  --color-red-500: rgba(192, 21, 47, 1);
-  --color-orange-400: rgba(230, 129, 97, 1);
-  --color-orange-500: rgba(168, 75, 47, 1);
+  /* ============================================
+     PALETA DE COLORES V2 (Clinical Modern)
+     ============================================ */
+  
+  /* MODO CLARO (Limpio y Clínico) */
+  --color-bg-base: #f1f5f9;       /* Fondo general pantalla */
+  --color-bg-surface: #ffffff;    /* Fondo tarjetas/inputs */
+  --color-txt-main: #0f172a;      /* Texto principal */
+  --color-txt-muted: #64748b;     /* Texto secundario */
+  
+  /* Semáforo Moderno */
+  --color-sem-success: #10b981;
+  --color-sem-error: #ef4444;
+  --color-sem-warning: #f59e0b;
+  
+  --color-brand-primary: #0891b2; /* Cyan/Teal Principal */
+  --color-brand-hover: #0e7490;
+  --color-brand-active: #155e75;
+  
+  --color-border-base: #e2e8f0;
 
-  /* RGB versions for opacity control */
-  --color-brown-600-rgb: 94, 82, 64;
-  --color-teal-500-rgb: 33, 128, 141;
-  --color-slate-900-rgb: 19, 52, 59;
-  --color-slate-500-rgb: 98, 108, 113;
-  --color-red-500-rgb: 192, 21, 47;
-  --color-red-400-rgb: 255, 84, 89;
-  --color-orange-500-rgb: 168, 75, 47;
-  --color-orange-400-rgb: 230, 129, 97;
-  --color-gray-400-rgb: 119, 124, 124;
-  --color-teal-300-rgb: 50, 184, 198;
-  --color-gray-300-rgb: 167, 169, 169;
-  --color-gray-200-rgb: 245, 245, 245;
+  /* Mapeo de variables antiguas para compatibilidad */
+  --color-background: var(--color-bg-base);
+  --color-surface: var(--color-bg-surface);
+  --color-text: var(--color-txt-main);
+  --color-text-secondary: var(--color-txt-muted);
+  
+  --color-primary: var(--color-brand-primary);
+  --color-primary-hover: var(--color-brand-hover);
+  --color-primary-active: var(--color-brand-active);
+  
+  --color-success: var(--color-sem-success);
+  --color-error: var(--color-sem-error);
+  --color-warning: var(--color-sem-warning);
+  --color-info: var(--color-txt-muted);
+  
+  --color-border: var(--color-border-base);
+  --color-card-border: var(--color-border-base);
+  
+  --color-bg-input: #ffffff;
+  --color-text-primary: var(--color-txt-main);
+  --color-btn-primary-text: #ffffff;
+  
+  --color-focus-ring: rgba(8, 145, 178, 0.4);
 
-  /* Background color tokens */
-  --color-bg-1: rgba(59, 130, 246, 0.08);
-  --color-bg-2: rgba(245, 158, 11, 0.08);
-  --color-bg-3: rgba(34, 197, 94, 0.08);
+  /* Fondos especiales */
+  --color-bg-1: rgba(8, 145, 178, 0.08);
+  --color-bg-2: rgba(245, 158, 11, 0.08); /* Crema (Edad y Botones) */
+  --color-bg-3: rgba(16, 185, 129, 0.08);
 
-  /* Semantic Color Tokens (Light Mode) */
-  --color-background: var(--color-cream-50);
-  --color-surface: var(--color-cream-100);
-  --color-text: var(--color-slate-900);
-  --color-text-secondary: var(--color-slate-500);
-  --color-primary: var(--color-teal-500);
-  --color-primary-hover: var(--color-teal-600);
-  --color-primary-active: var(--color-teal-700);
-  --color-secondary: rgba(var(--color-brown-600-rgb), 0.12);
-  --color-border: rgba(var(--color-brown-600-rgb), 0.2);
-  --color-btn-primary-text: var(--color-cream-50);
-  --color-card-border: rgba(var(--color-brown-600-rgb), 0.12);
-  --color-error: var(--color-red-500);
-  --color-success: var(--color-teal-500);
-  --color-warning: var(--color-orange-500);
-  --color-info: var(--color-slate-500);
-  --color-focus-ring: rgba(var(--color-teal-500-rgb), 0.4);
-  --color-bg-input: var(--color-white);
-  --color-text-primary: var(--color-slate-900);
-
-  /* Typography */
+  /* Tipografía */
   --font-family-base: "FKGroteskNeue", "Geist", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-size-xs: 11px;
-  --font-size-sm: 12px;
   --font-size-base: 14px;
   --font-size-md: 14px;
   --font-size-lg: 16px;
@@ -73,109 +58,123 @@
   --font-size-2xl: 20px;
   --font-size-3xl: 24px;
   --font-size-4xl: 30px;
-  --font-weight-normal: 400;
+  --font-size-sm: 12px;
+  --font-size-xs: 11px;
+  
   --font-weight-medium: 500;
   --font-weight-semibold: 550;
   --font-weight-bold: 600;
   --line-height-tight: 1.2;
   --line-height-normal: 1.5;
 
-  /* Spacing & Sizes */
-  --space-4: 4px;
-  --space-6: 6px;
+  /* Espaciado y Radios */
   --space-8: 8px;
-  --space-10: 10px;
   --space-12: 12px;
   --space-16: 16px;
   --space-20: 20px;
   --space-24: 24px;
   --space-32: 32px;
   
-  --radius-sm: 6px;
   --radius-base: 8px;
   --radius-md: 10px;
   --radius-lg: 12px;
   --radius-full: 9999px;
 
-  /* Shadows & Outline */
-  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.02);
+  /* Sombras */
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
   --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.04), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
   --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.04), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
   
   --duration-fast: 150ms;
-  --duration-normal: 250ms;
   --ease-standard: cubic-bezier(0.16, 1, 0.3, 1);
-  --focus-ring: 0 0 0 3px var(--color-focus-ring);
-  --focus-outline: 2px solid var(--color-primary);
 }
 
 /* ============================================
-   MODOS DE COLOR (Oscuro/Claro)
+   MODO OSCURO (Deep Blue)
    ============================================ */
 @media (prefers-color-scheme: dark) {
   :root {
-    --color-bg-1: rgba(29, 78, 216, 0.15);
-    --color-bg-2: rgba(180, 83, 9, 0.15);
-    --color-bg-3: rgba(21, 128, 61, 0.15);
-    --color-background: var(--color-charcoal-700);
-    --color-surface: var(--color-charcoal-800);
-    --color-text: var(--color-gray-200);
-    --color-text-secondary: rgba(var(--color-gray-300-rgb), 0.7);
-    --color-primary: var(--color-teal-300);
-    --color-primary-hover: var(--color-teal-400);
-    --color-primary-active: var(--color-teal-800);
-    --color-secondary: rgba(var(--color-gray-400-rgb), 0.15);
-    --color-border: rgba(var(--color-gray-400-rgb), 0.3);
-    --color-error: var(--color-red-400);
-    --color-success: var(--color-teal-300);
-    --color-warning: var(--color-orange-400);
-    --color-info: var(--color-gray-300);
-    --color-focus-ring: rgba(var(--color-teal-300-rgb), 0.4);
-    --color-btn-primary-text: var(--color-slate-900);
-    --color-card-border: rgba(var(--color-gray-400-rgb), 0.2);
+    --color-bg-base: #0f172a;
+    --color-bg-surface: #1e293b;
+    --color-txt-main: #f1f5f9;
+    --color-txt-muted: #94a3b8;
+    
+    --color-sem-success: #34d399;
+    --color-sem-error: #f87171;
+    --color-sem-warning: #fbbf24;
+    
+    --color-brand-primary: #22d3ee;
+    --color-brand-hover: #06b6d4;
+    --color-brand-active: #0891b2;
+    
+    --color-border-base: #334155;
+
+    --color-background: var(--color-bg-base);
+    --color-surface: var(--color-bg-surface);
+    --color-text: var(--color-txt-main);
+    --color-text-secondary: var(--color-txt-muted);
+    
+    --color-primary: var(--color-brand-primary);
+    --color-primary-hover: var(--color-brand-hover);
+    --color-primary-active: var(--color-brand-active);
+    
+    --color-success: var(--color-sem-success);
+    --color-error: var(--color-sem-error);
+    --color-warning: var(--color-sem-warning);
+    --color-info: var(--color-txt-muted);
+    
+    --color-border: var(--color-border-base);
+    --color-card-border: var(--color-border-base);
+    
+    --color-bg-input: #1e293b; 
+    --color-text-primary: #f1f5f9;
+    --color-btn-primary-text: #0f172a;
+    
+    --color-focus-ring: rgba(34, 211, 238, 0.4);
+
+    --color-bg-1: rgba(34, 211, 238, 0.15);
+    --color-bg-2: rgba(251, 191, 36, 0.15);
+    --color-bg-3: rgba(52, 211, 153, 0.15);
   }
 }
 
+/* Soporte toggle manual */
 [data-color-scheme="dark"] {
-  --color-bg-1: rgba(29, 78, 216, 0.15);
-  --color-bg-2: rgba(180, 83, 9, 0.15);
-  --color-bg-3: rgba(21, 128, 61, 0.15);
-  --color-background: var(--color-charcoal-700);
-  --color-surface: var(--color-charcoal-800);
-  --color-bg-input: var(--color-charcoal-800); 
-  --color-text-primary: var(--color-gray-200);
-  --color-text: var(--color-gray-200);
-  --color-text-secondary: rgba(var(--color-gray-300-rgb), 0.7);
-  --color-primary: var(--color-teal-300);
-  --color-primary-hover: var(--color-teal-400);
-  --color-primary-active: var(--color-teal-800);
-  --color-secondary: rgba(var(--color-gray-400-rgb), 0.15);
-  --color-border: rgba(var(--color-gray-400-rgb), 0.3);
-  --color-error: var(--color-red-400);
-  --color-success: var(--color-teal-300);
-  --color-warning: var(--color-orange-400);
-  --color-info: var(--color-gray-300);
-  --color-focus-ring: rgba(var(--color-teal-300-rgb), 0.4);
-  --color-btn-primary-text: var(--color-slate-900);
-  --color-card-border: rgba(var(--color-gray-400-rgb), 0.2);
+    --color-background: #0f172a;
+    --color-surface: #1e293b;
+    --color-text: #f1f5f9;
+    --color-text-secondary: #94a3b8;
+    --color-primary: #22d3ee;
+    --color-primary-hover: #06b6d4;
+    --color-success: #34d399;
+    --color-error: #f87171;
+    --color-warning: #fbbf24;
+    --color-border: #334155;
+    --color-card-border: #334155;
+    --color-bg-input: #1e293b;
+    --color-btn-primary-text: #0f172a;
+    --color-bg-1: rgba(34, 211, 238, 0.15);
+    --color-bg-2: rgba(251, 191, 36, 0.15);
+    --color-bg-3: rgba(52, 211, 153, 0.15);
 }
 
 [data-color-scheme="light"] {
-  --color-bg-1: rgba(59, 130, 246, 0.08);
-  --color-bg-2: rgba(245, 158, 11, 0.08);
-  --color-bg-3: rgba(34, 197, 94, 0.08);
-  --color-background: var(--color-cream-50);
-  --color-surface: var(--color-cream-100);
-  --color-text: var(--color-slate-900);
-  --color-text-secondary: var(--color-slate-500);
-  --color-primary: var(--color-teal-500);
-  --color-primary-hover: var(--color-teal-600);
-  --color-primary-active: var(--color-teal-700);
-  --color-secondary: rgba(var(--color-brown-600-rgb), 0.12);
-  --color-border: rgba(var(--color-brown-600-rgb), 0.2);
-  --color-btn-primary-text: var(--color-cream-50);
-  --color-card-border: rgba(var(--color-brown-600-rgb), 0.12);
+    --color-background: #f8fafc;
+    --color-surface: #ffffff;
+    --color-text: #0f172a;
+    --color-text-secondary: #64748b;
+    --color-primary: #0891b2;
+    --color-primary-hover: #0e7490;
+    --color-success: #10b981;
+    --color-error: #ef4444;
+    --color-warning: #f59e0b;
+    --color-border: #e2e8f0;
+    --color-card-border: #e2e8f0;
+    --color-bg-input: #ffffff;
+    --color-btn-primary-text: #ffffff;
+    --color-bg-1: rgba(8, 145, 178, 0.08);
+    --color-bg-2: rgba(245, 158, 11, 0.08);
+    --color-bg-3: rgba(16, 185, 129, 0.08);
 }
 
 /* ============================================
@@ -199,6 +198,12 @@ html, body {
   color: var(--color-text);
   background-color: var(--color-background);
   -webkit-font-smoothing: antialiased;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -218,178 +223,148 @@ h4 { font-size: var(--font-size-xl); }
   max-width: 1280px;
   margin: 0 auto;
   padding: var(--space-16);
-  /* Hemos borrado el overflow-x: hidden que rompía el efecto pegajoso */
 }
 
 /* ============================================
-   CABECERA Y TEMA
+   LAYOUT (SOLUCIÓN DOBLE BORDE)
+   ============================================ */
+/* Las secciones dentro de las pestañas NO deben tener borde propio */
+section.tab-content {
+    border: none;
+    box-shadow: none;
+    background: transparent;
+    padding: 24px;
+    margin-bottom: 0;
+}
+
+/* Títulos dentro de las secciones de formulario */
+.section-title {
+    margin-top: 0;
+    border-bottom: 2px solid var(--color-border);
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+    color: var(--color-primary);
+    font-weight: 600;
+}
+
+/* ============================================
+   CABECERA
    ============================================ */
 .app-header {
-  background: var(--color-bg-1);
+  background: var(--color-surface);
   padding: var(--space-24) var(--space-16);
   text-align: center;
-  border: 1px solid var(--color-border); /* Borde completo */
-  border-radius: var(--radius-lg); /* Esquinas redondeadas */
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
   margin-bottom: var(--space-24);
   position: relative;
-  box-shadow: var(--shadow-sm); /* Misma sombra que el formulario */
+  box-shadow: var(--shadow-sm);
 }
 
-.app-title {
-  margin-bottom: var(--space-8);
-  font-size: var(--font-size-3xl);
-}
-
-.app-subtitle {
-  color: var(--color-text-secondary);
-  margin: 0;
-  font-size: var(--font-size-base);
-}
+.app-title { margin-bottom: var(--space-8); font-size: var(--font-size-3xl); }
+.app-subtitle { color: var(--color-text-secondary); margin: 0; font-size: var(--font-size-base); }
 
 .btn-theme-toggle {
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  background: transparent;
-  border: none;
-  color: var(--color-text);
-  font-size: 24px;
-  cursor: pointer;
-  padding: 8px;
-  z-index: 100;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  position: absolute; top: 16px; right: 16px;
+  background: transparent; border: none;
+  color: var(--color-text); font-size: 24px;
+  cursor: pointer; padding: 8px; z-index: 100;
+  display: flex; align-items: center; justify-content: center;
   transition: transform 0.2s ease;
 }
-
-.btn-theme-toggle:hover {
-  transform: scale(1.1);
-  color: var(--color-primary);
-}
+.btn-theme-toggle:hover { transform: scale(1.1); color: var(--color-primary); }
 
 /* ============================================
-   PESTAÑAS (TABS)
+   PESTAÑAS
    ============================================ */
 .tabs-container {
   background: var(--color-surface);
   border-radius: var(--radius-lg);
   border: 1px solid var(--color-border);
-  /* BORRAMOS EL overflow: hidden; PARA QUE FUNCIONE EL STICKY */
   margin-bottom: var(--space-24);
   box-shadow: var(--shadow-sm);
   width: 100%;
 }
 
-/* AQUI ESTABA EL BUG. width: 100% soluciona el desborde */
 .tabs, .nav-tabs {
   display: flex;
-  background: var(--color-surface); /* Fondo sólido para tapar el texto al hacer scroll */
+  background: var(--color-surface);
   border-bottom: 2px solid var(--color-border);
   overflow-x: auto;
   white-space: nowrap;
   width: 100%;
   max-width: 100%;
-  
-  /* LA MAGIA STICKY */
-  position: sticky;
-  top: 0;
-  z-index: 50;
+  position: sticky; top: 0; z-index: 50;
   border-radius: var(--radius-lg) var(--radius-lg) 0 0;
-  
-  scrollbar-width: thin;
-  scroll-behavior: smooth;
-}
+  scrollbar-width: thin; scroll-behavior: smooth;
 }
 
-.tabs::-webkit-scrollbar, .nav-tabs::-webkit-scrollbar {
-  height: 5px;
-  background: #e5e7eb;
-}
-
-.tabs::-webkit-scrollbar-thumb, .nav-tabs::-webkit-scrollbar-thumb {
-  background: #2563eb;
-  border-radius: 8px;
-}
+.tabs::-webkit-scrollbar { height: 5px; background: transparent; }
+.tabs::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 8px; }
 
 .tab-button {
-  flex: 1 1 0px;
-  min-width: 120px;
+  flex: 1 1 0px; min-width: 120px;
   padding: var(--space-12) var(--space-20);
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-medium);
+  border: none; background: transparent; cursor: pointer;
+  font-size: var(--font-size-sm); font-weight: var(--font-weight-medium);
   color: var(--color-text-secondary);
   border-bottom: 3px solid transparent;
   transition: all var(--duration-fast) var(--ease-standard);
   text-align: center;
 }
 
-.tab-button:hover {
-  color: var(--color-text);
-  background: var(--color-bg-3);
-}
-
+.tab-button:hover { color: var(--color-text); background: var(--color-bg-1); }
 .tab-button.active {
   color: var(--color-primary);
   border-bottom-color: var(--color-primary);
   background: var(--color-bg-1);
-  font-weight: var(--font-weight-semibold);
+  font-weight: var(--font-weight-bold);
 }
-
-.tab-button:focus-visible { 
-  outline: none; 
-  box-shadow: var(--focus-ring); 
-}
-
-.tab-content { 
-  display: none; 
-  padding: var(--space-24); 
-  }
-
+.tab-button:focus-visible { outline: none; background: var(--color-bg-1); }
+.tab-content { display: none; padding: var(--space-24); }
 .tab-content.active { display: block; }
-
-.section-title { 
-  margin-bottom: var(--space-24); 
-  padding-bottom: var(--space-12); 
-  border-bottom: 2px solid var(--color-border); 
-}
 
 /* ============================================
    FORMULARIOS
    ============================================ */
-.form-grid { 
-  display: grid; 
-  grid-template-columns: repeat(4, 1fr); 
-  gap: var(--space-16); 
-}
+.form-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-16); }
 @media (min-width: 769px) {
   .span-2 { grid-column: span 2; }
   .span-3 { grid-column: span 3; }
-  .span-4 { grid-column: 1 / -1; } /* El truco definitivo para ocupar el 100% de la fila */
+  .span-4 { grid-column: 1 / -1; }
 }
-.form-grid-3col { 
-  display: grid; 
-  grid-template-columns: repeat(3, 1fr); /* Fuerza 3 columnas exactas en PC */
-  gap: var(--space-16); 
-}
+.form-grid-3col { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-16); }
 .form-group { display: flex; flex-direction: column; margin-bottom: var(--space-16); }
 .form-label { font-weight: var(--font-weight-medium); margin-bottom: var(--space-8); color: var(--color-text); font-size: var(--font-size-sm); }
 
 .form-control {
   display: block; width: 100%; padding: var(--space-8) var(--space-12);
   font-size: var(--font-size-md); line-height: var(--line-height-normal);
-  color: var(--color-text); background-color: var(--color-surface);
+  color: var(--color-text); background-color: var(--color-bg-input);
   border: 1px solid var(--color-border); border-radius: var(--radius-base);
-  transition: border-color var(--duration-fast) var(--ease-standard), box-shadow var(--duration-fast) var(--ease-standard);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
   font-family: var(--font-family-base);
 }
 
-.form-control:focus { border-color: var(--color-primary); outline: var(--focus-outline); box-shadow: var(--focus-ring); }
-input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; display: none; }
-input[type=number] { -moz-appearance: textfield; }
+.form-control:focus {
+    border-color: var(--color-primary) !important;
+    box-shadow: 0 0 0 3px var(--color-focus-ring) !important;
+    outline: none;
+    transform: translateY(-1px);
+}
+.form-control:hover { border-color: var(--color-primary-hover); }
+/* Quitar flechas de número (Spinners) */
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+  display: none; 
+}
+
+input[type=number] { 
+  -moz-appearance: textfield; /* Para Firefox viejo */
+  appearance: textfield;      /* Estándar moderno (ESTO ES LO QUE FALTABA) */
+}
 
 /* ============================================
    BOTONES
@@ -398,30 +373,28 @@ input[type=number] { -moz-appearance: textfield; }
   display: inline-flex; align-items: center; justify-content: center;
   padding: var(--space-8) var(--space-16); border-radius: var(--radius-base);
   font-size: var(--font-size-base); font-weight: var(--font-weight-medium);
-  cursor: pointer; transition: all var(--duration-normal) var(--ease-standard);
+  cursor: pointer; transition: all 0.2s ease;
   border: none; text-decoration: none; font-family: var(--font-family-base);
 }
+.btn:active { transform: scale(0.96); }
+.btn:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--color-focus-ring); }
 
-.btn:focus-visible { outline: none; box-shadow: var(--focus-ring); }
 .btn--primary { background: var(--color-primary); color: var(--color-btn-primary-text); }
 .btn--primary:hover { background: var(--color-primary-hover); }
-.btn--primary:active { background: var(--color-primary-active); }
-.btn--secondary { background: var(--color-success); color: var(--color-btn-primary-text); }
-.btn--secondary:hover { background: var(--color-primary-hover); }
 
-/* ZONA BOTONES PRINCIPALES */
+/* ZONA BOTONES PRINCIPALES (Corregido) */
 .zona-botones-principales {
-  margin: var(--space-32) 0; 
-  padding: var(--space-24); 
-  text-align: center;
-  border: 1px solid var(--color-border); /* Borde completo */
-  border-radius: var(--radius-lg); /* Esquinas redondeadas */
-  background: var(--color-bg-2);
-  display: flex; 
-  flex-direction: column; 
-  align-items: center; 
-  gap: var(--space-16);
-  box-shadow: var(--shadow-sm); /* Misma sombra que el formulario */
+  margin: var(--space-32) 0; padding: var(--space-24); text-align: center;
+  
+  /* FONDO CREMA y UN SOLO BORDE */
+  background: var(--color-bg-2); 
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  
+  /* Sin sombra extra */
+  box-shadow: none;
+  
+  display: flex; flex-direction: column; align-items: center; gap: var(--space-16);
 }
 
 .btn-calcular {
@@ -429,22 +402,74 @@ input[type=number] { -moz-appearance: textfield; }
   border-radius: var(--radius-md); box-shadow: var(--shadow-lg); background: var(--color-primary);
   color: var(--color-btn-primary-text); min-width: 280px; border: none;
 }
-
 .btn-calcular:hover { transform: translateY(-2px); background: var(--color-primary-hover); }
+.btn-calcular:active { transform: translateY(0); }
 
 .botones-secundarios { display: flex; gap: var(--space-12); justify-content: center; flex-wrap: wrap; }
-.btn-limpiar { font-size: var(--font-size-base); padding: var(--space-8) var(--space-16); background: transparent; border: 1px solid var(--color-border); color: var(--color-text-secondary); }
-.btn-limpiar:hover { background: var(--color-secondary); color: var(--color-text); }
 
-/* Botón HOY base */
+/* BOTÓN LIMPIAR (Corregido: Fondo Blanco, Texto Azul) */
+.btn-limpiar { 
+  font-size: var(--font-size-base); 
+  padding: var(--space-8) var(--space-16); 
+  
+  background-color: #ffffff !important;   /* FORZAMOS BLANCO */
+  color: var(--color-primary) !important; /* FORZAMOS AZUL */
+  border: 1px solid var(--color-primary) !important;
+  
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.btn-limpiar:hover { 
+  background-color: var(--color-bg-1) !important; /* Azul muy clarito al pasar ratón */
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  transform: translateY(-1px);
+}
+
+/* BOTÓN DATOS DE EJEMPLO (Corregido: Gris claro sobre fondo crema) */
+#btn-cargar-datos-test {
+    font-size: var(--font-size-sm);
+    padding: var(--space-8) var(--space-16);
+    
+    /* CAMBIO: Gris muy suave (Blanco roto) en vez de transparente */
+    background-color: #f8fafc; 
+    
+    /* Borde gris y texto gris */
+    border: 1px solid var(--color-border); 
+    color: var(--color-text-secondary);
+    
+    border-radius: var(--radius-base);
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    
+    margin-left: 10px;
+}
+
+#btn-cargar-datos-test:hover {
+    /* Al pasar el ratón se oscurece un poco (Gris medio) */
+    background-color: #e2e8f0; 
+    color: var(--color-text);
+    border-color: var(--color-text);
+}
+
+/* Botón HOY (Clásico: Gris claro y texto oscuro) */
 #btn-hoy, .btn-hoy {
   font-size: 14px !important; padding: 6px 0 !important;
   width: 90px !important; border-radius: 8px !important;
-  background: #f1f5f9 !important; color: #222 !important; box-shadow: 0 1px 8px rgba(0,0,0,0.05); border: none; cursor: pointer;
+  
+  background: #f1f5f9 !important; /* Gris claro */
+  color: #1e293b !important;      /* Texto oscuro */
+  border: 1px solid #cbd5e1 !important;
+  
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05); 
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
+#btn-hoy:hover { border-color: var(--color-primary); color: var(--color-primary) !important; }
 
 /* ============================================
-   RESULTADOS Y CONTADOR
+   RESULTADOS E INFORME (Estos SÍ llevan borde propio)
    ============================================ */
 .results-section, .report-section {
   background: var(--color-surface); border-radius: var(--radius-lg);
@@ -452,9 +477,41 @@ input[type=number] { -moz-appearance: textfield; }
   border: 1px solid var(--color-card-border); box-shadow: var(--shadow-sm);
 }
 
+/* Título de Resultados e Informe: Misma línea que en el formulario */
+.results-section h3, .report-section h3 {
+    margin-top: 0;
+    border-bottom: 2px solid var(--color-border);
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+    color: var(--color-primary);
+    font-weight: 600;
+}
+
 .results-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--space-16); }
-.result-item { background: var(--color-surface); padding: var(--space-16); border-radius: var(--radius-base); border: 1px solid var(--color-card-border); box-shadow: var(--shadow-xs); }
-.result-value { font-weight: bold; font-size: 1.15em; }
+
+/* TARJETAS DE RESULTADOS (Arreglado: Blancas en modo claro) */
+.result-item { 
+  background-color: var(--color-surface); /* Esto asegura BLANCO en modo claro */
+  padding: var(--space-16); 
+  border-radius: var(--radius-base); 
+  border: 1px solid var(--color-card-border); 
+  
+  /* Sombra suave para que floten */
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.result-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.08);
+}
+
+.result-value { 
+  font-weight: bold; 
+  font-size: 1.25em; 
+  color: var(--color-primary); 
+  margin-top: 4px;
+  display: block;
+}
 .export-options { display: flex; gap: var(--space-12); flex-wrap: wrap; justify-content: center; margin-top: var(--space-16); }
 
 .field-count {
@@ -467,133 +524,95 @@ input[type=number] { -moz-appearance: textfield; }
 
 .hidden { display: none !important; }
 
-/* MODO TEST */
-body.modo-test::before {
-  content: "MODO TEST"; position: fixed; top: 10px; left: 10px;
-  background: var(--color-info); color: var(--color-btn-primary-text);
-  padding: var(--space-8) var(--space-16); font-weight: var(--font-weight-bold);
-  border-radius: var(--radius-sm); z-index: 9999; box-shadow: var(--shadow-md);
+.form-control.campo-valido {
+    border-color: var(--color-success) !important;
+    background-color: transparent;
+    box-shadow: 0 0 0 1px var(--color-success) inset;
+    transition: all 0.3s ease;
+}
+.form-control.campo-error {
+    border-color: var(--color-error) !important;
+    box-shadow: 0 0 0 1px var(--color-error) inset;
 }
 
-/* ============================================ 
-   RESPONSIVE MÓVILES (Media Queries)
-   ============================================ */
+textarea.form-control {
+    height: 42px !important; min-height: 42px; overflow: hidden; resize: none;
+    white-space: nowrap; text-overflow: ellipsis; transition: all 0.3s ease-in-out;
+    padding-top: 10px;
+}
+textarea.form-control:focus {
+    height: 150px !important; min-height: 150px; white-space: normal;
+    overflow-y: auto; box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    background-color: var(--color-bg-input); color: var(--color-text-primary);
+    z-index: 10; position: relative;
+}
+
 @media (max-width: 1024px) {
   .container { padding: var(--space-12); }
   .form-grid, .form-grid-3col { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
 }
-
-@media (max-width: 800px) {
-  .tabs .tab-button, .nav-tabs .tab-button { flex: 0 0 auto !important; min-width: 120px !important; }
-}
-
 @media (max-width: 768px) {
   .container { padding: var(--space-8); }
-  .app-header { padding: var(--space-16) 45px; } /* 45px de margen lateral para que no toque el botón */
+  .app-header { padding: var(--space-16) 45px; }
   .app-title { font-size: var(--font-size-2xl); }
   .tab-button { font-size: var(--font-size-xs); padding: var(--space-12); }
   .tab-content { padding: var(--space-16); }
-  
   .form-grid, .form-grid-3col { grid-template-columns: 1fr; gap: var(--space-12); }
   .form-control { font-size: var(--font-size-lg); padding: var(--space-12); }
-  
   .zona-botones-principales { padding: var(--space-16); }
   .btn-calcular { width: 100%; font-size: var(--font-size-lg); padding: var(--space-12) var(--space-24); }
-  
   #btn-hoy, .btn-hoy { font-size: 14px !important; padding: 7px 16px !important; width: 90px !important; }
-  .form-group input { font-size: 14px !important; padding: 7px 8px !important; }
-  .form-group { margin-bottom: 12px !important; }
   .results-grid { grid-template-columns: 1fr !important; }
 }
 
-@media (max-width: 600px) {
-  #btn-hoy, .btn-hoy { font-size: 12px !important; padding: 5px 0 !important; width: 70px !important; }
-  .form-control { font-size: 13px !important; }
+.form-label, .app-header, .tabs-container, .section-title, .btn, .result-item, summary {
+    -webkit-user-select: none; -moz-user-select: none; user-select: none; cursor: default;
+}
+.form-control { user-select: text; cursor: text; }
+.input-unit-wrapper { cursor: text; }
+/* CAMBIO: Campo Edad con estilo "Readonly" estándar (Gris) */
+#edad_calculada {
+    background-color: #f1f5f9 !important; /* El mismo gris claro del botón HOY */
+    color: #475569 !important;            /* Texto gris oscuro (Slate 600) */
+    border-color: #cbd5e1 !important;     /* Borde gris un pelín más oscuro */
+    cursor: not-allowed;                  /* Cursor de prohibido para reforzar que no se toca */
+    font-weight: 500;
+}
+/* BOTÓN TEMA EN FOOTER (Estilo Píldora Discreto) */
+.btn-theme-footer {
+    background: transparent;
+    border: 1px solid var(--color-border);
+    color: var(--color-text-secondary);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 500;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px; /* Separación entre icono y texto */
+    transition: all 0.2s ease;
+    font-family: var(--font-family-base);
 }
 
-@media (max-width: 500px) {
-  #btn-hoy, .btn-hoy { font-size: 12px !important; padding: 4px 8px !important; width: 70px !important; }
-  .form-group input { font-size: 12px !important; padding: 4px 6px !important; }
-  .tabs { font-size: 12px !important; }
-  .container { padding: 2px !important; }
+.btn-theme-footer:hover {
+    background: var(--color-surface);
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
 }
 
-@media (max-width: 480px) {
-  .app-title { 
-      font-size: var(--font-size-xl); 
-      line-height: 1.3; 
-      margin-top: 5px; 
-  }
-  .tab-button { min-width: 90px; padding: var(--space-10) var(--space-8); }
-  .btn-calcular { font-size: var(--font-size-md); padding: var(--space-12) var(--space-20); }
-  .zona-botones-principales { padding: var(--space-12); gap: var(--space-12); }
-  .tab-content, .results-section, .report-section { padding: var(--space-12); }
-  .btn-theme-toggle { top: 10px; right: 10px; font-size: 18px; }
+.btn-theme-footer i {
+    font-size: 12px;
 }
-/* ============================================
-   FEEDBACK DE VALIDACIÓN (Bordes dinámicos)
-   ============================================ */
-.form-control.campo-valido {
-    border-color: var(--color-success) !important;
-    background-color: rgba(33, 128, 141, 0.03); /* Fondo verde muuuuy sutil */
-    transition: all 0.3s ease;
+/* ARREGLO URGENTE: Botón Copiar Invisible */
+#copyClipboardButton {
+    background-color: var(--color-primary) !important; /* Recuperamos el color Teal */
+    color: #ffffff !important;
+    opacity: 1 !important;
 }
 
-.form-control.campo-error {
-    border-color: var(--color-error) !important;
-    background-color: rgba(192, 21, 47, 0.03); /* Fondo rojo sutil */
-    box-shadow: 0 0 0 1px var(--color-error);
-}
-/* EFECTO ACORDEÓN PARA TEXTAREAS */
-textarea.form-control {
-    height: 42px !important; /* Altura idéntica a tus inputs normales */
-    min-height: 42px;
-    overflow: hidden; /* Oculta el scroll cuando está cerrado */
-    resize: none; /* Quita la esquinita de arrastrar */
-    white-space: nowrap; /* Mantiene el texto en una línea visualmente al estar cerrado */
-    text-overflow: ellipsis;
-    transition: all 0.3s ease-in-out; /* Animación suave */
-    padding-top: 10px; /* Centrado vertical del texto */
-}
-
-/* Cuando haces clic dentro (focus) */
-textarea.form-control:focus {
-    height: 150px !important; /* Se abre un cuadrado grande */
-    min-height: 150px;
-    white-space: normal; /* Permite saltos de línea al escribir */
-    overflow-y: auto; /* Muestra barra de scroll si escribes la biblia */
-    box-shadow: 0 4px 15px rgba(0,0,0,0.15); /* Sombra para que destaque */
-    background-color: var(--color-bg-input); 
-    color: var(--color-text-primary); /* Aseguramos que el texto se vea bien */
-    z-index: 10;
-    position: relative;
-}
-/* ============================================
-   FIX UX: COMPORTAMIENTO DE APP NATIVA
-   ============================================ */
-
-/* 1. Prohibir selección de texto en toda la interfaz */
-.form-label, 
-.app-header, 
-.tabs-container, 
-.section-title, 
-.btn, 
-.result-item,
-summary {
-    -webkit-user-select: none; /* Safari/Chrome */
-    -moz-user-select: none;    /* Firefox */
-    -ms-user-select: none;     /* IE/Edge */
-    user-select: none;         /* Estándar */
-    cursor: default;           /* Flecha normal en vez de cursor de texto */
-}
-
-/* 2. Asegurar que los inputs SÍ dejen escribir */
-.form-control {
-    user-select: text;
-    cursor: text;
-}
-
-/* 3. Arreglo específico para los Wrappers de unidades inyectados por JS */
-.input-unit-wrapper {
-    cursor: text; /* Para que al pasar por encima parezca que vas a escribir */
+#copyClipboardButton:hover {
+    background-color: var(--color-primary-hover) !important;
 }

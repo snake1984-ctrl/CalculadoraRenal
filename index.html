@@ -24,8 +24,8 @@
 <body>
   <div class="container">
         <header class="app-header">
-            <h1 class="app-title" style="font-size: 2.8rem; font-weight: 800; color: var(--color-primary); margin: 0 0 5px 0; letter-spacing: -1px;">NefroPed</h1>
-            <p class="app-subtitle" style="font-size: 1.1rem; font-weight: 500; opacity: 0.85; margin: 0;">Calculadora Clínica de Nefrología Pediátrica</p>
+            <h1 class="app-title">NefroPed</h1>
+            <p class="app-subtitle">Calculadora Clínica de Nefrología Pediátrica</p>
         </header>
 
         <div class="tabs-container">
@@ -57,14 +57,14 @@
                         </div>
                         <div class="form-group">
                             <label class="form-label" for="fecha_analitica">Fecha de analítica</label>
-                            <div style="display: flex; gap: 8px;">
-                                <input type="text" id="fecha_analitica" name="fecha_analitica" class="form-control" placeholder="DD/MM/AAAA" maxlength="10" style="flex: 1;" aria-label="Fecha de la analítica">
+                            <div class="fecha-wrapper">
+                                <input type="text" id="fecha_analitica" name="fecha_analitica" class="form-control" placeholder="DD/MM/AAAA" maxlength="10" aria-label="Fecha de la analítica">
                                 <button type="button" class="btn btn-hoy" onclick="rellenarFechaHoy()" aria-label="Establecer fecha de hoy">HOY</button>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="form-label" for="edad_calculada">Edad (calculada)</label>
-                            <input type="text" id="edad_calculada" name="edad_calculada" class="form-control" readonly placeholder="Se calcula automáticamente" style="background-color: var(--color-bg-2); cursor: not-allowed;" aria-readonly="true">
+                            <input type="text" id="edad_calculada" name="edad_calculada" class="form-control" readonly placeholder="Se calcula automáticamente" aria-readonly="true">
                         </div>
                         <div class="form-group">
                             <label class="form-label" for="peso_kg">Peso (kg)</label>
@@ -291,15 +291,15 @@
 
         <div class="zona-botones-principales">
             <button type="button" class="btn btn-primary btn-lg btn-calcular" id="calculateButton" aria-label="Calcular todos los resultados">
-                Calcular Resultados <i class="fas fa-calculator" style="margin-left: 8px;"></i>
+                Calcular Resultados <i class="fas fa-calculator icon-right"></i>
             </button>
             
             <div class="botones-secundarios">
                 <button type="button" class="btn btn-outline-secondary btn-sm btn-limpiar" onclick="confirmarLimpiarFormulario()" aria-label="Borrar todos los datos">
-                    Limpiar <i class="fas fa-trash-alt" style="margin-left: 8px;"></i>
+                    Limpiar <i class="fas fa-trash-alt icon-right"></i>
                 </button>
                 <button id="btn-cargar-datos-test" class="btn btn-sm" style="display:none;" onclick="loadSampleData()">
-                    Datos de ejemplo <i class="fas fa-vial" style="margin-left: 8px;"></i>
+                    Datos de ejemplo <i class="fas fa-vial icon-right"></i>
                 </button>
             </div>
         </div>
@@ -307,10 +307,10 @@
         <section id="results" class="results-section">
             <h3><i class="fas fa-chart-line"></i> Resultados Calculados</h3>
             
-            <div id="empty-state-results" style="text-align: center; padding: 50px 20px; color: var(--color-text-secondary); background: var(--color-bg-1); border-radius: var(--radius-lg); border: 1px dashed var(--color-primary); margin-top: 10px;">
-                <i class="fas fa-clipboard-list" style="font-size: 48px; color: var(--color-primary); opacity: 0.5; margin-bottom: 16px;"></i>
-                <h4 style="margin-bottom: 8px; color: var(--color-text);">Aún no hay datos</h4>
-                <p style="font-size: 14px; max-width: 400px; margin: 0 auto;">Introduce los parámetros clínicos del paciente en las pestañas superiores y pulsa "Calcular Resultados" para generar el informe analítico.</p>
+            <div id="empty-state-results">
+                <i class="fas fa-clipboard-list"></i>
+                <h4>Aún no hay datos</h4>
+                <p>Introduce los parámetros clínicos del paciente en las pestañas superiores y pulsa "Calcular Resultados" para generar el informe analítico.</p>
             </div>
 
             <div class="results-grid hidden" id="resultsGrid">
@@ -333,20 +333,20 @@
 
         <script src="scripts.js"></script>
       
-        <div style="margin-top: 30px; padding: 0 15px;">
-            <details style="background: var(--color-bg-2); padding: 12px 15px; border-radius: var(--radius-md); border: 1px solid var(--color-border); font-size: 12px; color: var(--color-text-secondary); transition: all 0.3s ease;">
-                <summary style="cursor: pointer; font-weight: 600; outline: none; list-style: none; display: flex; align-items: center; gap: 8px; color: var(--color-text);">
+        <div class="bibliography-container">
+            <details class="bibliography-details">
+                <summary class="bibliography-summary">
                     <i class="fas fa-book-medical"></i> Referencias Bibliográficas y Fórmulas
                 </summary>
-                <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--color-border);">
-                    <ul style="margin: 0; padding-left: 20px; line-height: 1.6; text-align: left;">
-                        <li style="margin-bottom: 6px;">
+                <div class="bibliography-content">
+                    <ul class="bibliography-list">
+                        <li class="bibliography-item">
                             <strong>eGFR CKiD U25 (Cr y CistC):</strong> Pierce CB, et al. <em>eGFR in Children and Young Adults: The CKiD U25 Equations.</em> Am J Kidney Dis. 2021;77(6):865-875.
                         </li>
-                        <li style="margin-bottom: 6px;">
+                        <li class="bibliography-item">
                             <strong>Estadificación KDIGO:</strong> <em>KDIGO 2012 Clinical Practice Guideline for the Evaluation and Management of Chronic Kidney Disease.</em> Kidney Int Suppl. 2013;3(1):1-150.
                         </li>
-                        <li style="margin-bottom: 6px;">
+                        <li class="bibliography-item">
                             <strong>Excreciones Fraccionales y Cocientes:</strong> <em>Protocolos Diagnósticos y Terapéuticos en Pediatría: Nefrología.</em> Asociación Española de Pediatría (AEPED).
                         </li>
                         <li>
@@ -357,10 +357,9 @@
             </details>
         </div>
     
-        <footer style="margin-top: 40px; padding: 20px 15px 50px 15px; border-top: 1px solid var(--color-border); text-align: justify; color: var(--color-text-secondary); font-size: 11px; line-height: 1.5;">
-            
-            <p style="text-align: center; margin-bottom: 8px;">
-                <strong><i class="fas fa-shield-alt"></i> Aviso Legal y Descargo de Responsabilidad Clínica</strong>
+        <footer class="app-footer">
+            <p class="footer-legal-title">
+                <strong><i class="fas fa-shield-alt icon-left" ></i> Aviso Legal y Descargo de Responsabilidad Clínica</strong>
             </p>
             <p>
                 NefroPed es una herramienta informática de apoyo diseñada exclusivamente para profesionales sanitarios. Los cálculos, estadificaciones y fórmulas pediátricas se basan en la literatura médica estándar. Sin embargo, esta aplicación no constituye un dispositivo médico ni un sistema de diagnóstico, y los resultados generados <strong>nunca deben sustituir el juicio clínico del facultativo</strong>.
@@ -369,30 +368,30 @@
                 El autor no se hace responsable de posibles errores en la entrada de datos, fallos en el procesamiento del navegador o decisiones terapéuticas tomadas en base a los resultados de esta aplicación. Es responsabilidad exclusiva del profesional médico verificar las dosis, parámetros y resultados antes de cualquier intervención clínica.
             </p>
             
-            <p style="text-align: center; color: var(--color-primary); font-weight: 600; font-size: 12px; margin: 15px 0;">
-                <i class="fas fa-lock" style="margin-right: 4px;"></i> Privacidad garantizada: Los datos introducidos no se envían a ningún servidor y se procesan 100% de forma local en el dispositivo.
+            <p class="footer-security-note">
+                <i class="fas fa-lock icon-left"></i> Privacidad garantizada: Los datos introducidos no se envían a ningún servidor y se procesan 100% de forma local en el dispositivo.
             </p>
 
-            <div style="text-align: center; margin-top: 20px; font-weight: 500; line-height: 1.8;">
+            <div class="footer-credits">
                 Dirección médica e idea original: <strong>Dra. Ana María Ortega Morales, FEA Pediatría en HUSC Granada</strong><br>
                 Desarrollo técnico e informático: <strong>Felipe Reyes</strong><br>
-                <a href="mailto:contacto@nefroped.es" style="color: var(--color-primary); text-decoration: none; display: inline-block; margin-bottom: 12px;">
-                    <i class="fas fa-envelope"></i> contacto@nefroped.es
+                <a href="mailto:contacto@nefroped.es" class="footer-contact-link icon-left">
+                    <i class="fas fa-envelope icon-left"></i> contacto@nefroped.es
                 </a><br>
                 
-                <button id="btn-install-pwa" class="btn hidden" style="background-color: transparent; border: 1px solid var(--color-primary); color: var(--color-primary); font-size: 12px; padding: 4px 14px; border-radius: 20px; cursor: pointer; margin-bottom: 12px; transition: all 0.2s ease;">
-                    <i class="fas fa-mobile-alt" style="margin-right: 6px;"></i> Instalar App
+                <button id="btn-install-pwa" class="btn btn-install-app hidden">
+                    <i class="fas fa-mobile-alt icon-left"></i> Instalar App
                 </button>
             </div>
             
-            <div style="margin-top: 5px; margin-bottom: 20px; display: flex; justify-content: center;">
+            <div class="footer-theme-toggle">
                 <button id="theme-toggle-footer" class="btn-theme-footer" aria-label="Cambiar modo oscuro/claro">
-                    <i class="fas fa-moon"></i> <span id="theme-text">Modo Oscuro</span>
+                    <i class="fas fa-moon icon-left"></i> <span id="theme-text">Modo Oscuro</span>
                  </button>
             </div>
 
-            <div style="text-align: center; margin-top: 15px; border-top: 1px solid var(--color-border); padding-top: 15px;">
-                <span style="font-size: 0.95em;">Desarrollado para la comunidad de Nefrología Pediátrica | &copy; 2026 Todos los derechos reservados.</span>
+            <div class="footer-copyright">
+                <span>Desarrollado para la comunidad de Nefrología Pediátrica | &copy; 2026 Todos los derechos reservados.</span>
             </div>
         </footer>
     </div>

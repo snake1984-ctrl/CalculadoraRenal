@@ -1,15 +1,16 @@
+/* ==========================================================================
+   NEFROPED - HOJA DE ESTILOS PRINCIPAL
+   ========================================================================== */
+
 :root {
   /* ============================================
-     PALETA DE COLORES V2 (Clinical Modern)
+     1. PALETA DE COLORES (Light Mode)
      ============================================ */
-  
-  /* MODO CLARO (Limpio y Clínico) */
   --color-bg-base: #f1f5f9;       /* Fondo general pantalla */
   --color-bg-surface: #ffffff;    /* Fondo tarjetas/inputs */
   --color-txt-main: #0f172a;      /* Texto principal */
   --color-txt-muted: #64748b;     /* Texto secundario */
   
-  /* Semáforo Moderno */
   --color-sem-success: #10b981;
   --color-sem-error: #ef4444;
   --color-sem-warning: #f59e0b;
@@ -20,36 +21,31 @@
   
   --color-border-base: #e2e8f0;
 
-  /* Mapeo de variables antiguas para compatibilidad */
+  /* Variables mapeadas */
   --color-background: var(--color-bg-base);
   --color-surface: var(--color-bg-surface);
   --color-text: var(--color-txt-main);
   --color-text-secondary: var(--color-txt-muted);
-  
   --color-primary: var(--color-brand-primary);
   --color-primary-hover: var(--color-brand-hover);
   --color-primary-active: var(--color-brand-active);
-  
   --color-success: var(--color-sem-success);
   --color-error: var(--color-sem-error);
   --color-warning: var(--color-sem-warning);
   --color-info: var(--color-txt-muted);
-  
   --color-border: var(--color-border-base);
   --color-card-border: var(--color-border-base);
-  
   --color-bg-input: #ffffff;
   --color-text-primary: var(--color-txt-main);
   --color-btn-primary-text: #ffffff;
-  
   --color-focus-ring: rgba(8, 145, 178, 0.4);
 
   /* Fondos especiales */
   --color-bg-1: rgba(8, 145, 178, 0.08);
-  --color-bg-2: rgba(245, 158, 11, 0.08); /* Crema (Edad y Botones) */
+  --color-bg-2: rgba(245, 158, 11, 0.08); /* Crema */
   --color-bg-3: rgba(16, 185, 129, 0.08);
 
-  /* Tipografía */
+  /* Tipografía y Espaciado */
   --font-family-base: "FKGroteskNeue", "Geist", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-size-base: 14px;
   --font-size-md: 14px;
@@ -67,7 +63,6 @@
   --line-height-tight: 1.2;
   --line-height-normal: 1.5;
 
-  /* Espaciado y Radios */
   --space-8: 8px;
   --space-12: 12px;
   --space-16: 16px;
@@ -88,8 +83,9 @@
   --duration-fast: 150ms;
   --ease-standard: cubic-bezier(0.16, 1, 0.3, 1);
 }
+
 /* ============================================
-   MODO OSCURO (Deep Blue)
+   2. PALETA DE COLORES (Dark Mode)
    ============================================ */
 @media (prefers-color-scheme: dark) {
   :root {
@@ -97,47 +93,39 @@
     --color-bg-surface: #1e293b;
     --color-txt-main: #f1f5f9;
     --color-txt-muted: #94a3b8;
-    
     --color-sem-success: #34d399;
     --color-sem-error: #f87171;
     --color-sem-warning: #fbbf24;
-    
     --color-brand-primary: #22d3ee;
     --color-brand-hover: #06b6d4;
     --color-brand-active: #0891b2;
-    
     --color-border-base: #334155;
-
+    
     --color-background: var(--color-bg-base);
     --color-surface: var(--color-bg-surface);
     --color-text: var(--color-txt-main);
     --color-text-secondary: var(--color-txt-muted);
-    
     --color-primary: var(--color-brand-primary);
     --color-primary-hover: var(--color-brand-hover);
     --color-primary-active: var(--color-brand-active);
-    
     --color-success: var(--color-sem-success);
     --color-error: var(--color-sem-error);
     --color-warning: var(--color-sem-warning);
     --color-info: var(--color-txt-muted);
-    
     --color-border: var(--color-border-base);
     --color-card-border: var(--color-border-base);
-    
     --color-bg-input: #1e293b; 
     --color-text-primary: #f1f5f9;
     --color-btn-primary-text: #0f172a;
-    
     --color-focus-ring: rgba(34, 211, 238, 0.4);
-
+    
     --color-bg-1: rgba(34, 211, 238, 0.15);
-    --color-bg-2: #334155; /* <-- CORREGIDO: Sin !important */
+    --color-bg-2: #334155; /* Azul Grisáceo Profundo */
     --color-bg-3: rgba(52, 211, 153, 0.15);
   }
 }
 
-/* Soporte toggle manual */
+/* Soporte manual Toggle Botón Oscuro/Claro */
 [data-color-scheme="dark"] {
     --color-background: #0f172a;
     --color-surface: #1e293b;
@@ -153,7 +141,7 @@
     --color-bg-input: #1e293b;
     --color-btn-primary-text: #0f172a;
     --color-bg-1: rgba(34, 211, 238, 0.15);
-    --color-bg-2: #334155; /* <-- CORREGIDO: Sin !important */
+    --color-bg-2: #334155; 
     --color-bg-3: rgba(52, 211, 153, 0.15);
 }
 
@@ -175,21 +163,19 @@
     --color-bg-2: rgba(245, 158, 11, 0.08);
     --color-bg-3: rgba(16, 185, 129, 0.08);
 }
+
 /* ============================================
-   RESETEOS Y BASE
+   3. RESETEOS Y BASE
    ============================================ */
 @font-face {
   font-family: 'FKGroteskNeue';
   src: url('https://r2cdn.perplexity.ai/fonts/FKGroteskNeue.woff2') format('woff2');
 }
 
-*, *::before, *::after {
-  box-sizing: border-box;
-}
+*, *::before, *::after { box-sizing: border-box; }
 
 html, body {
-  margin: 0;
-  padding: 0;
+  margin: 0; padding: 0;
   font-family: var(--font-family-base);
   font-size: var(--font-size-base);
   line-height: var(--line-height-normal);
@@ -199,180 +185,132 @@ html, body {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-:focus-visible {
-    outline: 2px solid var(--color-primary);
-    outline-offset: 2px;
-}
+:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 2px; }
 
-h1, h2, h3, h4, h5, h6 {
-  margin: 0;
-  font-weight: var(--font-weight-semibold);
-  line-height: var(--line-height-tight);
-  color: var(--color-text);
-}
-
+h1, h2, h3, h4, h5, h6 { margin: 0; font-weight: var(--font-weight-semibold); line-height: var(--line-height-tight); color: var(--color-text); }
 h1 { font-size: var(--font-size-4xl); }
 h2 { font-size: var(--font-size-3xl); }
 h3 { font-size: var(--font-size-2xl); }
 h4 { font-size: var(--font-size-xl); }
 
-.container {
-  width: 100%;
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: var(--space-16);
+.container { width: 100%; max-width: 1280px; margin: 0 auto; padding: var(--space-16); }
+
+/* Anti-selección en UI */
+.form-label, .app-header, .tabs-container, .section-title, .btn, .result-item, summary {
+    -webkit-user-select: none; -moz-user-select: none; user-select: none; cursor: default;
 }
 
 /* ============================================
-   LAYOUT (SOLUCIÓN DOBLE BORDE)
-   ============================================ */
-/* Las secciones dentro de las pestañas NO deben tener borde propio */
-section.tab-content {
-    border: none;
-    box-shadow: none;
-    background: transparent;
-    padding: 24px;
-    margin-bottom: 0;
-}
-
-/* Títulos dentro de las secciones de formulario */
-.section-title {
-    margin-top: 0;
-    border-bottom: 2px solid var(--color-border);
-    padding-bottom: 15px;
-    margin-bottom: 20px;
-    color: var(--color-primary);
-    font-weight: 600;
-}
-
-/* ============================================
-   CABECERA
+   4. ESTRUCTURA Y CABECERA
    ============================================ */
 .app-header {
   background: var(--color-surface);
   padding: var(--space-24) var(--space-16);
-  text-align: center;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  margin-bottom: var(--space-24);
-  position: relative;
-  box-shadow: var(--shadow-sm);
+  text-align: center; border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg); margin-bottom: var(--space-24);
+  position: relative; box-shadow: var(--shadow-sm);
 }
 
 .app-title { margin-bottom: var(--space-8); font-size: var(--font-size-3xl); }
 .app-subtitle { color: var(--color-text-secondary); margin: 0; font-size: var(--font-size-base); }
 
-.btn-theme-toggle {
-  position: absolute; top: 16px; right: 16px;
-  background: transparent; border: none;
-  color: var(--color-text); font-size: 24px;
-  cursor: pointer; padding: 8px; z-index: 100;
-  display: flex; align-items: center; justify-content: center;
-  transition: transform 0.2s ease;
-}
-.btn-theme-toggle:hover { transform: scale(1.1); color: var(--color-primary); }
-
 /* ============================================
-   PESTAÑAS
+   5. PESTAÑAS (TABS)
    ============================================ */
 .tabs-container {
-  background: var(--color-surface);
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--color-border);
-  margin-bottom: var(--space-24);
-  box-shadow: var(--shadow-sm);
-  width: 100%;
+  background: var(--color-surface); border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border); margin-bottom: var(--space-24);
+  box-shadow: var(--shadow-sm); width: 100%;
 }
 
 .tabs, .nav-tabs {
-  display: flex;
-  background: var(--color-surface);
-  border-bottom: 2px solid var(--color-border);
-  overflow-x: auto;
-  white-space: nowrap;
-  width: 100%;
-  max-width: 100%;
-  position: sticky; top: 0; z-index: 50;
-  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  display: flex; background: var(--color-surface); border-bottom: 2px solid var(--color-border);
+  overflow-x: auto; white-space: nowrap; width: 100%; max-width: 100%;
+  position: sticky; top: 0; z-index: 50; border-radius: var(--radius-lg) var(--radius-lg) 0 0;
   scrollbar-width: thin; scroll-behavior: smooth;
 }
-
 .tabs::-webkit-scrollbar { height: 5px; background: transparent; }
 .tabs::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 8px; }
 
 .tab-button {
-  flex: 1 1 0px; min-width: 120px;
-  padding: var(--space-12) var(--space-20);
+  flex: 1 1 0px; min-width: 120px; padding: var(--space-12) var(--space-20);
   border: none; background: transparent; cursor: pointer;
   font-size: var(--font-size-sm); font-weight: var(--font-weight-medium);
-  color: var(--color-text-secondary);
-  border-bottom: 3px solid transparent;
-  transition: all var(--duration-fast) var(--ease-standard);
-  text-align: center;
+  color: var(--color-text-secondary); border-bottom: 3px solid transparent;
+  transition: all var(--duration-fast) var(--ease-standard); text-align: center;
 }
-
 .tab-button:hover { color: var(--color-text); background: var(--color-bg-1); }
-.tab-button.active {
-  color: var(--color-primary);
-  border-bottom-color: var(--color-primary);
-  background: var(--color-bg-1);
-  font-weight: var(--font-weight-bold);
-}
+.tab-button.active { color: var(--color-primary); border-bottom-color: var(--color-primary); background: var(--color-bg-1); font-weight: var(--font-weight-bold); }
 .tab-button:focus-visible { outline: none; background: var(--color-bg-1); }
-.tab-content { display: none; padding: var(--space-24); }
+
+.tab-content { display: none; padding: var(--space-24); border: none; box-shadow: none; background: transparent; margin-bottom: 0;}
 .tab-content.active { display: block; }
 
 /* ============================================
-   FORMULARIOS
+   6. FORMULARIOS E INPUTS
    ============================================ */
-.form-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-16); }
-@media (min-width: 769px) {
-  .span-2 { grid-column: span 2; }
-  .span-3 { grid-column: span 3; }
-  .span-4 { grid-column: 1 / -1; }
+.section-title, .results-section h3, .report-section h3 {
+    margin-top: 0; border-bottom: 2px solid var(--color-border);
+    padding-bottom: 15px; margin-bottom: 20px; color: var(--color-primary); font-weight: 600;
 }
+
+.form-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-16); }
 .form-grid-3col { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-16); }
+@media (min-width: 769px) { .span-2 { grid-column: span 2; } .span-3 { grid-column: span 3; } .span-4 { grid-column: 1 / -1; } }
+
 .form-group { display: flex; flex-direction: column; margin-bottom: var(--space-16); }
 .form-label { font-weight: var(--font-weight-medium); margin-bottom: var(--space-8); color: var(--color-text); font-size: var(--font-size-sm); }
+.form-label[data-color-scheme="dark"] { color: #e2e8f0; }
 
-.form-control {
+.form-control, textarea.form-control {
   display: block; width: 100%; padding: var(--space-8) var(--space-12);
   font-size: var(--font-size-md); line-height: var(--line-height-normal);
   color: var(--color-text); background-color: var(--color-bg-input);
   border: 1px solid var(--color-border); border-radius: var(--radius-base);
   transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
   font-family: var(--font-family-base);
+  user-select: text; cursor: text;
 }
-
-.form-control:focus {
-    border-color: var(--color-primary) !important;
-    box-shadow: 0 0 0 3px var(--color-focus-ring) !important;
-    outline: none;
-    transform: translateY(-1px);
-}
+.form-control:focus { border-color: var(--color-primary) !important; box-shadow: 0 0 0 3px var(--color-focus-ring) !important; outline: none; transform: translateY(-1px); }
 .form-control:hover { border-color: var(--color-primary-hover); }
-/* Quitar flechas de número (Spinners) */
-input[type=number]::-webkit-inner-spin-button, 
-input[type=number]::-webkit-outer-spin-button { 
-  -webkit-appearance: none; 
-  margin: 0; 
-  display: none; 
+
+/* Modo Oscuro: Inputs */
+[data-color-scheme="dark"] .form-control, [data-color-scheme="dark"] textarea.form-control {
+    background-color: #1e293b; border-color: #475569; color: #f1f5f9 !important;
+}
+[data-color-scheme="dark"] .form-control:focus { background-color: #0f172a; border-color: var(--color-primary) !important; }
+
+/* Validaciones Visuales */
+.form-control.campo-valido { border-color: var(--color-primary) !important; background-color: transparent; box-shadow: 0 0 0 1px var(--color-primary) inset; transition: all 0.3s ease; }
+.form-control.campo-error { border-color: var(--color-error) !important; box-shadow: 0 0 0 1px var(--color-error) inset; }
+
+/* Textarea expansivo */
+textarea.form-control {
+    height: 42px !important; min-height: 42px; overflow: hidden; resize: none;
+    white-space: nowrap; text-overflow: ellipsis; padding-top: 10px;
+}
+textarea.form-control:focus {
+    height: 150px !important; min-height: 150px; white-space: normal;
+    overflow-y: auto; box-shadow: 0 4px 15px rgba(0,0,0,0.15); z-index: 10; position: relative;
 }
 
-input[type=number] { 
-  -moz-appearance: textfield; /* Para Firefox viejo */
-  appearance: textfield;      /* Estándar moderno (ESTO ES LO QUE FALTABA) */
-}
+/* Campos especiales (Spinners y Edad) */
+input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; display: none; }
+input[type=number] { -moz-appearance: textfield; appearance: textfield; }
+
+#edad_calculada { background-color: #f1f5f9 !important; color: #475569 !important; border-color: #cbd5e1 !important; cursor: not-allowed; font-weight: 500; }
+[data-color-scheme="dark"] #edad_calculada { background-color: #0f172a !important; color: #94a3b8 !important; border-color: #334155 !important; box-shadow: none; }
+
+.input-unit-wrapper { cursor: text; }
 
 /* ============================================
-   BOTONES
+   7. BOTONES
    ============================================ */
 .btn {
   display: inline-flex; align-items: center; justify-content: center;
   padding: var(--space-8) var(--space-16); border-radius: var(--radius-base);
   font-size: var(--font-size-base); font-weight: var(--font-weight-medium);
-  cursor: pointer; transition: all 0.2s ease;
-  border: none; text-decoration: none; font-family: var(--font-family-base);
+  cursor: pointer; transition: all 0.2s ease; border: none; text-decoration: none; font-family: var(--font-family-base);
 }
 .btn:active { transform: scale(0.96); }
 .btn:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--color-focus-ring); }
@@ -380,199 +318,78 @@ input[type=number] {
 .btn--primary { background: var(--color-primary); color: var(--color-btn-primary-text); }
 .btn--primary:hover { background: var(--color-primary-hover); }
 
-/* ZONA BOTONES PRINCIPALES (Corregido) */
+/* Caja de Botón Principal */
 .zona-botones-principales {
   margin: var(--space-32) 0; padding: var(--space-24); text-align: center;
-  
-  /* FONDO CREMA y UN SOLO BORDE */
-  background: var(--color-bg-2); 
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  
-  /* Sin sombra extra */
-  box-shadow: none;
-  
-  display: flex; flex-direction: column; align-items: center; gap: var(--space-16);
+  background: var(--color-bg-2); border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg); box-shadow: none; display: flex; flex-direction: column; align-items: center; gap: var(--space-16);
 }
+[data-color-scheme="dark"] .zona-botones-principales { background-color: var(--color-bg-2) !important; border-color: #475569 !important; }
 
-.btn-calcular {
-  font-size: 18px; padding: 15px 40px; font-weight: var(--font-weight-bold);
-  border-radius: var(--radius-md); box-shadow: var(--shadow-lg); background: var(--color-primary);
-  color: var(--color-btn-primary-text); min-width: 280px; border: none;
-}
+/* Botones específicos */
+.btn-calcular { font-size: 18px; padding: 15px 40px; font-weight: var(--font-weight-bold); border-radius: var(--radius-md); box-shadow: var(--shadow-lg); background: var(--color-primary); color: var(--color-btn-primary-text); min-width: 280px; }
 .btn-calcular:hover { transform: translateY(-2px); background: var(--color-primary-hover); }
 .btn-calcular:active { transform: translateY(0); }
 
 .botones-secundarios { display: flex; gap: var(--space-12); justify-content: center; flex-wrap: wrap; }
 
-/* BOTÓN LIMPIAR (Corregido: Fondo Blanco, Texto Azul) */
-.btn-limpiar { 
-  font-size: var(--font-size-base); 
-  padding: var(--space-8) var(--space-16); 
-  
-  background-color: #ffffff !important;   /* FORZAMOS BLANCO */
-  color: var(--color-primary) !important; /* FORZAMOS AZUL */
-  border: 1px solid var(--color-primary) !important;
-  
-  font-weight: 500;
-  transition: all 0.2s ease;
-}
+.btn-limpiar { font-size: var(--font-size-base); padding: var(--space-8) var(--space-16); background-color: #ffffff !important; color: var(--color-primary) !important; border: 1px solid var(--color-primary) !important; font-weight: 500; }
+.btn-limpiar:hover { background-color: var(--color-bg-1) !important; box-shadow: 0 2px 5px rgba(0,0,0,0.1); transform: translateY(-1px); }
+[data-color-scheme="dark"] .btn-limpiar { background-color: transparent !important; }
 
-.btn-limpiar:hover { 
-  background-color: var(--color-bg-1) !important; /* Azul muy clarito al pasar ratón */
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  transform: translateY(-1px);
-}
+#btn-cargar-datos-test { font-size: var(--font-size-sm); padding: var(--space-8) var(--space-16); background-color: #f8fafc; border: 1px solid var(--color-border); color: var(--color-text-secondary); border-radius: var(--radius-base); font-weight: 500; margin-left: 10px; }
+#btn-cargar-datos-test:hover { background-color: #e2e8f0; color: var(--color-text); border-color: var(--color-text); }
+[data-color-scheme="dark"] #btn-cargar-datos-test { background-color: #1e293b !important; border-color: #475569 !important; color: #94a3b8 !important; }
+[data-color-scheme="dark"] #btn-cargar-datos-test:hover { background-color: #334155 !important; color: #f1f5f9 !important; border-color: #f1f5f9 !important; }
 
-/* BOTÓN DATOS DE EJEMPLO (Corregido: Gris claro sobre fondo crema) */
-#btn-cargar-datos-test {
-    font-size: var(--font-size-sm);
-    padding: var(--space-8) var(--space-16);
-    
-    /* CAMBIO: Gris muy suave (Blanco roto) en vez de transparente */
-    background-color: #f8fafc; 
-    
-    /* Borde gris y texto gris */
-    border: 1px solid var(--color-border); 
-    color: var(--color-text-secondary);
-    
-    border-radius: var(--radius-base);
-    cursor: pointer;
-    font-weight: 500;
-    transition: all 0.2s ease;
-    
-    margin-left: 10px;
-}
+#btn-hoy, .btn-hoy { font-size: 14px !important; padding: 6px 0 !important; width: 90px !important; border-radius: 8px !important; background-color: #f1f5f9 !important; color: #1e293b !important; border: 1px solid #cbd5e1 !important; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
+#btn-hoy:hover { border-color: var(--color-primary) !important; color: var(--color-primary) !important; }
+[data-color-scheme="dark"] #btn-hoy { background-color: rgba(34, 211, 238, 0.15) !important; color: var(--color-primary) !important; border-color: var(--color-primary) !important; font-weight: 600 !important; }
+[data-color-scheme="dark"] #btn-hoy:hover { background-color: var(--color-primary) !important; color: #0f172a !important; box-shadow: 0 0 10px rgba(34, 211, 238, 0.4); }
 
-#btn-cargar-datos-test:hover {
-    /* Al pasar el ratón se oscurece un poco (Gris medio) */
-    background-color: #e2e8f0; 
-    color: var(--color-text);
-    border-color: var(--color-text);
-}
+#copyClipboardButton { background-color: var(--color-primary) !important; color: var(--color-btn-primary-text) !important; opacity: 1 !important; }
+#copyClipboardButton:hover { background-color: var(--color-primary-hover) !important; }
 
-/* =========================================
-   ESTILOS DEL BOTÓN HOY (Modo Claro y Oscuro)
-   ========================================= */
-
-/* ESTILO BASE (Modo Claro) - Gris suave */
-#btn-hoy, .btn-hoy {
-  font-size: 14px !important; 
-  padding: 6px 0 !important;
-  width: 90px !important; 
-  border-radius: 8px !important;
-  
-  background-color: #f1f5f9 !important; /* Gris claro */
-  color: #1e293b !important;            /* Texto oscuro */
-  border: 1px solid #cbd5e1 !important; /* Borde gris */
-  
-  box-shadow: 0 1px 2px rgba(0,0,0,0.05); 
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-#btn-hoy:hover { 
-  border-color: var(--color-primary) !important; 
-  color: var(--color-primary) !important; 
-}
-
-/* ESTILO MODO OSCURO - Botón "Tintado" para que se distinga */
-[data-color-scheme="dark"] #btn-hoy,
-[data-color-scheme="dark"] .btn-hoy {
-    /* CAMBIO: En vez de transparent, le damos un 15% de azul Cyan */
-    background-color: rgba(34, 211, 238, 0.15) !important; 
-    
-    color: var(--color-primary) !important;
-    border: 1px solid var(--color-primary) !important;
-    font-weight: 600 !important;
-}
-
-[data-color-scheme="dark"] #btn-hoy:hover {
-    /* Al pasar el ratón, se llena de color sólido */
-    background-color: var(--color-primary) !important; 
-    color: #0f172a !important; /* Texto oscuro */
-    box-shadow: 0 0 10px rgba(34, 211, 238, 0.4); /* Pequeño brillo neon */
-}
+.btn-theme-footer { background: transparent; border: 1px solid var(--color-border); color: var(--color-text-secondary); padding: 6px 14px; border-radius: 20px; font-size: 11px; font-weight: 500; display: inline-flex; align-items: center; gap: 8px; transition: all 0.2s ease; font-family: var(--font-family-base); }
+.btn-theme-footer:hover { background: var(--color-surface); border-color: var(--color-primary); color: var(--color-primary); transform: translateY(-1px); box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+.btn-theme-footer i { font-size: 12px; }
 
 /* ============================================
-   RESULTADOS E INFORME (Estos SÍ llevan borde propio)
+   8. RESULTADOS Y EXPORTACIÓN
    ============================================ */
-.results-section, .report-section {
-  background: var(--color-surface); border-radius: var(--radius-lg);
-  padding: var(--space-24); margin-top: var(--space-24);
-  border: 1px solid var(--color-card-border); box-shadow: var(--shadow-sm);
-}
-
-/* Título de Resultados e Informe: Misma línea que en el formulario */
-.results-section h3, .report-section h3 {
-    margin-top: 0;
-    border-bottom: 2px solid var(--color-border);
-    padding-bottom: 15px;
-    margin-bottom: 20px;
-    color: var(--color-primary);
-    font-weight: 600;
-}
-
+.results-section, .report-section { background: var(--color-surface); border-radius: var(--radius-lg); padding: var(--space-24); margin-top: var(--space-24); border: 1px solid var(--color-card-border); box-shadow: var(--shadow-sm); }
 .results-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--space-16); }
 
-/* TARJETAS DE RESULTADOS (Arreglado: Blancas en modo claro) */
 .result-item { 
-  background-color: var(--color-surface); /* Esto asegura BLANCO en modo claro */
-  padding: var(--space-16); 
-  border-radius: var(--radius-base); 
-  border: 1px solid var(--color-card-border); 
-  
-  /* Sombra suave para que floten */
-  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  background-color: var(--color-surface); padding: var(--space-16); border-radius: var(--radius-base); 
+  border: 1px solid var(--color-card-border); box-shadow: 0 1px 3px rgba(0,0,0,0.05); transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
-.result-item:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 6px rgba(0,0,0,0.08);
-}
+.result-item:hover { transform: translateY(-2px); box-shadow: 0 4px 6px rgba(0,0,0,0.08); }
+[data-color-scheme="dark"] .result-item { background-color: #1e293b !important; border-color: #334155 !important; }
+[data-color-scheme="dark"] .result-label { color: #94a3b8 !important; }
 
-.result-value { 
-  font-weight: bold; 
-  font-size: 1.25em; 
-  color: var(--color-primary); 
-  margin-top: 4px;
-  display: block;
-}
+.result-value { font-weight: bold; font-size: 1.25em; margin-top: 4px; display: block; }
 .export-options { display: flex; gap: var(--space-12); flex-wrap: wrap; justify-content: center; margin-top: var(--space-16); }
 
+/* ============================================
+   9. MISCELÁNEA
+   ============================================ */
 .field-count {
   position: fixed; bottom: var(--space-16); right: var(--space-16);
   background: var(--color-primary); color: var(--color-btn-primary-text);
   padding: var(--space-8) var(--space-12); border-radius: var(--radius-full);
-  font-size: var(--font-size-sm); font-weight: var(--font-weight-medium);
-  z-index: 1000; box-shadow: var(--shadow-md);
+  font-size: var(--font-size-sm); font-weight: var(--font-weight-medium); z-index: 1000; box-shadow: var(--shadow-md);
 }
 
 .hidden { display: none !important; }
 
-.form-control.campo-valido {
-    border-color: var(--color-primary) !important; 
-    background-color: transparent;
-    box-shadow: 0 0 0 1px var(--color-primary) inset;
-    transition: all 0.3s ease;
-}
-.form-control.campo-error {
-    border-color: var(--color-error) !important;
-    box-shadow: 0 0 0 1px var(--color-error) inset;
-}
+/* Detalles y Referencias (Usa color secundario en vez de negro) */
+summary { color: var(--color-text-secondary) !important; }
+summary:focus { outline: none; }
 
-textarea.form-control {
-    height: 42px !important; min-height: 42px; overflow: hidden; resize: none;
-    white-space: nowrap; text-overflow: ellipsis; transition: all 0.3s ease-in-out;
-    padding-top: 10px;
-}
-textarea.form-control:focus {
-    height: 150px !important; min-height: 150px; white-space: normal;
-    overflow-y: auto; box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-    background-color: var(--color-bg-input); color: var(--color-text-primary);
-    z-index: 10; position: relative;
-}
-
+/* ============================================
+   10. RESPONSIVE (MÓVIL)
+   ============================================ */
 @media (max-width: 1024px) {
   .container { padding: var(--space-12); }
   .form-grid, .form-grid-3col { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
@@ -590,164 +407,73 @@ textarea.form-control:focus {
   #btn-hoy, .btn-hoy { font-size: 14px !important; padding: 7px 16px !important; width: 90px !important; }
   .results-grid { grid-template-columns: 1fr !important; }
 }
+/* ============================================
+   11. COMPONENTES FINALES (Bibliografía y Footer)
+   ============================================ */
 
-.form-label, .app-header, .tabs-container, .section-title, .btn, .result-item, summary {
-    -webkit-user-select: none; -moz-user-select: none; user-select: none; cursor: default;
+/* Bibliografía */
+.bibliography-container { margin-top: 30px; padding: 0 15px; }
+.bibliography-details { 
+    background: var(--color-bg-2); padding: 12px 15px; 
+    border-radius: var(--radius-md); border: 1px solid var(--color-border); 
+    font-size: 12px; color: var(--color-text-secondary); transition: all 0.3s ease; 
 }
-.form-control { user-select: text; cursor: text; }
-.input-unit-wrapper { cursor: text; }
-/* CAMBIO: Campo Edad con estilo "Readonly" estándar (Gris) */
-#edad_calculada {
-    background-color: #f1f5f9 !important; /* El mismo gris claro del botón HOY */
-    color: #475569 !important;            /* Texto gris oscuro (Slate 600) */
-    border-color: #cbd5e1 !important;     /* Borde gris un pelín más oscuro */
-    cursor: not-allowed;                  /* Cursor de prohibido para reforzar que no se toca */
-    font-weight: 500;
+.bibliography-summary { 
+    cursor: pointer; font-weight: 600; outline: none; list-style: none; 
+    display: flex; align-items: center; gap: 8px; color: var(--color-text); 
 }
-/* BOTÓN TEMA EN FOOTER (Estilo Píldora Discreto) */
-.btn-theme-footer {
-    background: transparent;
-    border: 1px solid var(--color-border);
-    color: var(--color-text-secondary);
-    padding: 6px 14px;
-    border-radius: 20px;
-    font-size: 11px;
-    font-weight: 500;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px; /* Separación entre icono y texto */
-    transition: all 0.2s ease;
-    font-family: var(--font-family-base);
-}
+.bibliography-content { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--color-border); }
+.bibliography-list { margin: 0; padding-left: 20px; line-height: 1.6; text-align: left; }
+.bibliography-item { margin-bottom: 6px; }
 
-.btn-theme-footer:hover {
-    background: var(--color-surface);
-    border-color: var(--color-primary);
-    color: var(--color-primary);
-    transform: translateY(-1px);
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+/* Footer y Aviso Legal */
+.app-footer { 
+    margin-top: 40px; padding: 20px 15px 50px 15px; 
+    border-top: 1px solid var(--color-border); text-align: justify; 
+    color: var(--color-text-secondary); font-size: 11px; line-height: 1.5; 
 }
+.footer-legal-title { text-align: center; margin-bottom: 8px; }
+.footer-security-note { text-align: center; color: var(--color-primary); font-weight: 600; font-size: 12px; margin: 15px 0; }
+.footer-credits { text-align: center; margin-top: 20px; font-weight: 500; line-height: 1.8; }
+.footer-contact-link { color: var(--color-primary); text-decoration: none; display: inline-block; margin-bottom: 12px; }
 
-.btn-theme-footer i {
-    font-size: 12px;
+/* Botón Instalar App (Footer) */
+.btn-install-app { 
+    background-color: transparent; border: 1px solid var(--color-primary); 
+    color: var(--color-primary); font-size: 12px; padding: 4px 14px; 
+    border-radius: 20px; cursor: pointer; margin-bottom: 12px; transition: all 0.2s ease; 
 }
-/* ARREGLO URGENTE: Botón Copiar Invisible */
-#copyClipboardButton {
-    background-color: var(--color-primary) !important; 
-    color: var(--color-btn-primary-text) !important; /* AHORA SÍ: Usa el color de texto de sus hermanos */
-    opacity: 1 !important;
+.btn-install-app:hover { 
+    background-color: var(--color-primary); color: var(--color-btn-primary-text); 
 }
 
-#copyClipboardButton:hover {
-    background-color: var(--color-primary-hover) !important;
-}
-/* ===============================================
-   CORRECCIONES ESPECÍFICAS MODO OSCURO
-   =============================================== */
+/* Resto Footer */
+.footer-theme-toggle { margin-top: 5px; margin-bottom: 20px; display: flex; justify-content: center; }
+.footer-copyright { text-align: center; margin-top: 15px; border-top: 1px solid var(--color-border); padding-top: 15px; }
 
-/* 1. Arreglar el botón HOY en modo oscuro */
-[data-color-scheme="dark"] #btn-hoy {
-    background-color: var(--color-surface) !important; /* Fondo oscuro */
-    color: var(--color-primary) !important;            /* Texto Cyan */
-    border-color: var(--color-primary) !important;     /* Borde Cyan */
-}
+/* Actualización de Cabecera (Para quitar sus estilos en línea también) */
+.app-title { margin-bottom: var(--space-8); font-size: 2.8rem; font-weight: 800; color: var(--color-primary); letter-spacing: -1px; }
+.app-subtitle { color: var(--color-text-secondary); margin: 0; font-size: 1.1rem; font-weight: 500; opacity: 0.85; }
 
-[data-color-scheme="dark"] #btn-hoy:hover {
-    background-color: var(--color-primary) !important;
-    color: #000 !important; /* Texto negro al pasar el ratón para contraste */
-}
+/* ============================================
+   12. LIMPIEZA DE ESTILOS EN LÍNEA
+   ============================================ */
+/* Envoltura de la fecha y botón HOY */
+.fecha-wrapper { display: flex; gap: 8px; align-items: stretch; }
+#fecha_analitica { flex: 1; margin-bottom: 0; }
+/* 1. Separación de los iconos en los botones */
+.icon-right { margin-left: 8px; }
+.icon-left { margin-right: 6px; }
 
-/* 2. Arreglar el campo EDAD (Readonly) en modo oscuro */
-[data-color-scheme="dark"] #edad_calculada {
-    background-color: #0f172a !important; /* Un tono más oscuro que el formulario */
-    color: #94a3b8 !important;            /* Texto gris medio */
-    border-color: #334155 !important;     /* Borde sutil */
-    box-shadow: none;
-}
+/* 2. Ocultar el botón Test (El intocable) por defecto */
+#btn-cargar-datos-test { display: none; }
 
-/* 3. Mejorar contraste de los inputs normales */
-[data-color-scheme="dark"] .form-control {
-    background-color: #1e293b; /* Slate 800 */
-    border-color: #475569;
-    color: #f1f5f9;
+/* 3. Diseño de la caja "Aún no hay datos" */
+#empty-state-results { 
+    text-align: center; padding: 50px 20px; color: var(--color-text-secondary); 
+    background: var(--color-bg-1); border-radius: var(--radius-lg); 
+    border: 1px dashed var(--color-primary); margin-top: 10px; 
 }
-
-[data-color-scheme="dark"] .form-control:focus {
-    background-color: #0f172a; /* Al escribir se oscurece un poco */
-    border-color: var(--color-primary) !important;
-}
-
-/* 4. Ajustar el color de los label (etiquetas) para que no sean tan brillantes */
-[data-color-scheme="dark"] .form-label {
-    color: #e2e8f0; /* Blanco roto, cansa menos la vista que el blanco puro */
-}
-/* ===============================================
-   CORRECCIÓN: ZONA DE RESULTADOS Y BOTONES (OSCURO)
-   =============================================== */
-
-/* 1. Fondo de las tarjetas de resultados: Un pelín más claro que el fondo general 
-      para que se diferencien bien y tengan profundidad */
-[data-color-scheme="dark"] .result-item {
-    background-color: #1e293b !important; /* Slate 800 - Fondo oscuro sutil */
-    border: 1px solid #334155 !important; /* Borde sutil para separar */
-}
-
-/* 2. Asegurar que los textos dentro de las tarjetas se vean brillantes */
-[data-color-scheme="dark"] .result-label {
-    color: #94a3b8 !important; /* Gris suave para etiquetas */
-}
-
-[data-color-scheme="dark"] .result-value {
-    color: var(--color-primary) !important; /* Nuestro color Cyan para los números */
-}
-
-/* 3. Botón Limpiar en oscuro: Transparente + Borde Cyan */
-[data-color-scheme="dark"] .btn-limpiar {
-    background-color: transparent !important;
-    border: 1px solid var(--color-primary) !important;
-    color: var(--color-primary) !important;
-}
-
-/* 4. Botón Datos de ejemplo en oscuro: Fondo gris oscuro sólido */
-[data-color-scheme="dark"] #btn-cargar-datos-test {
-    background-color: #1e293b !important;
-    border: 1px solid #475569 !important;
-    color: #94a3b8 !important;
-}
-
-[data-color-scheme="dark"] #btn-cargar-datos-test:hover {
-    background-color: #334155 !important;
-    color: #f1f5f9 !important;
-    border-color: #f1f5f9 !important;
-}
-
-/* 5. Zona de botones (Caja crema antigua) */
-/* En modo oscuro, la caja crema no queda bien, vamos a oscurecerla */
-[data-color-scheme="dark"] .zona-botones-principales {
-    background-color: #1e293b !important; /* Fondo del mismo color que las tarjetas */
-    border: 1px solid #334155 !important;
-}
-/* Refuerzo para la zona de botones en modo oscuro */
-[data-color-scheme="dark"] .zona-botones-principales {
-    background-color: var(--color-bg-2);
-    border-color: #475569; /* Un borde un pelín más claro para que resalte la caja */
-}
-/* ===============================================
-   AJUSTES FINALES MODO OSCURO
-   =============================================== */
-
-/* 1. Aplicar el 'Tercer Color' a la caja de botones principal */
-[data-color-scheme="dark"] .zona-botones-principales {
-    background-color: var(--color-bg-2) !important; /* Usa el gris azulado de las referencias */
-    border-color: #475569 !important; /* Borde un poco más claro para separar */
-}
-/* Igualar el color del título de Referencias con su texto */
-summary {
-    color: var(--color-text-secondary) !important;
-}
-
-/* Y ya que estamos, le quitamos el contorno negro feo que sale a veces al hacerle clic */
-summary:focus {
-    outline: none;
-}
+#empty-state-results i { font-size: 48px; color: var(--color-primary); opacity: 0.5; margin-bottom: 16px; }
+#empty-state-results h4 { margin-bottom: 8px; color: var(--color-text); }
+#empty-state-results p { font-size: 14px; max-width: 400px; margin: 0 auto; }

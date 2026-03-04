@@ -762,13 +762,16 @@ function displayResults() {
             const numValue = results[key];
             value.textContent = typeof numValue === 'number' ? numValue.toFixed(2) : '0.00';
             
-            if (key === "superficiecorporal" || key === "imc") {
-                value.style.setProperty('color', '#21808d', 'important'); value.style.fontWeight = "bold";
+           if (key === "superficiecorporal" || key === "imc") {
+                // Usa la variable CSS primaria
+                value.style.setProperty('color', 'var(--color-primary)', 'important'); 
+                value.style.fontWeight = "bold";
             } else {
                 const paramEncontrado = parametros.find(p => p.key === key);
                 if (paramEncontrado && numValue && numValue !== 0) {
                     const evaluacion = evaluarRango(key, numValue, edad, edadMeses);
-                    value.style.setProperty('color', !evaluacion.enRango ? '#dc2626' : '#21808d', 'important');
+                    // Si está fuera de rango rojo puro, si está OK usa la variable primaria
+                    value.style.setProperty('color', !evaluacion.enRango ? '#dc2626' : 'var(--color-primary)', 'important');
                     value.style.fontWeight = "bold";
                 }
             }

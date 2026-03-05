@@ -6,30 +6,25 @@ if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('./service-worker.js').then(registration => {
             console.log('SW registrado correctamente');
 
-            // 1. Si al cargar ya hay una actualización esperando (waiting)
             if (registration.waiting) {
                 mostrarAvisoActualizacion(registration.waiting);
             }
 
-            // 2. Si detectamos que se está instalando una nueva mientras usamos la app
             registration.addEventListener('updatefound', () => {
                 const newWorker = registration.installing;
                 newWorker.addEventListener('statechange', () => {
-                    // Cuando el nuevo SW esté listo pero esperando (installed)
                     if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
                         mostrarAvisoActualizacion(newWorker);
                     }
                 });
             });
 
-            // 3. TRUCO PARA HOSPITALES: Comprobar actualizaciones cada 1 hora
             setInterval(() => {
                 registration.update();
-            }, 60 * 60 * 1000); // 1 hora en milisegundos
+            }, 60 * 60 * 1000); 
 
         });
 
-        // 4. Cuando el SW nuevo tome el control (después de darle al botón), recargamos
         let refreshing;
         navigator.serviceWorker.addEventListener('controllerchange', () => {
             if (refreshing) return;
@@ -47,7 +42,7 @@ function mostrarAvisoActualizacion(worker) {
         confirmButtonText: '🔄 Actualizar ahora',
         showCancelButton: true,
         cancelButtonText: 'Más tarde',
-        timer: null, // No desaparece solo
+        timer: null,
         background: '#333',
         color: '#fff',
         confirmButtonColor: '#21808d'
@@ -58,7 +53,6 @@ function mostrarAvisoActualizacion(worker) {
         title: 'Nueva versión disponible'
     }).then((result) => {
         if (result.isConfirmed) {
-            // Le mandamos la orden al SW para que se active
             worker.postMessage({ type: 'SKIP_WAITING' });
         }
     });
@@ -67,7 +61,6 @@ function mostrarAvisoActualizacion(worker) {
 // ===============================================
 // 2. VARIABLES GLOBALES Y CONFIGURACIÓN
 // ===============================================
-// Autodetecta todos los inputs y selects dentro del formulario que tengan un ID
 const fieldIds = Array.from(document.querySelectorAll('#clinicalForm input[id], #clinicalForm select[id]')).map(el => el.id);
 
 window.calculatedResults = {};
@@ -85,7 +78,6 @@ window.valoresFueraRango = [];
 document.addEventListener('DOMContentLoaded', function() {
     console.log('🚀 Inicializando aplicación...');
     
-    // 1. Configuraciones de validación y UI
     configureNumericValidation();
     configurarEventosFechas();
     verifyFieldsExist();
@@ -96,17 +88,13 @@ document.addEventListener('DOMContentLoaded', function() {
     updateFieldCounter();
     inyectarUnidadesEnInputs();
 
-    // 2. Detección del Modo Test por URL
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('modo') === 'test') {
         activarModoTest();
     }
 
-    // 3. Huevo de Pascua (Easter Egg)
     setupSecretTap();
-    
-    // 4. Mejoras UX: Tema y Autoguardado
-    setupThemeToggle(); // Nueva función del footer
+    setupThemeToggle(); 
     setupAutoSave();
 });
 
@@ -160,7 +148,7 @@ function setupSecretTap() {
 }
 
 // ===============================================
-// GESTIÓN DEL MODO OSCURO (FOOTER - NUEVO)
+// GESTIÓN DEL MODO OSCURO (FOOTER)
 // ===============================================
 function setupThemeToggle() {
     const toggleBtn = document.getElementById('theme-toggle-footer');
@@ -169,20 +157,16 @@ function setupThemeToggle() {
 
     if (!toggleBtn) return;
 
-    // Función interna para actualizar Texto e Icono
     function updateUI(theme) {
         if (theme === 'dark') {
-            // Si estamos en oscuro, ofrecemos ir a claro
             if(themeIcon) themeIcon.className = 'fas fa-sun';
             if(themeText) themeText.textContent = 'Modo Claro';
         } else {
-            // Si estamos en claro, ofrecemos ir a oscuro
             if(themeIcon) themeIcon.className = 'fas fa-moon';
             if(themeText) themeText.textContent = 'Modo Oscuro';
         }
     }
 
-    // 1. Cargar preferencia guardada o del sistema
     const savedTheme = localStorage.getItem('themePref');
     if (savedTheme) {
         document.documentElement.setAttribute('data-color-scheme', savedTheme);
@@ -191,10 +175,9 @@ function setupThemeToggle() {
         document.documentElement.setAttribute('data-color-scheme', 'dark');
         updateUI('dark');
     } else {
-        updateUI('light'); // Por defecto
+        updateUI('light'); 
     }
 
-    // 2. Evento Click
     toggleBtn.addEventListener('click', () => {
         const currentTheme = document.documentElement.getAttribute('data-color-scheme') === 'dark' ? 'light' : 'dark';
         document.documentElement.setAttribute('data-color-scheme', currentTheme);
@@ -204,7 +187,6 @@ function setupThemeToggle() {
 }
 
 function setupAutoSave() {
-    // Cargar datos temporales al abrir la pestaña
     const savedData = sessionStorage.getItem('calcRenalDataTemporales');
     if (savedData) {
         try {
@@ -213,14 +195,12 @@ function setupAutoSave() {
                 const input = document.getElementById(key);
                 if (input && data[key] !== 0 && data[key] !== '') input.value = data[key];
             });
-            // Recalcular edad visualmente
             calcularEdad();
         } catch (e) {
             console.error('Error al recuperar datos temporales');
         }
     }
 
-    // Guardar temporalmente en cada pulsación (solo en esta pestaña)
     document.getElementById('clinicalForm').addEventListener('input', () => {
         const data = getFormData();
         data.sedimento_urinario = document.getElementById('sedimento_urinario')?.value || '';
@@ -238,14 +218,6 @@ function rellenarFechaHoy() {
     const mes = (hoy.getMonth() + 1).toString().padStart(2, '0');
     const año = hoy.getFullYear();
     document.getElementById('fecha_analitica').value = `${dia}/${mes}/${año}`;
-    calcularEdad();
-}
-
-function validarFormatoFecha(input) {
-    let value = input.value.replace(/[^0-9]/g, '');
-    if (value.length >= 2) value = value.substring(0, 2) + '/' + value.substring(2);
-    if (value.length >= 5) value = value.substring(0, 5) + '/' + value.substring(5, 9);
-    input.value = value;
     calcularEdad();
 }
 
@@ -277,11 +249,48 @@ function calcularEdad() {
 }
 
 function configurarEventosFechas() {
-    const fechaNac = document.getElementById('fecha_nacimiento');
-    const fechaAnal = document.getElementById('fecha_analitica');
-    if (fechaNac) fechaNac.addEventListener('input', function() { validarFormatoFecha(this); });
-    if (fechaAnal) fechaAnal.addEventListener('input', function() { validarFormatoFecha(this); });
+    ['fecha_nacimiento', 'fecha_analitica'].forEach(id => {
+        const input = document.getElementById(id);
+        if (input) {
+            input.addEventListener('input', function(e) {
+                let cursor = this.selectionStart;
+                
+                // Extraemos solo los números
+                let numerico = this.value.replace(/[^0-9]/g, '').substring(0, 8);
+                let nuevoTexto = '';
+                
+                // Construimos la fecha con las barras naturales
+                for (let i = 0; i < numerico.length; i++) {
+                    if (i === 2 || i === 4) {
+                        nuevoTexto += '/';
+                    }
+                    nuevoTexto += numerico[i];
+                }
+
+                // Autocompletar barra al final SOLO si estamos escribiendo (no borrando)
+                if (e.inputType && !e.inputType.includes('delete')) {
+                    if (numerico.length === 2 || numerico.length === 4) {
+                        nuevoTexto += '/';
+                    }
+                }
+                
+                this.value = nuevoTexto;
+                
+                // Ajustar el cursor inteligentemente para que no salte al final
+                if (e.inputType && !e.inputType.includes('delete')) {
+                    if (nuevoTexto.length === 3 || nuevoTexto.length === 6) {
+                        if (cursor === 2 || cursor === 5) cursor++;
+                    }
+                }
+                this.setSelectionRange(cursor, cursor);
+                
+                calcularEdad();
+            });
+        }
+    });
 }
+
+
 
 function configureNumericValidation() {
     const camposDecimales = [
@@ -311,7 +320,6 @@ function configureNumericValidation() {
                 if (parts.length > 2) value = parts[0] + ',' + parts.slice(1).join('');
                 if (parts.length === 2 && parts[1].length > 2) value = parts[0] + ',' + parts[1].substring(0, 2);
                 
-                // Validación para no permitir negativos en tiempo real (excepto exceso bases)
                 if (fieldId !== 'exceso_bases_mmol_l' && value.includes('-')) value = value.replace('-', '');
                 
                 e.target.value = value;
@@ -396,7 +404,6 @@ function setupFormEvents() {
                 updateFieldCounter(); 
                 actualizarMarcadoresEnTiempoReal(); 
                 
-                // Feedback Positivo en tiempo real
                 if(e.target.value.trim() !== '') {
                     e.target.classList.add('campo-valido');
                     e.target.classList.remove('campo-error');
@@ -413,7 +420,6 @@ function setupButtons() {
     const calculateButton = document.getElementById('calculateButton');
     if (calculateButton) calculateButton.addEventListener('click', () => { primeraValidacion = true; actualizarMarcadoresEnTiempoReal(); calculateResults(); });
     
-    // NUEVO: Conectar botón de copiar
     const copyClipboardButton = document.getElementById('copyClipboardButton');
     if (copyClipboardButton) copyClipboardButton.addEventListener('click', copyToClipboard);
 
@@ -436,38 +442,32 @@ function confirmarLimpiarFormulario() {
 }
 
 function clearFormSilent() {
-    // 1. Borramos el TEXTO de los campos principales
     fieldIds.forEach(id => {
         const input = document.getElementById(id);
         if (input) input.value = '';
     });
 
-    // 2. Borramos el TEXTO de los campos extra/especiales
     ['sedimento_urinario', 'comentario_nutricional', 'edad_calculada'].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.value = '';
     });
     
-    // 3. NUEVO: Llamamos a la función que quita los COLORES (verde/rojo) de todo
     limpiarColoresValidacion();
     
-    // 4. Gestión de la interfaz (Resultados vs Estado Vacío)
     document.getElementById('results')?.classList.remove('hidden');
     document.getElementById('reportSection')?.classList.add('hidden');
     
     const resultsGrid = document.getElementById('resultsGrid'); 
     if(resultsGrid) {
         resultsGrid.innerHTML = '';
-        resultsGrid.classList.add('hidden'); // Ocultamos los números
+        resultsGrid.classList.add('hidden'); 
     }
     
     const emptyState = document.getElementById('empty-state-results');
-    if(emptyState) emptyState.classList.remove('hidden'); // Mostramos el mensaje de "Aún no hay datos"
+    if(emptyState) emptyState.classList.remove('hidden'); 
     
     const reportContent = document.getElementById('reportContent'); 
     if(reportContent) reportContent.textContent = '';
-    
-    // 5. Reseteo de variables internas y pestañas
      
     window.calculatedResults = {}; 
     reportText = ''; 
@@ -496,7 +496,6 @@ function loadSampleData() {
         const input = document.getElementById(key);
         if (input) {
             input.value = sampleData[key];
-            // LA LÍNEA MÁGICA: Fuerza el evento para que se pinte de verde
             input.dispatchEvent(new Event('input')); 
         }
     });
@@ -508,7 +507,7 @@ function loadSampleData() {
         showConfirmButton: true,
         confirmButtonText: '<i class="fas fa-check"></i> OK',
         confirmButtonColor: '#21808d',
-        allowOutsideClick: true // Permite que se cierre también tocando fuera
+        allowOutsideClick: true 
     });
 }
 
@@ -552,8 +551,6 @@ function updateFieldCounter() {
     const counter = document.getElementById('fieldCount');
     if (counter) {
         counter.textContent = `${filledCount}/${fieldIds.length}`;
-        
-        // Magia UX: Si hay 1 o más campos, quitamos la clase hidden. Si está en 0, la ponemos.
         if (filledCount > 0) {
             counter.classList.remove('hidden');
         } else {
@@ -572,7 +569,24 @@ function evaluarRango(parametro, valor, edad, edadMeses) {
     
     switch (parametro) {
         case 'vpercent': if (edad >= 1) { rangoMax = 0.81; rangoTexto = '<0.81%'; return { enRango: valor <= rangoMax, tipo: valor > rangoMax ? 'alto' : 'normal', rangoTexto }; } break;
-        case 'ckid_u25_cr': case 'ckid_u25_cistc': case 'ckid_u25_combinado': rangoMin = 90; rangoTexto = '>90ml/min/1.73m²'; return { enRango: valor >= rangoMin, tipo: valor < rangoMin ? 'bajo' : 'normal', rangoTexto };
+        
+        // Fórmulas para > 2 años (KDIGO normal)
+        case 'ckid_u25_cr': case 'ckid_u25_cistc': case 'ckid_u25_combinado': 
+        case 'schwartz_bedside': case 'ekfc_cr': case 'ekfc_cistc':
+            rangoMin = 90; rangoTexto = '>90ml/min/1.73m²'; return { enRango: valor >= rangoMin, tipo: valor < rangoMin ? 'bajo' : 'normal', rangoTexto };
+            
+        // Fórmulas para Lactantes y Neonatos (Ajuste dinámico por mes)
+        case 'schwartz_neo': case 'schwartz_lact': case 'bokenkamp':
+            const limites_minimos = {
+                1: 35, 2: 40, 3: 45, 4: 50, 5: 55, 6: 60, 7: 63, 8: 65, 9: 68, 10: 70, 
+                11: 73, 12: 75, 13: 76, 14: 77, 15: 78, 16: 79, 17: 81, 18: 82, 19: 83, 
+                20: 84, 21: 85, 22: 87, 23: 88, 24: 90
+            };
+            const mesUsado = edadTotalMeses <= 0 ? 1 : (edadTotalMeses > 24 ? 24 : Math.floor(edadTotalMeses));
+            rangoMin = limites_minimos[mesUsado] || 90;
+            rangoTexto = `>${rangoMin}ml/min/1.73m² (Normal para ${mesUsado} meses)`;
+            return { enRango: valor >= rangoMin, tipo: valor < rangoMin ? 'bajo' : 'normal', rangoTexto };
+
         case 'efau': if (edad >= 1 && edad < 5) { rangoMin = 11; rangoMax = 17; rangoTexto = '11–17'; } else if (edad >= 5) { rangoMin = 4.45; rangoMax = 9.99; rangoTexto = '4.45–9.99'; } else esRangoValido = false; break;
         case 'efna': rangoMin = 0.42; rangoMax = 0.84; rangoTexto = '0.42–0.84'; break;
         case 'efk': rangoMin = 5.19; rangoMax = 11.67; rangoTexto = '5.19–11.67'; break;
@@ -627,31 +641,89 @@ function calculateResults() {
 }
 
 // =========================================================
-// EL MATEMÁTICO: Función "pura" que solo hace cálculos.
-// No sabe qué es un botón, ni colores, ni pantallas.
+// EL MATEMÁTICO: Función "pura" con las nuevas fórmulas eFG integradas
 // =========================================================
 function performMedicalCalculations(data) {
     const superficieCorporal = Math.sqrt(data.peso_kg * data.talla_cm / 3600);
     const imc = data.peso_kg > 0 && data.talla_cm > 0 ? data.peso_kg / Math.pow(data.talla_cm / 100, 2) : 0;
     const edadExacta = window.edadEnAños + (window.edadEnMeses / 12);
     const talla_m = data.talla_cm / 100;
-    
-    let k_cr = 0;
-    if (edadExacta >= 1 && edadExacta < 12) k_cr = (data.sexo === 'M') ? 39.0 * Math.pow(1.008, edadExacta - 12) : 36.1 * Math.pow(1.008, edadExacta - 12);
-    else if (edadExacta >= 12 && edadExacta < 18) k_cr = (data.sexo === 'M') ? 39.0 * Math.pow(1.045, edadExacta - 12) : 36.1 * Math.pow(1.023, edadExacta - 12);
-    else if (edadExacta >= 18) k_cr = (data.sexo === 'M') ? 50.8 : 41.4;
-    
-    const ckid_u25_cr = (k_cr > 0 && data.creatinina_enz_mg_dl > 0 && talla_m > 0) ? k_cr * (talla_m / data.creatinina_enz_mg_dl) : 0;
 
-    let k_cist = 0;
-    if (edadExacta >= 1 && edadExacta < 12) k_cist = (data.sexo === 'M') ? 87.2 * Math.pow(1.011, edadExacta - 15) : 79.9 * Math.pow(1.004, edadExacta - 12);
-    else if (edadExacta >= 12 && edadExacta < 15) k_cist = (data.sexo === 'M') ? 87.2 * Math.pow(1.011, edadExacta - 15) : 79.9 * Math.pow(0.974, edadExacta - 12);
-    else if (edadExacta >= 15 && edadExacta < 18) k_cist = (data.sexo === 'M') ? 87.2 * Math.pow(0.960, edadExacta - 15) : 79.9 * Math.pow(0.974, edadExacta - 12);
-    else if (edadExacta >= 18) k_cist = (data.sexo === 'M') ? 77.1 : 41.4;
-    
-    const ckid_u25_cistc = (k_cist > 0 && data.cistatina_c_mg_l > 0) ? k_cist * (1 / data.cistatina_c_mg_l) : 0;
-    const ckid_u25_combinado = (ckid_u25_cr > 0 && ckid_u25_cistc > 0) ? (ckid_u25_cr + ckid_u25_cistc) / 2 : 0;
+    // --- 1. NUEVO MOTOR DE FILTRADO GLOMERULAR (eFG) PEDIÁTRICO ---
+    const talla = data.talla_cm;
+    const cr = data.creatinina_enz_mg_dl;
+    const cistC = data.cistatina_c_mg_l;
+    const sexo = data.sexo;
 
+    let diasVida = 0;
+    const inputFechaNac = document.getElementById('fecha_nacimiento');
+    const inputFechaAnal = document.getElementById('fecha_analitica');
+    if (inputFechaNac && inputFechaAnal && inputFechaNac.value && inputFechaAnal.value) {
+        const [diaNac, mesNac, añoNac] = inputFechaNac.value.split('/').map(Number);
+        const [diaAnal, mesAnal, añoAnal] = inputFechaAnal.value.split('/').map(Number);
+        const fechaNacimiento = new Date(añoNac, mesNac - 1, diaNac);
+        const fechaAnalitica = new Date(añoAnal, mesAnal - 1, diaAnal);
+        diasVida = Math.floor((fechaAnalitica.getTime() - fechaNacimiento.getTime()) / (1000 * 3600 * 24));
+    }
+
+    let schwartz_neo = 0, schwartz_lact = 0, schwartz_bedside = 0, bokenkamp = 0, ekfc_cr = 0, ekfc_cistc = 0;
+    let ckid_u25_cr = 0, ckid_u25_cistc = 0, ckid_u25_combinado = 0;
+
+    // GRUPO 1: NEONATOS (0 a 28 días)
+    if (diasVida >= 0 && diasVida <= 28) {
+        if (cr && talla) schwartz_neo = 0.31 * (talla / cr);
+        if (cistC) bokenkamp = 100 * (0.83 / cistC);
+    }
+    // GRUPO 2: LACTANTES (29 a 364 días)
+    else if (diasVida >= 29 && diasVida < 365) {
+        if (cr && talla) schwartz_lact = 0.34 * (talla / cr);
+        if (cistC) bokenkamp = 100 * (0.83 / cistC);
+    }
+    // GRUPO 3 y 4: MAYORES DE 1 AÑO (Hasta 25 años)
+    else if (diasVida >= 365 && edadExacta <= 25) {
+        // A. Schwartz Bedside
+        if (cr && talla && edadExacta < 16) schwartz_bedside = 0.413 * (talla / cr);
+
+        // B. CKiD U25
+        let k_cr = 0;
+        if (edadExacta >= 1 && edadExacta < 12) k_cr = (sexo === 'M') ? 39.0 * Math.pow(1.008, edadExacta - 12) : 36.1 * Math.pow(1.008, edadExacta - 12);
+        else if (edadExacta >= 12 && edadExacta < 18) k_cr = (sexo === 'M') ? 39.0 * Math.pow(1.045, edadExacta - 12) : 36.1 * Math.pow(1.023, edadExacta - 12);
+        else if (edadExacta >= 18) k_cr = (sexo === 'M') ? 50.8 : 41.4;
+
+        if (k_cr > 0 && cr > 0 && talla_m > 0) ckid_u25_cr = k_cr * (talla_m / cr);
+
+        let k_cist = 0;
+        if (edadExacta >= 1 && edadExacta < 12) k_cist = (sexo === 'M') ? 87.2 * Math.pow(1.011, edadExacta - 15) : 79.9 * Math.pow(1.004, edadExacta - 12);
+        else if (edadExacta >= 12 && edadExacta < 15) k_cist = (sexo === 'M') ? 87.2 * Math.pow(1.011, edadExacta - 15) : 79.9 * Math.pow(0.974, edadExacta - 12);
+        else if (edadExacta >= 15 && edadExacta < 18) k_cist = (sexo === 'M') ? 87.2 * Math.pow(0.960, edadExacta - 15) : 79.9 * Math.pow(0.974, edadExacta - 12);
+        else if (edadExacta >= 18) k_cist = (sexo === 'M') ? 77.1 : 41.4;
+
+        if (k_cist > 0 && cistC > 0) ckid_u25_cistc = k_cist * (1 / cistC);
+        if (ckid_u25_cr > 0 && ckid_u25_cistc > 0) ckid_u25_combinado = (ckid_u25_cr + ckid_u25_cistc) / 2;
+
+        // C. EKFC (European Kidney Function Consortium)
+        if (cr && edadExacta >= 2) {
+            let Q_cr = 0;
+            if (edadExacta <= 25) {
+                let lnQ_umol = 3.200 + (0.259 * edadExacta) - (0.543 * Math.log(edadExacta)) - (0.00763 * Math.pow(edadExacta, 2)) + (0.0000790 * Math.pow(edadExacta, 3));
+                Q_cr = Math.exp(lnQ_umol) / 88.4;
+            } else {
+                Q_cr = (sexo === 'M' || sexo === 'Hombre') ? 0.90 : 0.70;
+            }
+            const ratioCr = cr / Q_cr;
+            const alphaCr = ratioCr <= 1 ? -0.322 : -1.132;
+            ekfc_cr = 107.3 * Math.pow(ratioCr, alphaCr) * Math.pow(0.990, (edadExacta > 40 ? edadExacta - 40 : 0));
+        }
+
+        if (cistC && edadExacta >= 2) {
+            const Q_cistC = 0.83;
+            const ratioCistC = cistC / Q_cistC;
+            const alphaCistC = ratioCistC <= 1 ? -0.322 : -1.132;
+            ekfc_cistc = 107.3 * Math.pow(ratioCistC, alphaCistC) * Math.pow(0.990, (edadExacta > 50 ? edadExacta - 50 : 0));
+        }
+    }
+
+    // --- 2. RESTO DE CÁLCULOS (Excreción Fraccional, etc.) ---
     const efNa = (data.na_plasma_meq_l && data.creatinina_orina_mg_dl && data.na_orina_meq_l && data.creatinina_enz_mg_dl) ? (data.na_orina_meq_l * data.creatinina_enz_mg_dl) / (data.na_plasma_meq_l * data.creatinina_orina_mg_dl) * 100 : 0;
     const efK = (data.k_plasma_meq_l && data.creatinina_orina_mg_dl && data.k_orina_meq_l && data.creatinina_enz_mg_dl) ? (data.k_orina_meq_l * data.creatinina_enz_mg_dl) / (data.k_plasma_meq_l * data.creatinina_orina_mg_dl) * 100 : 0;
     const efCl = (data.cl_plasma_meq_l && data.creatinina_orina_mg_dl && data.cl_orina_meq_l && data.creatinina_enz_mg_dl) ? (data.cl_orina_meq_l * data.creatinina_enz_mg_dl) / (data.cl_plasma_meq_l * data.creatinina_orina_mg_dl) * 100 : 0;
@@ -681,9 +753,9 @@ function performMedicalCalculations(data) {
     const proteinuriaEstimada = protcr * 0.63;
     const vpercent = (data.creatinina_enz_mg_dl > 0 && data.creatinina_orina_mg_dl > 0) ? (data.creatinina_enz_mg_dl / data.creatinina_orina_mg_dl) * 100 : 0;
 
-    // Retornamos un "paquete" con toda la ciencia hecha
     return {
         superficiecorporal: superficieCorporal, imc: imc, vpercent: vpercent, 
+        schwartz_neo, schwartz_lact, schwartz_bedside, bokenkamp, ekfc_cr, ekfc_cistc,
         ckid_u25_cr: ckid_u25_cr, ckid_u25_cistc: ckid_u25_cistc, ckid_u25_combinado: ckid_u25_combinado, 
         efau: efAU, efna: efNa, efk: efK, efcl: efCl, cacr: cacr, rtp: rtp, mgcr: mgcr, pcr: pcr, aucr: aucr, 
         citratocr: citratocr, cacitrato: cacitrato, oxalatocr: oxalatocr, albcr: albcr, protcr: protcr, nak: nak, 
@@ -693,7 +765,7 @@ function performMedicalCalculations(data) {
 }
 
 // =========================================================
-// EL PINTOR (ORQUESTADOR): Solo maneja botones, tiempos y llama al Matemático
+// EL PINTOR (ORQUESTADOR): Interfaz de Usuario
 // =========================================================
 function executeCalculations() {
     const data = getFormData();
@@ -701,20 +773,16 @@ function executeCalculations() {
 
     const calcButton = document.querySelector('.btn-calcular');
     
-    // 1. Efecto visual: Botón cargando
     calcButton.classList.add('loading');
     calcButton.innerHTML = 'Calculando... <i class="fas fa-spinner fa-spin" style="margin-left: 8px;"></i>';
 
     try {
-        // 2. Pedimos los resultados a la función pura
         window.calculatedResults = performMedicalCalculations(data);
 
-        // 3. Temporizador UX y pintado en pantalla
         setTimeout(() => {
             displayResults();
             setTimeout(() => { generateReport(data); }, 100);
             
-            // Apagamos el botón
             calcButton.classList.remove('loading');
             calcButton.innerHTML = 'Calcular Resultados <i class="fas fa-calculator" style="margin-left: 8px;"></i>';
         }, 800);
@@ -723,7 +791,6 @@ function executeCalculations() {
         console.error('Error en los cálculos:', error);
         Swal.fire({ icon: 'error', title: 'Error', text: 'Se produjo un error al realizar los cálculos.', confirmButtonColor: '#dc3545' });
         
-        // Restauramos el botón en caso de error
         calcButton.classList.remove('loading'); 
         calcButton.innerHTML = 'Calcular Resultados <i class="fas fa-calculator" style="margin-left: 8px;"></i>';
     }
@@ -736,11 +803,26 @@ function displayResults() {
     const edadMeses = window.edadEnMeses || 0;
     
     const parametros = [
-        { key: 'vpercent', nombre: 'V%', unidad: '%' }, { key: 'ckid_u25_cr', nombre: 'eGFR CKiD U25 Cr', unidad: 'ml/min/1.73m²' }, { key: 'ckid_u25_cistc', nombre: 'eGFR CKiD U25 CistC', unidad: 'ml/min/1.73m²' }, { key: 'ckid_u25_combinado', nombre: 'eGFR Combinado', unidad: 'ml/min/1.73m²' }, { key: 'efau', nombre: 'EF AU', unidad: '' }, { key: 'efna', nombre: 'EF Na', unidad: '' }, { key: 'efk', nombre: 'EF K', unidad: '' }, { key: 'efcl', nombre: 'EF Cl', unidad: '' }, { key: 'cacr', nombre: 'Ca/Cr', unidad: 'mg/mg' }, { key: 'rtp', nombre: 'RTP', unidad: '%' }, { key: 'mgcr', nombre: 'Mg/Cr', unidad: 'mg/mg' }, { key: 'pcr', nombre: 'P/Cr', unidad: 'mg/mg' }, { key: 'aucr', nombre: 'AU/Cr', unidad: 'mg/mg' }, { key: 'citratocr', nombre: 'Citrato/Cr', unidad: 'mg/mg' }, { key: 'cacitrato', nombre: 'Ca/Citrato', unidad: '' }, { key: 'oxalatocr', nombre: 'Oxalato/Cr', unidad: 'mg/mg' }, { key: 'albcr', nombre: 'Alb/Cr', unidad: 'mg/g' }, { key: 'protcr', nombre: 'Prot/Cr', unidad: 'mg/g' }, { key: 'nak', nombre: 'Na/K orina', unidad: '' }, { key: 'uricosuria', nombre: 'Uricosuria', unidad: 'mg/1.73m²/día' }, { key: 'calciuria', nombre: 'Calciuria', unidad: 'mg/kg/día' }, { key: 'citraturia', nombre: 'Citraturia', unidad: 'mg/kg/día' }, { key: 'fosfaturia', nombre: 'Fosfaturia', unidad: 'mg/kg/día' }, { key: 'oxaluria', nombre: 'Oxaluria', unidad: 'mg/1.73m²/día' }, { key: 'magnesuria', nombre: 'Magnesuria', unidad: 'mg/kg/día' }, { key: 'albuminuria', nombre: 'Albuminuria', unidad: 'mg/1.73m²/día' }, { key: 'proteinuria', nombre: 'Proteinuria', unidad: 'mg/m²/día' }, { key: 'proteinuriaestimada', nombre: 'Proteinuria estimada', unidad: 'mg/m²/día' }
+        { key: 'vpercent', nombre: 'V%', unidad: '%' }, 
+        { key: 'schwartz_neo', nombre: 'eGFR Schwartz neonatal', unidad: 'ml/min/1.73m²' },
+        { key: 'schwartz_lact', nombre: 'eGFR Schwartz lactante', unidad: 'ml/min/1.73m²' },
+        { key: 'bokenkamp', nombre: 'eGFR Bökenkamp', unidad: 'ml/min/1.73m²' },
+        { key: 'schwartz_bedside', nombre: 'eGFR Schwartz Bedside', unidad: 'ml/min/1.73m²' },
+        { key: 'ckid_u25_cr', nombre: 'eGFR CKiD U25 Cr', unidad: 'ml/min/1.73m²' }, 
+        { key: 'ckid_u25_cistc', nombre: 'eGFR CKiD U25 CistC', unidad: 'ml/min/1.73m²' }, 
+        { key: 'ckid_u25_combinado', nombre: 'eGFR Combinado', unidad: 'ml/min/1.73m²' }, 
+        { key: 'ekfc_cr', nombre: 'eGFR EKFC Cr', unidad: 'ml/min/1.73m²' },
+        { key: 'ekfc_cistc', nombre: 'eGFR EKFCCC CistC', unidad: 'ml/min/1.73m²' },
+        { key: 'efau', nombre: 'EF AU', unidad: '' }, { key: 'efna', nombre: 'EF Na', unidad: '' }, { key: 'efk', nombre: 'EF K', unidad: '' }, { key: 'efcl', nombre: 'EF Cl', unidad: '' }, { key: 'cacr', nombre: 'Ca/Cr', unidad: 'mg/mg' }, { key: 'rtp', nombre: 'RTP', unidad: '%' }, { key: 'mgcr', nombre: 'Mg/Cr', unidad: 'mg/mg' }, { key: 'pcr', nombre: 'P/Cr', unidad: 'mg/mg' }, { key: 'aucr', nombre: 'AU/Cr', unidad: 'mg/mg' }, { key: 'citratocr', nombre: 'Citrato/Cr', unidad: 'mg/mg' }, { key: 'cacitrato', nombre: 'Ca/Citrato', unidad: '' }, { key: 'oxalatocr', nombre: 'Oxalato/Cr', unidad: 'mg/mg' }, { key: 'albcr', nombre: 'Alb/Cr', unidad: 'mg/g' }, { key: 'protcr', nombre: 'Prot/Cr', unidad: 'mg/g' }, { key: 'nak', nombre: 'Na/K orina', unidad: '' }, { key: 'uricosuria', nombre: 'Uricosuria', unidad: 'mg/1.73m²/día' }, { key: 'calciuria', nombre: 'Calciuria', unidad: 'mg/kg/día' }, { key: 'citraturia', nombre: 'Citraturia', unidad: 'mg/kg/día' }, { key: 'fosfaturia', nombre: 'Fosfaturia', unidad: 'mg/kg/día' }, { key: 'oxaluria', nombre: 'Oxaluria', unidad: 'mg/1.73m²/día' }, { key: 'magnesuria', nombre: 'Magnesuria', unidad: 'mg/kg/día' }, { key: 'albuminuria', nombre: 'Albuminuria', unidad: 'mg/1.73m²/día' }, { key: 'proteinuria', nombre: 'Proteinuria', unidad: 'mg/m²/día' }, { key: 'proteinuriaestimada', nombre: 'Proteinuria estimada', unidad: 'mg/m²/día' }
     ];
     
     const resultLabels = {
-        superficiecorporal: 'Superficie Corporal (m²)', imc: 'IMC (kg/m²)', vpercent: 'V% (creat enz/orina)', ckid_u25_cr: 'eGFR CKiD U25 Cr (ml/min/1.73m²)', ckid_u25_cistc: 'eGFR CKiD U25 CistC (ml/min/1.73m²)', ckid_u25_combinado: 'eGFR Combinado (ml/min/1.73m²)', efna: 'EF Na (%)', efk: 'EF K (%)', efcl: 'EF Cl (%)', efau: 'EF AU (%)', cacr: 'Ca/Cr (mg/mg)', mgcr: 'Mg/Cr (mg/mg)', pcr: 'P/Cr (mg/mg)', aucr: 'AU/Cr (mg/mg)', albcr: 'Alb/Cr (mg/g)', protcr: 'Prot/Cr (mg/g)', citratocr: 'Citrato/Cr (mg/mg)', oxalatocr: 'Oxalato/Cr (mg/mg)', nak: 'Na/K orina', cacitrato: 'Ca/Citrato', rtp: 'RTP (%)', uricosuria: 'Uricosuria (mg/1.73m²/día)', calciuria: 'Calciuria (mg/kg/día)', citraturia: 'Citraturia (mg/kg/día)', fosfaturia: 'Fosfaturia (mg/kg/día)', magnesuria: 'Magnesuria (mg/kg/día)', oxaluria: 'Oxaluria (mg/1.73m²/día)', albuminuria: 'Albuminuria (mg/1.73m²/día)', proteinuria: 'Proteinuria (mg/m²/día)', proteinuriaestimada: 'Proteinuria estimada (mg/m²/día)'
+        superficiecorporal: 'Superficie Corporal (m²)', imc: 'IMC (kg/m²)', vpercent: 'V% (creat enz/orina)', 
+        schwartz_neo: 'eGFR Schwartz neonatal (ml/min/1.73m²)', schwartz_lact: 'eGFR Schwartz lactante (ml/min/1.73m²)',
+        schwartz_bedside: 'eGFR Schwartz Bedside (ml/min/1.73m²)', bokenkamp: 'eGFR Bökenkamp (ml/min/1.73m²)',
+        ekfc_cr: 'eGFR EKFC Cr (ml/min/1.73m²)', ekfc_cistc: 'eGFR EKFCCC CistC (ml/min/1.73m²)',
+        ckid_u25_cr: 'eGFR CKiD U25 Cr (ml/min/1.73m²)', ckid_u25_cistc: 'eGFR CKiD U25 CistC (ml/min/1.73m²)', ckid_u25_combinado: 'eGFR Combinado (ml/min/1.73m²)', 
+        efna: 'EF Na (%)', efk: 'EF K (%)', efcl: 'EF Cl (%)', efau: 'EF AU (%)', cacr: 'Ca/Cr (mg/mg)', mgcr: 'Mg/Cr (mg/mg)', pcr: 'P/Cr (mg/mg)', aucr: 'AU/Cr (mg/mg)', albcr: 'Alb/Cr (mg/g)', protcr: 'Prot/Cr (mg/g)', citratocr: 'Citrato/Cr (mg/mg)', oxalatocr: 'Oxalato/Cr (mg/mg)', nak: 'Na/K orina', cacitrato: 'Ca/Citrato', rtp: 'RTP (%)', uricosuria: 'Uricosuria (mg/1.73m²/día)', calciuria: 'Calciuria (mg/kg/día)', citraturia: 'Citraturia (mg/kg/día)', fosfaturia: 'Fosfaturia (mg/kg/día)', magnesuria: 'Magnesuria (mg/kg/día)', oxaluria: 'Oxaluria (mg/1.73m²/día)', albuminuria: 'Albuminuria (mg/1.73m²/día)', proteinuria: 'Proteinuria (mg/m²/día)', proteinuriaestimada: 'Proteinuria estimada (mg/m²/día)'
     };
     
     const resultsGrid = document.getElementById('resultsGrid');
@@ -748,7 +830,7 @@ function displayResults() {
     resultsGrid.classList.remove('hidden');
     const emptyState = document.getElementById('empty-state-results');
     if(emptyState) emptyState.classList.add('hidden');
-  
+ 
     parametros.forEach(param => {
         const valor = results[param.key];
         if (valor && valor !== 0) {
@@ -762,31 +844,31 @@ function displayResults() {
     
     Object.keys(results).forEach(key => {
         if (resultLabels[key]) {
-            const resultItem = document.createElement('div');
-            resultItem.className = 'result-item'; resultItem.id = `resultado-${key}`;
-            
-            const label = document.createElement('div');
-            label.className = 'result-label'; label.textContent = resultLabels[key];
-            
-            const value = document.createElement('div');
-            value.className = 'result-value';
             const numValue = results[key];
-            value.textContent = typeof numValue === 'number' ? numValue.toFixed(2) : '0.00';
-            
-          if (key === "superficiecorporal" || key === "imc") {
-                // Usar color primario dinámico
-                value.style.setProperty('color', 'var(--color-primary)', 'important'); 
-                value.style.fontWeight = "bold";
-            } else {
-                const paramEncontrado = parametros.find(p => p.key === key);
-                if (paramEncontrado && numValue && numValue !== 0) {
-                    const evaluacion = evaluarRango(key, numValue, edad, edadMeses);
-                    // Rojo si está mal, Color Primario Dinámico si está OK
-                    value.style.setProperty('color', !evaluacion.enRango ? '#dc2626' : 'var(--color-primary)', 'important');
+            if (numValue && numValue !== 0) {
+                const resultItem = document.createElement('div');
+                resultItem.className = 'result-item'; resultItem.id = `resultado-${key}`;
+                
+                const label = document.createElement('div');
+                label.className = 'result-label'; label.textContent = resultLabels[key];
+                
+                const value = document.createElement('div');
+                value.className = 'result-value';
+                value.textContent = typeof numValue === 'number' ? numValue.toFixed(2) : '0.00';
+                
+                if (key === "superficiecorporal" || key === "imc") {
+                    value.style.setProperty('color', 'var(--color-primary)', 'important'); 
                     value.style.fontWeight = "bold";
+                } else {
+                    const paramEncontrado = parametros.find(p => p.key === key);
+                    if (paramEncontrado) {
+                        const evaluacion = evaluarRango(key, numValue, edad, edadMeses);
+                        value.style.setProperty('color', !evaluacion.enRango ? '#dc2626' : 'var(--color-primary)', 'important');
+                        value.style.fontWeight = "bold";
+                    }
                 }
+                resultItem.appendChild(label); resultItem.appendChild(value); resultsGrid.appendChild(resultItem);
             }
-            resultItem.appendChild(label); resultItem.appendChild(value); resultsGrid.appendChild(resultItem);
         }
     });
     document.getElementById('results').classList.remove('hidden');
@@ -803,17 +885,28 @@ function generateReport(data) {
     
     let hidrosalino = [];
     if (isValid(data.urea_mg_dl)) hidrosalino.push(`Urea: ${fmt(data.urea_mg_dl)}mg/dL`);
+    
+    // FORMATO DE REPORTE CON TODAS LAS eGFR (Creatinina)
     if (isValid(data.creatinina_enz_mg_dl)) {
         let cr = `Cr: ${fmt(data.creatinina_enz_mg_dl)}mg/dL`;
+        if (isValid(results.schwartz_neo)) cr += ` (eGFR Schwartz neonatal: ${fmt(results.schwartz_neo)}ml/min/1.73m²)`;
+        if (isValid(results.schwartz_lact)) cr += ` (eGFR Schwartz lactante: ${fmt(results.schwartz_lact)}ml/min/1.73m²)`;
+        if (isValid(results.schwartz_bedside)) cr += ` (eGFR Schwartz Bedside: ${fmt(results.schwartz_bedside)}ml/min/1.73m²)`;
         if (isValid(results.ckid_u25_cr)) cr += ` (eGFR CKiD U25 Cr: ${fmt(results.ckid_u25_cr)}ml/min/1.73m²)`;
+        if (isValid(results.ekfc_cr)) cr += ` (eGFR EKFC Cr: ${fmt(results.ekfc_cr)}ml/min/1.73m²)`;
         hidrosalino.push(cr);
     }
+    
+    // FORMATO DE REPORTE CON TODAS LAS eGFR (Cistatina C)
     if (isValid(data.cistatina_c_mg_l)) {
         let cist = `Cistatina C: ${fmt(data.cistatina_c_mg_l)}mg/L`;
+        if (isValid(results.bokenkamp)) cist += ` (eGFR Bökenkamp: ${fmt(results.bokenkamp)}ml/min/1.73m²)`;
         if (isValid(results.ckid_u25_cistc)) cist += ` (eGFR CKiD U25 CistC: ${fmt(results.ckid_u25_cistc)}ml/min/1.73m²)`;
+        if (isValid(results.ekfc_cistc)) cist += ` (eGFR EKFCCC CistC: ${fmt(results.ekfc_cistc)}ml/min/1.73m²)`;
         hidrosalino.push(cist);
     }
-    if (isValid(results.ckid_u25_combinado)) hidrosalino.push(`eGFR Combinado: ${fmt(results.ckid_u25_combinado)}ml/min/1.73m²`);
+    
+    if (isValid(results.ckid_u25_combinado)) hidrosalino.push(`eGFR Combinado (CKiD U25): ${fmt(results.ckid_u25_combinado)}ml/min/1.73m²`);
     if (isValid(results.vpercent)) hidrosalino.push(`V%: ${fmt(results.vpercent)}%`);
     if (isValid(data.na_plasma_meq_l)) hidrosalino.push(`Na: ${fmt(data.na_plasma_meq_l)}mEq/L`);
     if (isValid(results.efna)) hidrosalino.push(`EFNa: ${fmt(results.efna)}`);
@@ -891,7 +984,7 @@ function generateReport(data) {
     if (isValid(results.albuminuria)) orina24h.push(`Albuminuria: ${fmt(results.albuminuria)}mg/1.73m²/día`);
     if (orina24h.length > 0) report.push(`- Orina de 24h: ${orina24h.join('   ')}`);
     
-    // --- ESTADIFICACIÓN KDIGO (SOLO MAYORES DE 2 AÑOS) ---
+    // --- ESTADIFICACIÓN KDIGO Y LACTANTES ---
     function evaluarGradoG(egfr) {
         if (!isValid(egfr)) return null;
         if (egfr >= 90) return "Estadio G1 (Normal o elevado)";
@@ -901,6 +994,27 @@ function generateReport(data) {
         if (egfr >= 15) return "Estadio G4 (Muy disminuido)";
         return "Estadio G5 (Fallo renal)";
     }
+    
+    function evaluarERC_Lactante(egfr, meses) {
+        if (!isValid(egfr)) return null;
+        const limites = {
+            1: [35, 24, 12, 5], 2: [40, 27, 13, 6], 3: [45, 30, 15, 7], 4: [50, 33, 17, 8],
+            5: [55, 37, 18, 9], 6: [60, 40, 20, 10], 7: [63, 42, 21, 10], 8: [65, 44, 22, 11],
+            9: [68, 45, 23, 11], 10: [70, 47, 24, 11], 11: [73, 49, 24, 12], 12: [75, 50, 25, 12],
+            13: [76, 51, 25, 12], 14: [77, 52, 26, 13], 15: [78, 53, 26, 13], 16: [79, 54, 27, 13],
+            17: [81, 54, 27, 14], 18: [82, 55, 28, 14], 19: [83, 56, 28, 14], 20: [84, 57, 29, 14],
+            21: [85, 58, 29, 14], 22: [87, 59, 29, 15], 23: [88, 59, 30, 15], 24: [90, 60, 30, 15]
+        };
+        const m = meses <= 0 ? 1 : (meses > 24 ? 24 : Math.floor(meses));
+        const [g1, g2, g3, g4] = limites[m];
+        
+        if (egfr >= g1) return "ERC 1 (Normal o elevado)";
+        if (egfr >= g2) return "ERC 2 (Levemente disminuido)";
+        if (egfr >= g3) return "ERC 3 (Moderadamente disminuido)";
+        if (egfr >= g4) return "ERC 4 (Muy disminuido)";
+        return "ERC 5 (Fallo renal)";
+    }
+
     function evaluarGradoA(albcr) {
         if (albcr === null || isNaN(albcr) || albcr === undefined) return null;
         if (albcr < 30) return "Estadio A1 (Normal o levemente elevada)";
@@ -908,19 +1022,48 @@ function generateReport(data) {
         return "Estadio A3 (Muy elevada)";
     }
 
-    if (window.edadEnAños >= 2) {
-        const gradoCr = evaluarGradoG(results.ckid_u25_cr);
-        const gradoCist = evaluarGradoG(results.ckid_u25_cistc);
-        const gradoComb = evaluarGradoG(results.ckid_u25_combinado);
-        let gradoAlb = (results.albcr !== undefined && results.albcr > 0) ? evaluarGradoA(results.albcr) : null;
+    const mesesTotales = window.edadTotalMeses || 0;
 
-        if (gradoCr || gradoCist || gradoComb || gradoAlb) {
+    if (window.edadEnAños >= 2) {
+        let grados_kdigo = [];
+        
+        if (isValid(results.schwartz_bedside)) grados_kdigo.push(`- eGFR Schwartz Bedside: ${evaluarGradoG(results.schwartz_bedside)}`);
+        if (isValid(results.ckid_u25_cr)) grados_kdigo.push(`- eGFR CKiD U25 Cr: ${evaluarGradoG(results.ckid_u25_cr)}`);
+        if (isValid(results.ekfc_cr)) grados_kdigo.push(`- eGFR EKFC Cr: ${evaluarGradoG(results.ekfc_cr)}`);
+        
+        if (isValid(results.ckid_u25_cistc)) grados_kdigo.push(`- eGFR CKiD U25 CistC: ${evaluarGradoG(results.ckid_u25_cistc)}`);
+        if (isValid(results.ekfc_cistc)) grados_kdigo.push(`- eGFR EKFCCC CistC: ${evaluarGradoG(results.ekfc_cistc)}`);
+        
+        if (isValid(results.ckid_u25_combinado)) grados_kdigo.push(`- eGFR Combinado (CKiD U25): ${evaluarGradoG(results.ckid_u25_combinado)}`);
+        
+        let gradoAlb = (results.albcr !== undefined && results.albcr > 0) ? evaluarGradoA(results.albcr) : null;
+        if (gradoAlb) grados_kdigo.push(`- Albuminuria: ${gradoAlb}`);
+
+        if (grados_kdigo.length > 0) {
             report.push('');
             report.push('ESTADIFICACIÓN SEGÚN GUÍAS KDIGO 2012');
-            if (gradoCr) report.push(`- Grado de ERC por Cr: ${gradoCr}`);
-            if (gradoCist) report.push(`- Grado de ERC por CistC: ${gradoCist}`);
-            if (gradoComb) report.push(`- Grado de ER Combinado: ${gradoComb}`);
-            if (gradoAlb) report.push(`- Albuminuria: ${gradoAlb}`);
+            report = report.concat(grados_kdigo); 
+        }
+    } else {
+        // Bebés y Lactantes (< 2 años)
+        let grados_lactante = [];
+        
+        if (isValid(results.schwartz_neo)) grados_lactante.push(`- eGFR Schwartz neonatal: ${evaluarERC_Lactante(results.schwartz_neo, mesesTotales)}`);
+        if (isValid(results.schwartz_lact)) grados_lactante.push(`- eGFR Schwartz lactante: ${evaluarERC_Lactante(results.schwartz_lact, mesesTotales)}`);
+        if (isValid(results.schwartz_bedside)) grados_lactante.push(`- eGFR Schwartz Bedside: ${evaluarERC_Lactante(results.schwartz_bedside, mesesTotales)}`);
+        if (isValid(results.ckid_u25_cr)) grados_lactante.push(`- eGFR CKiD U25 Cr: ${evaluarERC_Lactante(results.ckid_u25_cr, mesesTotales)}`);
+        if (isValid(results.ekfc_cr)) grados_lactante.push(`- eGFR EKFC Cr: ${evaluarERC_Lactante(results.ekfc_cr, mesesTotales)}`);
+        
+        if (isValid(results.bokenkamp)) grados_lactante.push(`- eGFR Bökenkamp (CistC): ${evaluarERC_Lactante(results.bokenkamp, mesesTotales)}`);
+        if (isValid(results.ckid_u25_cistc)) grados_lactante.push(`- eGFR CKiD U25 CistC: ${evaluarERC_Lactante(results.ckid_u25_cistc, mesesTotales)}`);
+        if (isValid(results.ekfc_cistc)) grados_lactante.push(`- eGFR EKFCCC CistC: ${evaluarERC_Lactante(results.ekfc_cistc, mesesTotales)}`);
+        
+        if (isValid(results.ckid_u25_combinado)) grados_lactante.push(`- eGFR Combinado (CKiD U25): ${evaluarERC_Lactante(results.ckid_u25_combinado, mesesTotales)}`);
+
+        if (grados_lactante.length > 0) {
+            report.push('');
+            report.push('ESTADIFICACIÓN ERC (AJUSTADA A EDAD < 2 AÑOS)');
+            report = report.concat(grados_lactante);
         }
     }
     // -----------------------------------------------------
@@ -940,7 +1083,6 @@ function generateReport(data) {
     const reportTextReady = report.join('\n');
     const reportContentDiv = document.getElementById('reportContent');
     
-    // Forma moderna y segura: vaciamos y creamos el nodo
     reportContentDiv.innerHTML = ''; 
     const preElement = document.createElement('pre');
     preElement.style.fontFamily = "'Rubik', sans-serif";
@@ -948,7 +1090,6 @@ function generateReport(data) {
     preElement.style.lineHeight = "2.0";
     preElement.style.whiteSpace = "pre-wrap";
     
-    // textContent es a prueba de inyecciones de código y errores de etiquetas
     preElement.textContent = reportTextReady; 
     
     reportContentDiv.appendChild(preElement);
@@ -1010,16 +1151,14 @@ function copyToClipboard() {
         return Swal.fire({ icon: 'warning', title: 'Sin informe', text: 'Calcule primero los resultados.'});
     }
     
-    // Usamos la API moderna del portapapeles del navegador
     navigator.clipboard.writeText(reportText).then(() => {
-        // Alerta de éxito elegante
         Swal.fire({
             icon: 'success',
             title: '¡Copiado!',
             text: 'El informe médico está listo para pegar (Ctrl+V) en la Historia Clínica.',
             timer: 2500,
             showConfirmButton: false,
-            backdrop: `rgba(33, 128, 141, 0.2)` // Un fondo verde muy sutil
+            backdrop: `rgba(33, 128, 141, 0.2)`
         });
     }).catch(err => {
         console.error('Error al copiar: ', err);
@@ -1031,7 +1170,6 @@ function copyToClipboard() {
 // ===============================================
 let deferredPrompt;
 
-// 1. Detectar si es un dispositivo Apple (iOS)
 const isIOS = () => {
     return [
       'iPad Simulator', 'iPhone Simulator', 'iPod Simulator', 'iPad', 'iPhone', 'iPod'
@@ -1039,7 +1177,6 @@ const isIOS = () => {
     || (navigator.userAgent.includes("Mac") && "ontouchend" in document);
 };
 
-// 2. Si es Android o PC, el navegador avisa cuando está listo
 window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     deferredPrompt = e;
@@ -1049,20 +1186,16 @@ window.addEventListener('beforeinstallprompt', (e) => {
     }
 });
 
-// 3. Configurar el botón de instalar
 document.addEventListener('DOMContentLoaded', () => {
     const installBtn = document.getElementById('btn-install-pwa');
     if (!installBtn) return;
 
-    // A. Si es un iPhone, forzamos a que el botón sea visible siempre
     if (isIOS()) {
         installBtn.classList.remove('hidden');
     }
 
-    // B. Al hacer click en el botón
     installBtn.addEventListener('click', async () => {
         if (isIOS()) {
-            // MODO APPLE: Mostramos el mensaje emergente moderno (SweetAlert)
             Swal.fire({
                 title: 'Instalar en iPhone',
                 html: '<div style="font-size: 15px; text-align: left; line-height: 1.6;">Para añadir esta calculadora a tu móvil:<br><br><b>1.</b> Toca el botón <b>Compartir</b> <i class="fas fa-external-link-alt" style="color: #0891b2;"></i> en la barra inferior de Safari.<br><b>2.</b> Selecciona <b>"Añadir a la pantalla de inicio"</b> <i class="fas fa-plus-square" style="color: #0891b2;"></i>.</div>',
@@ -1073,7 +1206,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 color: document.documentElement.getAttribute('data-color-scheme') === 'dark' ? '#f1f5f9' : '#0f172a'
             });
         } else if (deferredPrompt) {
-            // MODO ANDROID/PC: Instalación automática nativa
             deferredPrompt.prompt();
             const { outcome } = await deferredPrompt.userChoice;
             deferredPrompt = null;
@@ -1084,7 +1216,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// 4. Si ya se instaló, ocultamos el botón
 window.addEventListener('appinstalled', () => {
     const installBtn = document.getElementById('btn-install-pwa');
     if (installBtn) installBtn.classList.add('hidden');
@@ -1094,14 +1225,13 @@ window.addEventListener('appinstalled', () => {
 // ===============================================
 function inyectarUnidadesEnInputs() {
     document.querySelectorAll('.form-label').forEach(label => {
-        // Bloquear selección de texto en el label (Refuerzo JS)
         label.style.userSelect = 'none';
         label.style.cursor = 'default';
 
         for (let i = 0; i < label.childNodes.length; i++) {
             const node = label.childNodes[i];
             
-            if (node.nodeType === 3) { // Es texto
+            if (node.nodeType === 3) { 
                 const match = node.nodeValue.match(/\((.*?)\)/);
                 
                 if (match) {
@@ -1114,15 +1244,13 @@ function inyectarUnidadesEnInputs() {
                     if (input && input.tagName.toLowerCase() === 'input') {
                         node.nodeValue = node.nodeValue.replace(/\(.*?\)/, '').trim() + ' ';
                         
-                        // CREAMOS EL WRAPPER
                         const wrapper = document.createElement('div');
-                        wrapper.className = 'input-unit-wrapper'; // Clase para CSS
+                        wrapper.className = 'input-unit-wrapper'; 
                         wrapper.style.position = 'relative';
                         wrapper.style.width = '100%';
-                        wrapper.style.display = 'flex'; // Volvemos a flex para alinear mejor el click
+                        wrapper.style.display = 'flex'; 
                         wrapper.style.alignItems = 'center';
                         
-                        // EVENTO MÁGICO: Si clicas en el wrapper (el hueco), focusea el input
                         wrapper.addEventListener('click', function(e) {
                             input.focus();
                         });
@@ -1130,19 +1258,16 @@ function inyectarUnidadesEnInputs() {
                         input.parentNode.insertBefore(wrapper, input);
                         wrapper.appendChild(input);
                         
-                        // Ajustes del input
                         const paddingDerecho = (unidad.length * 9 + 20); 
                         input.style.width = '100%';
-                        input.style.flex = '1'; // Que ocupe todo el espacio
+                        input.style.flex = '1'; 
                         input.style.paddingRight = paddingDerecho + 'px';
                         input.style.boxSizing = 'border-box';
                         
-                        // La unidad flotante
                         const unitSpan = document.createElement('span');
                         unitSpan.textContent = unidad;
                         unitSpan.style.position = 'absolute';
                         unitSpan.style.right = '12px';
-                        // Centrado vertical perfecto sin transform (por si acaso Brave se lía)
                         unitSpan.style.top = '0';
                         unitSpan.style.bottom = '0';
                         unitSpan.style.display = 'flex';
@@ -1151,8 +1276,8 @@ function inyectarUnidadesEnInputs() {
                         unitSpan.style.color = 'var(--color-text-secondary)';
                         unitSpan.style.fontSize = '12px';
                         unitSpan.style.fontWeight = '600';
-                        unitSpan.style.pointerEvents = 'none'; // El click atraviesa
-                        unitSpan.style.userSelect = 'none'; // No se puede seleccionar
+                        unitSpan.style.pointerEvents = 'none'; 
+                        unitSpan.style.userSelect = 'none'; 
                         
                         wrapper.appendChild(unitSpan);
                     }
@@ -1166,7 +1291,6 @@ function inyectarUnidadesEnInputs() {
 // FUNCIÓN AUXILIAR: LIMPIEZA DE COLORES
 // ==========================================
 function limpiarColoresValidacion() {
-    // Busca cualquier input o textarea que sea del formulario
     document.querySelectorAll('.form-control').forEach(input => {
         input.classList.remove('campo-valido', 'campo-error');
     });

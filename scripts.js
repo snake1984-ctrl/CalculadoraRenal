@@ -61,8 +61,8 @@ function mostrarAvisoActualizacion(worker) {
 // ===============================================
 // 2. VARIABLES GLOBALES Y CONFIGURACIÓN
 // ===============================================
-const fieldIds = Array.from(document.querySelectorAll('#clinicalForm input[id], #clinicalForm select[id]')).map(el => el.id);
-
+const fieldIds = Array.from(document.querySelectorAll('#clinicalForm input[id]:not([id="edad_calculada"]), #clinicalForm select[id]')).map(el => el.id);
+const camposParaContador = [...fieldIds, 'sedimento_urinario', 'comentario_nutricional'];
 window.calculatedResults = {};
 let reportText = '';
 let primeraValidacion = false; 
@@ -397,7 +397,7 @@ function actualizarMarcadoresEnTiempoReal() {
 }
 
 function setupFormEvents() {
-    fieldIds.forEach(fieldId => {
+    camposParaContador.forEach(fieldId => {
         const input = document.getElementById(fieldId);
         if (input) {
             input.addEventListener('input', (e) => { 
@@ -547,10 +547,12 @@ function validarTodosCampos() {
 }
 
 function updateFieldCounter() {
-    const filledCount = fieldIds.filter(id => document.getElementById(id)?.value.trim() !== '').length;
+    const filledCount = camposParaContador.filter(id => document.getElementById(id)?.value.trim() !== '').length;
     const counter = document.getElementById('fieldCount');
     if (counter) {
-        counter.textContent = `${filledCount}/${fieldIds.length}`;
+        counter.textContent = `${filledCount}/${camposParaContador.length}`;
+        
+        // Magia UX: Si hay 1 o más campos, quitamos la clase hidden. Si está en 0, la ponemos.
         if (filledCount > 0) {
             counter.classList.remove('hidden');
         } else {
@@ -1294,4 +1296,5 @@ function limpiarColoresValidacion() {
     document.querySelectorAll('.form-control').forEach(input => {
         input.classList.remove('campo-valido', 'campo-error');
     });
+
 }

@@ -36,13 +36,14 @@
         </header>
 
         <div class="tabs-container">
-            <nav class="tabs nav-tabs" role="tablist" aria-label="Secciones clínicas">
+           <nav class="tabs nav-tabs" role="tablist" aria-label="Secciones clínicas">
                 <button id="datos-basicos-tab" class="tab-button nav-link active" data-tab="datos-basicos" role="tab" aria-selected="true" aria-controls="datos-basicos" tabindex="0">📊 Datos Básicos</button>
                 <button id="bioquimica-tab" class="tab-button nav-link" data-tab="bioquimica" role="tab" aria-selected="false" aria-controls="bioquimica" tabindex="-1">🧪 Bioquímica</button>
                 <button id="gasometria-tab" class="tab-button nav-link" data-tab="gasometria" role="tab" aria-selected="false" aria-controls="gasometria" tabindex="-1">🫁 Gasometría</button>
                 <button id="orina-puntual-tab" class="tab-button nav-link" data-tab="orina-puntual" role="tab" aria-selected="false" aria-controls="orina-puntual" tabindex="-1">💧 Orina Puntual</button>
-                <button id="orina-24h-tab" class="tab-button nav-link" data-tab="orina-24h" role="tab" aria-selected="false" aria-controls="orina-24h" tabindex="-1">⏰ Orina 24h</button>
                 <button id="hematologia-tab" class="tab-button nav-link" data-tab="hematologia" role="tab" aria-selected="false" aria-controls="hematologia" tabindex="-1">🩸 Hematología</button>
+                <button id="orina-24h-tab" class="tab-button nav-link" data-tab="orina-24h" role="tab" aria-selected="false" aria-controls="orina-24h" tabindex="-1">⏰ Orina 24h</button>
+                <button id="ecografia-tab" class="tab-button nav-link" data-tab="ecografia" role="tab" aria-selected="false" aria-controls="ecografia" tabindex="-1">🖥️ Ecografía</button>
             </nav>
 
             <form id="clinicalForm" autocomplete="off">
@@ -237,7 +238,23 @@
                         </div>
                     </div>
                 </section>
-
+<section id="hematologia" class="tab-content" role="tabpanel" aria-labelledby="hematologia-tab">
+                    <h3 class="section-title"><i class="fas fa-syringe"></i> Hematología</h3>
+                    <div class="form-grid-3col">
+                        <div class="form-group">
+                            <label class="form-label" for="hb_g_l">Hb (g/L)</label>
+                            <input type="number" id="hb_g_l" name="hb_g_l" class="form-control" step="any" min="0" aria-label="Hemoglobina en gramos por litro">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="ferritina_ng_ml">Ferritina (ng/mL)</label>
+                            <input type="number" id="ferritina_ng_ml" name="ferritina_ng_ml" class="form-control" step="any" min="0">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="ist_percent">IST (%)</label>
+                            <input type="number" id="ist_percent" name="ist_percent" class="form-control" step="any" min="0" max="100" aria-label="Índice de Saturación de Transferrina">
+                        </div>
+                    </div>
+                </section>
                 <section id="orina-24h" class="tab-content" role="tabpanel" aria-labelledby="orina-24h-tab">
                     <h3 class="section-title"><i class="fas fa-clock"></i> Análisis de Orina 24 Horas</h3>
                     <div class="form-grid">
@@ -275,24 +292,42 @@
                         </div>
                     </div>
                 </section>
+                    <section id="ecografia" class="tab-content" role="tabpanel" aria-labelledby="ecografia-tab">
+                    <h3 class="section-title"><i class="fas fa-wave-square"></i> Ecografía Renal</h3>
+                    <div class="form-grid">
+                          <div class="form-group span-2" style="display: flex; flex-direction: column; justify-content: center;">
+                            <label class="form-label">Condición anatómica</label>
+                            <div style="display: flex; align-items: center; gap: 15px; background: var(--color-bg-1); padding: 8px 12px; border-radius: 8px; border: 1px solid var(--color-border);">
+                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 13px; font-weight: 500;">
+                                    <input type="checkbox" id="check_monoreno" onchange="toggleMonoreno(this.checked)" style="width: 16px; height: 16px; accent-color: var(--color-primary);">
+                                    Paciente Monoreno
+                                </label>
+                                
+                                <div id="opciones_monoreno" style="display: none; align-items: center; gap: 10px; margin-left: 10px; border-left: 1px solid var(--color-border); padding-left: 15px;">
+                                    <span style="font-size: 12px; color: var(--color-text-secondary);">Presente:</span>
+                                    <label style="display: flex; align-items: center; gap: 4px; cursor: pointer; font-size: 13px;">
+                                        <input type="radio" name="radio_rinon_unico" value="izquierdo" onchange="seleccionarRinonUnico('izquierdo')" style="accent-color: var(--color-primary);" checked> Izq
+                                    </label>
+                                    <label style="display: flex; align-items: center; gap: 4px; cursor: pointer; font-size: 13px;">
+                                        <input type="radio" name="radio_rinon_unico" value="derecho" onchange="seleccionarRinonUnico('derecho')" style="accent-color: var(--color-primary);"> Der
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="rinon_izquierdo_mm">Riñón Izquierdo (mm)</label>
+                            <input type="number" id="rinon_izquierdo_mm" name="rinon_izquierdo_mm" class="form-control" step="any" min="0" max="250">
+                        </div>
 
-                <section id="hematologia" class="tab-content" role="tabpanel" aria-labelledby="hematologia-tab">
-                    <h3 class="section-title"><i class="fas fa-syringe"></i> Hematología</h3>
-                    <div class="form-grid-3col">
                         <div class="form-group">
-                            <label class="form-label" for="hb_g_l">Hb (g/L)</label>
-                            <input type="number" id="hb_g_l" name="hb_g_l" class="form-control" step="any" min="0" aria-label="Hemoglobina en gramos por litro">
+                            <label class="form-label" for="rinon_derecho_mm">Riñón Derecho (mm)</label>
+                            <input type="number" id="rinon_derecho_mm" name="rinon_derecho_mm" class="form-control" step="any" min="0" max="250">
                         </div>
-                        <div class="form-group">
-                            <label class="form-label" for="ferritina_ng_ml">Ferritina (ng/mL)</label>
-                            <input type="number" id="ferritina_ng_ml" name="ferritina_ng_ml" class="form-control" step="any" min="0">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label" for="ist_percent">IST (%)</label>
-                            <input type="number" id="ist_percent" name="ist_percent" class="form-control" step="any" min="0" max="100" aria-label="Índice de Saturación de Transferrina">
-                        </div>
+
+                      
                     </div>
                 </section>
+                
             </form>
         </div>
 

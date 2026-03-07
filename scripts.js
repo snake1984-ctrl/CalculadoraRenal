@@ -61,7 +61,10 @@ function mostrarAvisoActualizacion(worker) {
 // ===============================================
 // 2. VARIABLES GLOBALES Y CONFIGURACIÓN
 // ===============================================
-const fieldIds = Array.from(document.querySelectorAll('#clinicalForm input[id]:not([id="edad_calculada"]), #clinicalForm select[id]')).map(el => el.id);
+// Campos matemáticos (excluye Edad calculada, textos largos, y los checkboxes/radios del monoreno)
+const fieldIds = Array.from(document.querySelectorAll('#clinicalForm input[id]:not([id="edad_calculada"]):not([type="checkbox"]):not([type="radio"]), #clinicalForm select[id]')).map(el => el.id);
+
+// Todos los campos editables para el contador visual (suma 52 campos en total)
 const camposParaContador = [...fieldIds, 'sedimento_urinario', 'comentario_nutricional'];
 window.calculatedResults = {};
 let reportText = '';
@@ -1297,4 +1300,54 @@ function limpiarColoresValidacion() {
         input.classList.remove('campo-valido', 'campo-error');
     });
 
+}
+// ==========================================
+// CONTROL DE UI: ECOGRAFÍA Y MONORENO
+// ==========================================
+function toggleMonoreno(isMonoreno) {
+    const opcionesDiv = document.getElementById('opciones_monoreno');
+    
+    if (isMonoreno) {
+        opcionesDiv.style.display = 'flex';
+        const seleccionado = document.querySelector('input[name="radio_rinon_unico"]:checked').value;
+        seleccionarRinonUnico(seleccionado);
+    } else {
+        opcionesDiv.style.display = 'none';
+        reactivarCaja('rinon_izquierdo_mm');
+        reactivarCaja('rinon_derecho_mm');
+    }
+}
+
+function seleccionarRinonUnico(lateralidadPresente) {
+    if (lateralidadPresente === 'izquierdo') {
+        reactivarCaja('rinon_izquierdo_mm');
+        bloquearCaja('rinon_derecho_mm');
+    } else {
+        reactivarCaja('rinon_derecho_mm');
+        bloquearCaja('rinon_izquierdo_mm');
+    }
+}
+
+function bloquearCaja(id) {
+    const input = document.getElementById(id);
+    if (!input) return;
+    input.value = ''; // Limpiamos el valor para que no contamine
+    input.disabled = true;
+    
+    // Quitamos los estilos manuales antiguos por si se habían quedado
+    input.style.opacity = ''; 
+    input.style.cursor = '';
+    
+    // Le aplicamos el diseño oficial de "Edad calculada"
+    input.classList.add('input-bloqueado');
+    input.classList.remove('campo-valido', 'campo-error'); 
+    
+    updateFieldCounter(); // Actualizamos contador
+}
+
+function reactivarCaja(id) {
+    const input = document.getElementById(id);
+    if (!input) return;
+    input.disabled = false;
+    input.classList.remove('input-bloqueado'); // Le quitamos el diseño de bloqueo
 }

@@ -298,8 +298,8 @@ textarea.form-control:focus {
 input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; display: none; }
 input[type=number] { -moz-appearance: textfield; appearance: textfield; }
 
-#edad_calculada { background-color: #f1f5f9 !important; color: #475569 !important; border-color: #cbd5e1 !important; cursor: not-allowed; font-weight: 500; }
-[data-color-scheme="dark"] #edad_calculada { background-color: #0f172a !important; color: #94a3b8 !important; border-color: #334155 !important; box-shadow: none; }
+#edad_calculada, .input-bloqueado { background-color: #f1f5f9 !important; color: #475569 !important; border-color: #cbd5e1 !important; cursor: not-allowed; font-weight: 500; }
+[data-color-scheme="dark"] #edad_calculada, [data-color-scheme="dark"] .input-bloqueado { background-color: #0f172a !important; color: #94a3b8 !important; border-color: #334155 !important; box-shadow: none; }
 
 .input-unit-wrapper { cursor: text; }
 
